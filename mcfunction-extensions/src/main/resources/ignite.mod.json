@@ -1,0 +1,10 @@
+{
+    "id": "mcfext",
+    "version": "1.0.0",
+    "mixins": [
+        "mcfext.mixins.json"
+    ],
+    "wideners": [
+        "mcfext.accesswidener"
+    ]
+}
