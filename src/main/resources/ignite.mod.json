@@ -1,0 +1,10 @@
+{
+    "id": "monumenta",
+    "version": "${version}",
+    "mixins": [
+        "monumenta.mixins.json"
+    ],
+    "wideners": [
+        "monumenta.accesswidener"
+    ]
+}
