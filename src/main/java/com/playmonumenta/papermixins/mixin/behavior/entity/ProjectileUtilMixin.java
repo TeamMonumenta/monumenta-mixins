@@ -18,16 +18,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(ProjectileUtil.class)
 public class ProjectileUtilMixin {
-    @Inject(
-        method = "getWeaponHoldingHand",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private static void returnMainhandIfBow(LivingEntity entity, Item item,
-                                                      CallbackInfoReturnable<InteractionHand> cir) {
-        if (Items.BOW == item) {
-            cir.setReturnValue(InteractionHand.MAIN_HAND);
-            cir.cancel();
-        }
-    }
+	@Inject(
+		method = "getWeaponHoldingHand",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private static void returnMainhandIfBow(LivingEntity entity, Item item,
+													CallbackInfoReturnable<InteractionHand> cir) {
+		if (Items.BOW == item) {
+			cir.setReturnValue(InteractionHand.MAIN_HAND);
+			cir.cancel();
+		}
+	}
 }

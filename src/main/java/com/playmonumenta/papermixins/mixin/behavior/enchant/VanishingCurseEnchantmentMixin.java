@@ -14,13 +14,13 @@ import org.spongepowered.asm.mixin.Mixin;
  */
 @Mixin(VanishingCurseEnchantment.class)
 public class VanishingCurseEnchantmentMixin extends Enchantment {
-    protected VanishingCurseEnchantmentMixin(Rarity rarity, EnchantmentCategory target, EquipmentSlot[] slotTypes) {
-        super(rarity, target, slotTypes);
-    }
+	protected VanishingCurseEnchantmentMixin(Rarity rarity, EnchantmentCategory target, EquipmentSlot[] slotTypes) {
+		super(rarity, target, slotTypes);
+	}
 
-    // Mixin @Overrides will be properly mixed into the target class, which is convenient.
-    @Override
-    public int getMaxLevel() {
-        return 2;
-    }
+	// Mixin @Overrides will be properly mixed into the target class, which is convenient.
+	@Override
+	public int getMaxLevel() {
+		return 2;
+	}
 }

@@ -15,31 +15,31 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(ConcretePowderBlock.class)
 public class ConcretePowderBlockMixin {
-    /**
-     * @author Flowey
-     * @reason Remove concrete hardening.
-     */
-    @Overwrite
+	/**
+	 * @author Flowey
+	 * @reason Remove concrete hardening.
+	 */
+	@Overwrite
 
-    private static boolean shouldSolidify(BlockGetter world, BlockPos pos, BlockState state) {
-        return false;
-    }
+	private static boolean shouldSolidify(BlockGetter world, BlockPos pos, BlockState state) {
+		return false;
+	}
 
-    /**
-     * @author Flowey
-     * @reason Remove concrete hardening.
-     */
-    @Overwrite
-    private static boolean touchesLiquid(BlockGetter world, BlockPos pos) {
-        return false;
-    }
+	/**
+	 * @author Flowey
+	 * @reason Remove concrete hardening.
+	 */
+	@Overwrite
+	private static boolean touchesLiquid(BlockGetter world, BlockPos pos) {
+		return false;
+	}
 
-    /**
-     * @author Flowey
-     * @reason Remove concrete hardening.
-     */
-    @Overwrite
-    private static boolean canSolidify(BlockState state) {
-        return false;
-    }
+	/**
+	 * @author Flowey
+	 * @reason Remove concrete hardening.
+	 */
+	@Overwrite
+	private static boolean canSolidify(BlockState state) {
+		return false;
+	}
 }

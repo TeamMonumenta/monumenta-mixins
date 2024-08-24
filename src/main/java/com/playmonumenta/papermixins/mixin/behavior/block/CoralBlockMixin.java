@@ -14,12 +14,12 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(CoralBlock.class)
 public class CoralBlockMixin {
-    /**
-     * @author Flowey
-     * @reason Disable coral death.
-     */
-    @Overwrite
-    protected boolean scanForWater(BlockGetter world, BlockPos pos) {
-        return true;
-    }
+	/**
+	 * @author Flowey
+	 * @reason Disable coral death.
+	 */
+	@Overwrite
+	public boolean scanForWater(BlockGetter world, BlockPos pos) {
+		return true;
+	}
 }

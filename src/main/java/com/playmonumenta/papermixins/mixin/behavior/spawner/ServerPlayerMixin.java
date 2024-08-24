@@ -22,25 +22,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player {
-    public ServerPlayerMixin(Level world, BlockPos pos, float yaw, GameProfile gameProfile) {
-        super(world, pos, yaw, gameProfile);
-    }
+	public ServerPlayerMixin(Level world, BlockPos pos, float yaw, GameProfile gameProfile) {
+		super(world, pos, yaw, gameProfile);
+	}
 
-    @Inject(
-        method = "die",
-        at = @At("TAIL")
-    )
-    private void onPlayerDeath(DamageSource damageSource, CallbackInfo ci) {
-        var center = new Location(level().getWorld(), this.getX(), this.getY(), this.getZ());
-        var nearbyEntities = level().getWorld().getNearbyEntities(center, 24.0d, 24.0d, 24.0d);
+	@Inject(
+		method = "die",
+		at = @At("TAIL")
+	)
+	private void onPlayerDeath(DamageSource damageSource, CallbackInfo ci) {
+		var center = new Location(level().getWorld(), this.getX(), this.getY(), this.getZ());
+		var nearbyEntities = level().getWorld().getNearbyEntities(center, 24.0d, 24.0d, 24.0d);
 
-        for (var nearby : nearbyEntities) {
-            var accessor = (EntityAccess) ((CraftEntity) nearby).getHandle();
-            accessor.monumenta$setSpawner(null);
+		for (var nearby : nearbyEntities) {
+			var accessor = (EntityAccess) ((CraftEntity) nearby).getHandle();
+			accessor.monumenta$setSpawner(null);
 
-            if (this.getTags().contains("DelvesPlayer")) {
-                accessor.monumenta$setDelveReprime(true);
-            }
-        }
-    }
+			if (this.getTags().contains("DelvesPlayer")) {
+				accessor.monumenta$setDelveReprime(true);
+			}
+		}
+	}
 }

@@ -21,99 +21,99 @@ import org.jetbrains.annotations.NotNull;
  * constructs.
  */
 public class CodeGenerator<T extends ExecutionCommandSource<T>> {
-    protected final FunctionBuilder<T> builder = new FunctionBuilder<>() {
-        @Override
-        public void addMacro(@NotNull String command, int lineNum) {
-            if (this.plainEntries != null) {
-                this.macroEntries = new ArrayList<>(this.plainEntries.size() + 1);
+	protected final FunctionBuilder<T> builder = new FunctionBuilder<>() {
+		@Override
+		public void addMacro(@NotNull String command, int lineNum) {
+			if (this.plainEntries != null) {
+				this.macroEntries = new ArrayList<>(this.plainEntries.size() + 1);
 
-                for (final var action : this.plainEntries) {
-                    if (action == null) {
-                        this.macroEntries.add(null);
-                    } else {
-                        this.macroEntries.add(new MacroFunction.PlainTextEntry<>(action));
-                    }
-                }
+				for (final var action : this.plainEntries) {
+					if (action == null) {
+						this.macroEntries.add(null);
+					} else {
+						this.macroEntries.add(new MacroFunction.PlainTextEntry<>(action));
+					}
+				}
 
-                this.plainEntries = null;
-            }
+				this.plainEntries = null;
+			}
 
-            super.addMacro(command, lineNum);
-        }
-    };
-    protected final List<IntObjectPair<Linkable<T>>> linkables = new ArrayList<>();
-    private int currLabelId = 0;
+			super.addMacro(command, lineNum);
+		}
+	};
+	protected final List<IntObjectPair<Linkable<T>>> linkables = new ArrayList<>();
+	private int currLabelId = 0;
 
-    public Label defineLabel(String name) {
-        return new Label(currLabelId++, name);
-    }
+	public Label defineLabel(String name) {
+		return new Label(currLabelId++, name);
+	}
 
-    public Label defineLabel() {
-        return new Label(currLabelId++, null);
-    }
+	public Label defineLabel() {
+		return new Label(currLabelId++, null);
+	}
 
-    public void emitPlain(UnboundEntryAction<T> instr) {
-        builder.addCommand(instr);
-    }
+	public void emitPlain(UnboundEntryAction<T> instr) {
+		builder.addCommand(instr);
+	}
 
-    public void emitControl(ControlInstr<T> instr) {
-        builder.addCommand(instr);
-    }
+	public void emitControl(ControlInstr<T> instr) {
+		builder.addCommand(instr);
+	}
 
-    public void emitControlNamed(String name, ControlInstr.StateModifier<T> instr) {
-        emitControl(ControlInstr.named(name, instr));
-    }
+	public void emitControlNamed(String name, ControlInstr.StateModifier<T> instr) {
+		emitControl(ControlInstr.named(name, instr));
+	}
 
-    public void emitMacro(String data, int lineNo) {
-        builder.addMacro(data, lineNo);
-    }
+	public void emitMacro(String data, int lineNo) {
+		builder.addMacro(data, lineNo);
+	}
 
-    public void emitMacroCustom(String data, BiFunction<StringTemplate, IntList, MacroFunction.Entry<T>> entry) {
-        builder.addMacro(data, 0);
-        // hack
-        assert builder.macroEntries != null;
-        final var lastIndex = builder.macroEntries.size() - 1;
-        final var macroEntry = (MacroFunction.MacroEntry<T>) builder.macroEntries.get(lastIndex);
-        builder.macroEntries.set(lastIndex, entry.apply(macroEntry.template, macroEntry.parameters));
-    }
+	public void emitMacroCustom(String data, BiFunction<StringTemplate, IntList, MacroFunction.Entry<T>> entry) {
+		builder.addMacro(data, 0);
+		// hack
+		assert builder.macroEntries != null;
+		final var lastIndex = builder.macroEntries.size() - 1;
+		final var macroEntry = (MacroFunction.MacroEntry<T>) builder.macroEntries.get(lastIndex);
+		builder.macroEntries.set(lastIndex, entry.apply(macroEntry.template, macroEntry.parameters));
+	}
 
-    public void emitLinkable(Linkable<T> linkable) {
-        linkables.add(IntObjectPair.of(nextInstrIndex(), linkable));
-        (builder.plainEntries == null ? builder.macroEntries : builder.plainEntries).add(null);
-    }
+	public void emitLinkable(Linkable<T> linkable) {
+		linkables.add(IntObjectPair.of(nextInstrIndex(), linkable));
+		(builder.plainEntries == null ? builder.macroEntries : builder.plainEntries).add(null);
+	}
 
-    public void emitControlLinkable(Supplier<ControlInstr<T>> gen) {
-        emitLinkable(Linkable.wrap(gen));
-    }
+	public void emitControlLinkable(Supplier<ControlInstr<T>> gen) {
+		emitLinkable(Linkable.wrap(gen));
+	}
 
-    public void emitControlLinkable(List<Label> targets, Supplier<ControlInstr<T>> gen) {
-        emitLinkable(Linkable.wrap(targets, gen));
-    }
+	public void emitControlLinkable(List<Label> targets, Supplier<ControlInstr<T>> gen) {
+		emitLinkable(Linkable.wrap(targets, gen));
+	}
 
-    public void emitLabel(Label label) {
-        label.offset = nextInstrIndex();
-    }
+	public void emitLabel(Label label) {
+		label.offset = nextInstrIndex();
+	}
 
-    public int nextInstrIndex() {
-        return builder.plainEntries == null ? builder.macroEntries.size() : builder.plainEntries.size();
-    }
+	public int nextInstrIndex() {
+		return builder.plainEntries == null ? builder.macroEntries.size() : builder.plainEntries.size();
+	}
 
-    public CommandFunction<T> define(ResourceLocation id) {
-        // linking :3
-        for (var linkableInfo : linkables) {
-            if (builder.plainEntries != null) {
-                builder.plainEntries.set(linkableInfo.firstInt(), linkableInfo.second().link());
-            } else {
-                assert builder.macroEntries != null;
-                builder.macroEntries.set(linkableInfo.firstInt(),
-                    new MacroFunction.PlainTextEntry<>(linkableInfo.second().link()));
-            }
-        }
+	public CommandFunction<T> define(ResourceLocation id) {
+		// linking :3
+		for (var linkableInfo : linkables) {
+			if (builder.plainEntries != null) {
+				builder.plainEntries.set(linkableInfo.firstInt(), linkableInfo.second().link());
+			} else {
+				assert builder.macroEntries != null;
+				builder.macroEntries.set(linkableInfo.firstInt(),
+					new MacroFunction.PlainTextEntry<>(linkableInfo.second().link()));
+			}
+		}
 
-        return builder.build(id);
-    }
+		return builder.build(id);
+	}
 
-    public String dumpDisassembly() {
-        throw new IllegalStateException();
-    }
+	public String dumpDisassembly() {
+		throw new IllegalStateException();
+	}
 }

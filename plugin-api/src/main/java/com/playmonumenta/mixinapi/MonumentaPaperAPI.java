@@ -9,28 +9,28 @@ import org.semver4j.Semver;
 
 @SuppressWarnings("deprecation")
 public interface MonumentaPaperAPI {
-    static MonumentaPaperAPI getInstance() {
-        return ImplLoader.INSTANCE;
-    }
+	static MonumentaPaperAPI getInstance() {
+		return ImplLoader.INSTANCE;
+	}
 
-    EntityDamageEvent.DamageModifier getIframes();
+	EntityDamageEvent.DamageModifier getIframes();
 
-    Semver getVersion();
+	Semver getVersion();
 
-    int getFlyingTickTime();
+	int getFlyingTickTime();
 
-    void setFlyingTickTime(int time);
+	void setFlyingTickTime(int time);
 
-    int getServerShutdownTime();
+	int getServerShutdownTime();
 
-    void setServerShutdownTime(int time);
+	void setServerShutdownTime(int time);
 
-    @ApiStatus.Internal
-    DataLoaderRegistry getDataLoaderRegistryAPI();
+	@ApiStatus.Internal
+	DataLoaderRegistry getDataLoaderRegistryAPI();
 
-    @ApiStatus.Internal
-    CustomItemRegistry getCustomItemRegistryAPI();
+	@ApiStatus.Internal
+	CustomItemRegistry getCustomItemRegistryAPI();
 
-    @ApiStatus.Internal
-    CustomItems getCustomItemsAPI();
+	@ApiStatus.Internal
+	CustomItems getCustomItemsAPI();
 }

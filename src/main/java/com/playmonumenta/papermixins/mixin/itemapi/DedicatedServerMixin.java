@@ -20,25 +20,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DedicatedServer.class)
 public abstract class DedicatedServerMixin extends MinecraftServer {
-    public DedicatedServerMixin(OptionSet options, WorldLoader.DataLoadContext worldLoader, Thread thread,
-                                LevelStorageSource.LevelStorageAccess convertable_conversionsession,
-                                PackRepository resourcepackrepository, WorldStem worldstem, Proxy proxy,
-                                DataFixer datafixer, Services services,
-                                ChunkProgressListenerFactory worldloadlistenerfactory) {
-        super(options, worldLoader, thread, convertable_conversionsession, resourcepackrepository, worldstem, proxy,
-            datafixer, services, worldloadlistenerfactory);
-    }
+	public DedicatedServerMixin(OptionSet options, WorldLoader.DataLoadContext worldLoader, Thread thread,
+								LevelStorageSource.LevelStorageAccess convertable_conversionsession,
+								PackRepository resourcepackrepository, WorldStem worldstem, Proxy proxy,
+								DataFixer datafixer, Services services,
+								ChunkProgressListenerFactory worldloadlistenerfactory) {
+		super(options, worldLoader, thread, convertable_conversionsession, resourcepackrepository, worldstem, proxy,
+			datafixer, services, worldloadlistenerfactory);
+	}
 
-    @Inject(
-        method = "initServer",
-        at = @At(
-            value = "INVOKE",
-            target = "Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;loadPlugins()V",
-            shift = At.Shift.AFTER
-        )
-    )
-    private void reloadDatapackHandlers(CallbackInfoReturnable<Boolean> cir) {
-        PluginDataListener.INSTANCE.reload(true);
-        CustomItemRegistryImpl.getInstance().freeze();
-    }
+	@Inject(
+		method = "initServer",
+		at = @At(
+			value = "INVOKE",
+			target = "Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;loadPlugins()V",
+			shift = At.Shift.AFTER
+		)
+	)
+	private void reloadDatapackHandlers(CallbackInfoReturnable<Boolean> cir) {
+		PluginDataListener.INSTANCE.reload(true);
+		CustomItemRegistryImpl.getInstance().freeze();
+	}
 }

@@ -20,28 +20,28 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(WitherBoss.class)
 public abstract class WitherBossMixin extends Monster {
-    protected WitherBossMixin(EntityType<? extends Monster> type, Level world) {
-        super(type, world);
-    }
+	protected WitherBossMixin(EntityType<? extends Monster> type, Level world) {
+		super(type, world);
+	}
 
-    // It's never below half health (I promise!)
-    @ModifyExpressionValue(
-        method = "hurt",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/boss/wither/WitherBoss;isPowered()Z"
-        )
-    )
-    private boolean disableArrowInvulnerability(boolean original) {
-        return false;
-    }
+	// It's never below half health (I promise!)
+	@ModifyExpressionValue(
+		method = "hurt",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/boss/wither/WitherBoss;isPowered()Z"
+		)
+	)
+	private boolean disableArrowInvulnerability(boolean original) {
+		return false;
+	}
 
-    /**
-     * @author Flowey
-     * @reason Disable nether stars.
-     */
-    @Overwrite
-    protected void dropCustomDeathLoot(@NotNull DamageSource source, int lootingMultiplier, boolean allowDrops) {
-        super.dropCustomDeathLoot(source, lootingMultiplier, allowDrops);
-    }
+	/**
+	 * @author Flowey
+	 * @reason Disable nether stars.
+	 */
+	@Overwrite
+	public void dropCustomDeathLoot(@NotNull DamageSource source, int lootingMultiplier, boolean allowDrops) {
+		super.dropCustomDeathLoot(source, lootingMultiplier, allowDrops);
+	}
 }

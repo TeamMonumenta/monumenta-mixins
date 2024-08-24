@@ -1,6 +1,7 @@
-package com.playmonumenta.papermixins.mixin.itemapi;
+package com.playmonumenta.papermixins.mixin.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.playmonumenta.papermixins.mcfunction.parse.parser.Parser;
 import com.playmonumenta.papermixins.registry.CommandRegister;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -14,18 +15,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Commands.class)
 public abstract class CommandsMixin {
-    @Shadow
-    @Final
-    private CommandDispatcher<CommandSourceStack> dispatcher;
+	@Shadow
+	@Final
+	private CommandDispatcher<CommandSourceStack> dispatcher;
 
-    @Inject(
-        method = "<init>(Lnet/minecraft/commands/Commands$CommandSelection;" +
-            "Lnet/minecraft/commands/CommandBuildContext;)V",
-        at = @At("TAIL")
-    )
-    private void registerCommands(Commands.CommandSelection environment,
-                                  CommandBuildContext commandRegistryAccess,
-                                  CallbackInfo ci) {
-        CommandRegister.register(this.dispatcher);
-    }
+	@Inject(
+		method = "<init>(Lnet/minecraft/commands/Commands$CommandSelection;" +
+			"Lnet/minecraft/commands/CommandBuildContext;)V",
+		at = @At("TAIL")
+	)
+	private void registerCommands(Commands.CommandSelection environment,
+								CommandBuildContext commandRegistryAccess,
+								CallbackInfo ci) {
+		CommandRegister.register(this.dispatcher);
+		Parser.init(commandRegistryAccess);
+	}
 }

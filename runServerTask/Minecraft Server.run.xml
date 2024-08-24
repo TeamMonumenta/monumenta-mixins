@@ -5,10 +5,10 @@
     <envs>
       <env name="IS_DEVENV" value="1" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="space.vectrix.ignite.IgniteBootstrap" />
+    <option name="MAIN_CLASS_NAME" value="net.fabricmc.loader.launch.knot.KnotServer" />
     <module name="monumenta-mixins.main" />
     <option name="PROGRAM_PARAMETERS" value="-nogui" />
-    <option name="VM_PARAMETERS" value="-Dignite.locator=classpath -javaagent:$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar" />
+    <option name="VM_PARAMETERS" value="-Dfabric.development=true -Dfabric.classPathGroups=$PROJECT_DIR$/build/classes/java/main:$PROJECT_DIR$/build/resources/main:$USER_HOME$/.gradle/caches/paperweight-userdev/0fb32c1fc90affc784e8e1c275c217cc2bc2c229cb1a9c3d4c8468ecd94a9c8e/module/io.papermc.paper/dev-bundle/1.20.4-R0.1-SNAPSHOT/paperweight/ivyRepository/io/papermc/paper/paper-server/userdev-1.20.4-R0.1-SNAPSHOT/paper-server-userdev-1.20.4-R0.1-SNAPSHOT.jar:$PROJECT_DIR$/plugin-api/build/classes/java/main:$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.tr7zw/item-nbt-api/2.12.4/a20134bb51ef11f6443b7b17eba06a0b5e8d63ec/item-nbt-api-2.12.4.jar:$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.semver4j/semver4j/5.3.0/19a0eacad6a20072ee4f096f60c331dbd9fae1d1/semver4j-5.3.0.jar -javaagent:$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run/" />
     <method v="2">
       <option name="Make" enabled="true" />

@@ -30,67 +30,67 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(PlayerDataStorage.class)
 public class PlayerDataStorageMixin {
-    @Shadow
-    @Final
-    private File playerDir;
+	@Shadow
+	@Final
+	private File playerDir;
 
-    // really cursed save inject
-    // TODO: break apart this inject or just use overwrite
-    @Inject(
-        method = "save",
-        at = @At(
-            value = "INVOKE",
-            target = "Ljava/nio/file/Files;createTempFile(Ljava/nio/file/Path;Ljava/lang/String;Ljava/lang/String;" +
-                "[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;"
-        ),
-        cancellable = true
-    )
-    private void emitSaveEvent(Player player, CallbackInfo ci, @Local(ordinal = 0) CompoundTag tag) {
-        // always cancel the event since we overwrite logic
-        ci.cancel();
+	// really cursed save inject
+	// TODO: break apart this inject or just use overwrite
+	@Inject(
+		method = "save",
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/nio/file/Files;createTempFile(Ljava/nio/file/Path;Ljava/lang/String;Ljava/lang/String;" +
+				"[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;"
+		),
+		cancellable = true
+	)
+	private void emitSaveEvent(Player player, CallbackInfo ci, @Local(ordinal = 0) CompoundTag tag) {
+		// always cancel the event since we overwrite logic
+		ci.cancel();
 
-        var playerData = new File(this.playerDir, player.getStringUUID() + ".dat");
-        var playerDataOld = new File(this.playerDir, player.getStringUUID() + ".dat_old");
+		var playerData = new File(this.playerDir, player.getStringUUID() + ".dat");
+		var playerDataOld = new File(this.playerDir, player.getStringUUID() + ".dat_old");
 
-        var event = new PlayerDataSaveEvent((CraftPlayer) (player.getBukkitEntity()), playerData, tag);
+		var event = new PlayerDataSaveEvent((CraftPlayer) (player.getBukkitEntity()), playerData, tag);
 
-        if (!event.callEvent()) {
-            return;
-        }
+		if (!event.callEvent()) {
+			return;
+		}
 
-        try {
-            var file = Files.createTempFile(this.playerDir.toPath(), player.getStringUUID() + "-", ".dat");
-            NbtIo.writeCompressed((CompoundTag) event.getData(), file);
-            Util.safeReplaceFile(event.getPath().toPath(), file, playerDataOld.toPath());
-            ci.cancel();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
-    }
+		try {
+			var file = Files.createTempFile(this.playerDir.toPath(), player.getStringUUID() + "-", ".dat");
+			NbtIo.writeCompressed((CompoundTag) event.getData(), file);
+			Util.safeReplaceFile(event.getPath().toPath(), file, playerDataOld.toPath());
+			ci.cancel();
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    @ModifyVariable(
-        method = "load",
-        at = @At(value = "LOAD", ordinal = 0),
-        slice = @Slice(
-            from = @At(
-                value = "INVOKE",
-                target = "Ljava/util/logging/Logger;warning(Ljava/lang/String;)V"
-            ),
-            to = @At(
-                value = "INVOKE:LAST",
-                target = "Ljava/io/File;exists()Z"
-            )
-        )
-    )
-    private File emitLoadEvent(File file, Player player, @Local LocalRef<CompoundTag> tag) {
-        PlayerDataLoadEvent event = new PlayerDataLoadEvent((CraftPlayer) (player.getBukkitEntity()), file);
-        event.callEvent();
+	@ModifyVariable(
+		method = "load",
+		at = @At(value = "LOAD", ordinal = 0),
+		slice = @Slice(
+			from = @At(
+				value = "INVOKE",
+				target = "Ljava/util/logging/Logger;warning(Ljava/lang/String;)V"
+			),
+			to = @At(
+				value = "INVOKE:LAST",
+				target = "Ljava/io/File;exists()Z"
+			)
+		)
+	)
+	private File emitLoadEvent(File file, Player player, @Local LocalRef<CompoundTag> tag) {
+		PlayerDataLoadEvent event = new PlayerDataLoadEvent((CraftPlayer) (player.getBukkitEntity()), file);
+		event.callEvent();
 
-        if (event.getData() != null) {
-            tag.set((CompoundTag) event.getData());
-            return MonumentaMod.FAKE_FILE;
-        }
+		if (event.getData() != null) {
+			tag.set((CompoundTag) event.getData());
+			return MonumentaMod.FAKE_FILE;
+		}
 
-        return event.getPath();
-    }
+		return event.getPath();
+	}
 }

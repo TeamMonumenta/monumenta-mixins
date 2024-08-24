@@ -18,22 +18,22 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(IceBlock.class)
 public class IceBlockMixin {
-    /**
-     * @author Flowey
-     * @reason Disable all special ice behaviour when harvested with non-silk touch tool.
-     */
-    @Overwrite
-    public void afterDestroy(Level world, BlockPos pos, ItemStack tool) {
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool) == 0) {
-            world.removeBlock(pos, false);
-        }
-    }
+	/**
+	 * @author Flowey
+	 * @reason Disable all special ice behaviour when harvested with non-silk touch tool.
+	 */
+	@Overwrite
+	public void afterDestroy(Level world, BlockPos pos, ItemStack tool) {
+		if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool) == 0) {
+			world.removeBlock(pos, false);
+		}
+	}
 
-    /**
-     * @author Flowey
-     * @reason Disable ice melting.
-     */
-    @Overwrite
-    protected void melt(BlockState state, Level world, BlockPos pos) {
-    }
+	/**
+	 * @author Flowey
+	 * @reason Disable ice melting.
+	 */
+	@Overwrite
+	public void melt(BlockState state, Level world, BlockPos pos) {
+	}
 }

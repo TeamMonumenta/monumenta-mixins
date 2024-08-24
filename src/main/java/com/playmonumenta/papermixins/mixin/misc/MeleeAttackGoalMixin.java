@@ -13,25 +13,25 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(MeleeAttackGoal.class)
 public class MeleeAttackGoalMixin implements CustomMeleeAttackGoal {
-    @Shadow
-    @Final
-    protected PathfinderMob mob;
+	@Shadow
+	@Final
+	protected PathfinderMob mob;
 
-    @Override
-    public boolean isWithinAttackRange(LivingEntity entity) {
-        return this.mob.isWithinMeleeAttackRange(((CraftLivingEntity) entity).getHandle());
-    }
+	@Override
+	public boolean isWithinAttackRange(LivingEntity entity) {
+		return this.mob.isWithinMeleeAttackRange(((CraftLivingEntity) entity).getHandle());
+	}
 
-    @Redirect(
-        method = "canUse",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/PathfinderMob;isWithinMeleeAttackRange" +
-                "(Lnet/minecraft/world/entity/LivingEntity;)Z"
-        )
-    )
-    private boolean redirectCanUse(PathfinderMob instance,
-                                   net.minecraft.world.entity.LivingEntity livingEntity) {
-        return isWithinAttackRange(livingEntity.getBukkitLivingEntity());
-    }
+	@Redirect(
+		method = "canUse",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/PathfinderMob;isWithinMeleeAttackRange" +
+				"(Lnet/minecraft/world/entity/LivingEntity;)Z"
+		)
+	)
+	private boolean redirectCanUse(PathfinderMob instance,
+								net.minecraft.world.entity.LivingEntity livingEntity) {
+		return isWithinAttackRange(livingEntity.getBukkitLivingEntity());
+	}
 }

@@ -10,14 +10,13 @@ plugins {
 // https://github.com/gradle/gradle/issues/15383
 val libs = the<LibrariesForLibs>()
 
+val shadowImplementation by configurations.creating
+
 dependencies {
     // Paper & ignite - toolchain items
-    compileOnly(libs.ignite.api)
-    compileOnly(libs.bundles.mixin)
+    implementation(libs.bundles.toolchain)
     compileOnly(paperweight.paperDevBundle(libs.versions.paper.api.get()))
-    implementation(libs.paper.server)
-    implementation(libs.ignite.launcher)
-    implementation(libs.bundles.papermisc) // Required for server to start when running "Minecraft Server"
+    implementation(libs.bundles.paperrt) // Required for server to start when running "Minecraft Server"
     remapper(libs.tinyremapper) { // Tiny remapper
         artifact {
             classifier = "fat"
@@ -31,7 +30,8 @@ tasks {
     }
 
     shadowJar {
-        archiveClassifier.set("")
+        archiveClassifier.set("dev")
+        configurations = listOf(shadowImplementation)
     }
 
     reobfJar {

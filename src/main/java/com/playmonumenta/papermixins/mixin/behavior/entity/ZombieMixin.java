@@ -13,13 +13,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(Zombie.class)
 public class ZombieMixin {
-    @Redirect(
-        method = "tick",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/monster/Zombie;startUnderWaterConversion(I)V"
-        )
-    )
-    private void disableConversion(Zombie instance, int ticksUntilWaterConversion) {
-    }
+	@Redirect(
+		method = "tick",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/monster/Zombie;startUnderWaterConversion(I)V"
+		)
+	)
+	private void disableConversion(Zombie instance, int ticksUntilWaterConversion) {
+	}
 }

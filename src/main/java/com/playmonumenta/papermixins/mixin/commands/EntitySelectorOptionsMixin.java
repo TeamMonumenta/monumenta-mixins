@@ -23,43 +23,43 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(EntitySelectorOptions.class)
 public abstract class EntitySelectorOptionsMixin {
-    @Shadow
-    private static void register(String id, EntitySelectorOptions.Modifier handler,
-                                 Predicate<EntitySelectorParser> condition, Component description) {
-    }
+	@Shadow
+	private static void register(String id, EntitySelectorOptions.Modifier handler,
+								Predicate<EntitySelectorParser> condition, Component description) {
+	}
 
-    @Inject(
-        method = "bootStrap",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/commands/arguments/selector/options/EntitySelectorOptions;register" +
-                "(Ljava/lang/String;Lnet/minecraft/commands/arguments/selector/options" +
-                "/EntitySelectorOptions$Modifier;Ljava/util/function/Predicate;Lnet/minecraft/network/chat/Component;" +
-                ")V",
-            ordinal = 2
-        )
-    )
-    private static void registerAllWorlds(CallbackInfo ci) {
-        register("all_worlds",
-            (reader) -> {
-                int i = reader.getReader().getCursor();
-                String string = reader.getReader().readUnquotedString();
-                reader.setSuggestions((builder, consumer) -> SharedSuggestionProvider.suggest(Arrays.asList("true",
-                    "false"), builder));
-                switch (string) {
-                case "true":
-                    ((EntitySelectorParserAccess) reader).monumenta$setWorldLimited(false);
-                    break;
-                case "false":
-                    break;
-                default:
-                    reader.getReader().setCursor(i);
-                    throw EntitySelectorOptions.ERROR_UNKNOWN_OPTION.createWithContext(reader.getReader(), string);
-                }
-                ((EntitySelectorParserAccess) reader).monumenta$setWorldLimitedSet(true);
-            },
-            (reader) -> !((EntitySelectorParserAccess) reader).monumenta$getWorldLimitedSet(),
-            Component.literal("Select entities in all worlds")
-        );
-    }
+	@Inject(
+		method = "bootStrap",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/commands/arguments/selector/options/EntitySelectorOptions;register" +
+				"(Ljava/lang/String;Lnet/minecraft/commands/arguments/selector/options" +
+				"/EntitySelectorOptions$Modifier;Ljava/util/function/Predicate;Lnet/minecraft/network/chat/Component;" +
+				")V",
+			ordinal = 2
+		)
+	)
+	private static void registerAllWorlds(CallbackInfo ci) {
+		register("all_worlds",
+			(reader) -> {
+				int i = reader.getReader().getCursor();
+				String string = reader.getReader().readUnquotedString();
+				reader.setSuggestions((builder, consumer) -> SharedSuggestionProvider.suggest(Arrays.asList("true",
+					"false"), builder));
+				switch (string) {
+				case "true":
+					((EntitySelectorParserAccess) reader).monumenta$setWorldLimited(false);
+					break;
+				case "false":
+					break;
+				default:
+					reader.getReader().setCursor(i);
+					throw EntitySelectorOptions.ERROR_UNKNOWN_OPTION.createWithContext(reader.getReader(), string);
+				}
+				((EntitySelectorParserAccess) reader).monumenta$setWorldLimitedSet(true);
+			},
+			(reader) -> !((EntitySelectorParserAccess) reader).monumenta$getWorldLimitedSet(),
+			Component.literal("Select entities in all worlds")
+		);
+	}
 }

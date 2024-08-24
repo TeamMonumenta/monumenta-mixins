@@ -18,30 +18,30 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @SuppressWarnings("deprecation")
 @Mixin(EntityDamageEvent.DamageModifier.class)
 public class DamageModifierMixin {
-    @Shadow
-    @Final
-    @Mutable
-    private static DamageModifier[] $VALUES;
+	@Shadow
+	@Final
+	@Mutable
+	private static DamageModifier[] $VALUES;
 
-    static {
-        monumenta$addVariant("IFRAMES");
-    }
+	static {
+		monumenta$addVariant("IFRAMES");
+	}
 
-    @Invoker("<init>")
-    public static DamageModifier invokeInit(String internalName, int ord) {
-        throw new AssertionError();
-    }
+	@Invoker("<init>")
+	public static DamageModifier invokeInit(String internalName, int ord) {
+		throw new AssertionError();
+	}
 
-    @Unique
-    private static DamageModifier monumenta$addVariant(String internalName) {
-        if ($VALUES == null)
-            throw new AssertionError();
+	@Unique
+	private static DamageModifier monumenta$addVariant(String internalName) {
+		if ($VALUES == null)
+			throw new AssertionError();
 
-        ArrayList<DamageModifier> variants = new ArrayList<>(Arrays.asList($VALUES));
-        var nextOrdinal = variants.get(variants.size() - 1).ordinal() + 1;
-        EntityDamageEvent.DamageModifier instance = invokeInit(internalName, nextOrdinal);
-        variants.add(instance);
-        $VALUES = variants.toArray(new DamageModifier[0]);
-        return instance;
-    }
+		ArrayList<DamageModifier> variants = new ArrayList<>(Arrays.asList($VALUES));
+		var nextOrdinal = variants.get(variants.size() - 1).ordinal() + 1;
+		EntityDamageEvent.DamageModifier instance = invokeInit(internalName, nextOrdinal);
+		variants.add(instance);
+		$VALUES = variants.toArray(new DamageModifier[0]);
+		return instance;
+	}
 }

@@ -1,22 +1,23 @@
 package com.playmonumenta.papermixins.util;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Lazy<T> implements Supplier<T> {
-    private final Supplier<T> impl;
-    private Optional<T> cache = Optional.empty();
+    private Object impl;
+    private boolean init = false;
 
     public Lazy(Supplier<T> supplier) {
         this.impl = supplier;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T get() {
-        if (cache.isEmpty()) {
-            cache = Optional.of(impl.get());
+        if (!init) {
+            impl = ((Supplier<T>) impl).get();
+            init = true;
         }
 
-        return cache.get();
+        return (T) impl;
     }
 }

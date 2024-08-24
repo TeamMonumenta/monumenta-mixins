@@ -6,6 +6,7 @@ plugins {
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
     gradlePluginPortal()
+    mavenLocal()
     maven("https://maven.playmonumenta.com/releases/")
 }
 

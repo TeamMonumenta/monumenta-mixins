@@ -2,6 +2,7 @@ package com.playmonumenta.papermixins.mixin.event;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerConnectionListener;
 import net.minecraft.server.players.PlayerList;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -18,53 +19,55 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Move player save location.
  */
 @Mixin(MinecraftServer.class)
-public class MinecraftServerMixin {
-    @Shadow
-    @Final
-    public static Logger LOGGER;
-    @Shadow
-    private PlayerList playerList;
-    @Shadow
-    private volatile boolean isRestarting;
+public abstract class MinecraftServerMixin {
+	@Shadow
+	@Final
+	public static Logger LOGGER;
+	@Shadow
+	private PlayerList playerList;
+	@Shadow
+	private volatile boolean isRestarting;
 
-    @Shadow
-    private volatile boolean isSaving;
+	@Shadow
+	private volatile boolean isSaving;
 
-    // Start saving before plugins are disabled
-    @Inject(
-        method = "stopServer",
-        at = @At(
-            value = "FIELD",
-            target = "Lnet/minecraft/server/MinecraftServer;server:Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;",
-            ordinal = 0
-        )
-    )
-    void savePlayers(CallbackInfo ci) {
-        this.isSaving = true;
-        if (this.playerList != null) {
-            LOGGER.info("Saving players");
-            this.playerList.saveAll();
-            this.playerList.removeAll(this.isRestarting);
+	@Shadow public abstract ServerConnectionListener getConnection();
 
-            try {
-                Thread.sleep(100L);
-            } catch (InterruptedException ignored) {
-            }
-        }
-    }
+	// Start saving before plugins are disabled
+	@Inject(
+		method = "stopServer",
+		at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/server/MinecraftServer;server:Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;",
+			ordinal = 0
+		)
+	)
+	void savePlayers(CallbackInfo ci) {
+		this.isSaving = true;
+		if (this.playerList != null) {
+			LOGGER.info("Saving players");
+			this.playerList.saveAll();
+			this.playerList.removeAll(this.isRestarting);
 
-    // It's fine to not modify the isSaving = true statement, so we don't bother bonking it
+			try {
+				Thread.sleep(100L);
+			} catch (InterruptedException ignored) {
+			}
+		}
+	}
 
-    // Prevent the server from saving players twice
-    @ModifyExpressionValue(
-        method = "stopServer",
-        at = @At(
-            value = "FIELD",
-            target = "Lnet/minecraft/server/MinecraftServer;playerList:Lnet/minecraft/server/players/PlayerList;",
-            ordinal = 0
-        )
-    )
-    private PlayerList skipSecondSave(PlayerList original) {
-        return null;
-    }
+	// It's fine to not modify the isSaving = true statement, so we don't bother bonking it
+
+	// Prevent the server from saving players twice
+	@ModifyExpressionValue(
+		method = "stopServer",
+		at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/server/MinecraftServer;playerList:Lnet/minecraft/server/players/PlayerList;",
+			ordinal = 0
+		)
+	)
+	private PlayerList skipSecondSave(PlayerList original) {
+		return null;
+	}
 }

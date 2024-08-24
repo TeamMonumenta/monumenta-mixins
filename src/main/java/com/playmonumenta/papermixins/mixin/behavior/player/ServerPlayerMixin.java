@@ -26,56 +26,56 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player {
-    public ServerPlayerMixin(Level world, BlockPos pos, float yaw, GameProfile gameProfile) {
-        super(world, pos, yaw, gameProfile);
-    }
+	public ServerPlayerMixin(Level world, BlockPos pos, float yaw, GameProfile gameProfile) {
+		super(world, pos, yaw, gameProfile);
+	}
 
-    @Shadow
-    public abstract boolean setRespawnPosition(
-        ResourceKey<Level> dimension,
-        @Nullable BlockPos pos,
-        float angle,
-        boolean forced,
-        boolean sendMessage,
-        PlayerSetSpawnEvent.Cause cause
-    );
+	@Shadow
+	public abstract boolean setRespawnPosition(
+		ResourceKey<Level> dimension,
+		@Nullable BlockPos pos,
+		float angle,
+		boolean forced,
+		boolean sendMessage,
+		PlayerSetSpawnEvent.Cause cause
+	);
 
-    // Move spawnpoint set for sleeping in bed after event
-    // Also, sleeping checks are disabled now...
-    @Inject(
-        method = "getBedResult",
-        at = @At(
-            target = "Lnet/minecraft/server/level/ServerPlayer;setRespawnPosition" +
-                "(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/BlockPos;" +
-                "FZZLcom/destroystokyo/paper/event/player/PlayerSetSpawnEvent$Cause;)Z",
-            value = "INVOKE"
-        ),
-        cancellable = true
-    )
-    private void alwaysAllowSleeping(BlockPos _0, Direction _1,
-                                               CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
-        cir.setReturnValue(Either.right(Unit.INSTANCE));
-        cir.cancel();
-    }
+	// Move spawnpoint set for sleeping in bed after event
+	// Also, sleeping checks are disabled now...
+	@Inject(
+		method = "getBedResult",
+		at = @At(
+			target = "Lnet/minecraft/server/level/ServerPlayer;setRespawnPosition" +
+				"(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/BlockPos;" +
+				"FZZLcom/destroystokyo/paper/event/player/PlayerSetSpawnEvent$Cause;)Z",
+			value = "INVOKE"
+		),
+		cancellable = true
+	)
+	private void alwaysAllowSleeping(BlockPos _0, Direction _1,
+											CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
+		cir.setReturnValue(Either.right(Unit.INSTANCE));
+		cir.cancel();
+	}
 
-    // Actually set spawnpoints now...
-    @Inject(
-        method = "startSleepInBed",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/player/Player;startSleepInBed(Lnet/minecraft/core/BlockPos;Z)" +
-                "Lcom/mojang/datafixers/util/Either;"
-        )
-    )
-    private void setSpawn(BlockPos pos, boolean _0,
-                                    CallbackInfoReturnable<Either<BedSleepingProblem, Unit>> cir) {
-        this.setRespawnPosition(
-            level().dimension(),
-            pos,
-            getYRot(),
-            false,
-            true,
-            PlayerSetSpawnEvent.Cause.BED
-        );
-    }
+	// Actually set spawnpoints now...
+	@Inject(
+		method = "startSleepInBed",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/player/Player;startSleepInBed(Lnet/minecraft/core/BlockPos;Z)" +
+				"Lcom/mojang/datafixers/util/Either;"
+		)
+	)
+	private void setSpawn(BlockPos pos, boolean _0,
+									CallbackInfoReturnable<Either<BedSleepingProblem, Unit>> cir) {
+		this.setRespawnPosition(
+			level().dimension(),
+			pos,
+			getYRot(),
+			false,
+			true,
+			PlayerSetSpawnEvent.Cause.BED
+		);
+	}
 }

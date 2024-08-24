@@ -14,12 +14,12 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(DigDurabilityEnchantment.class)
 public class DigDurabilityEnchantMixin {
-    /**
-     * @author Flowey
-     * @reason All items work like tools for unbreaking.
-     */
-    @Overwrite
-    public static boolean shouldIgnoreDurabilityDrop(ItemStack item, int level, RandomSource random) {
-        return random.nextInt(level + 1) > 0;
-    }
+	/**
+	 * @author Flowey
+	 * @reason All items work like tools for unbreaking.
+	 */
+	@Overwrite
+	public static boolean shouldIgnoreDurabilityDrop(ItemStack item, int level, RandomSource random) {
+		return random.nextInt(level + 1) > 0;
+	}
 }
