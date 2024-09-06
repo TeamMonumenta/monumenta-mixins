@@ -33,4 +33,7 @@ public interface MonumentaPaperAPI {
 
 	@ApiStatus.Internal
 	CustomItems getCustomItemsAPI();
+
+	@ApiStatus.Internal
+	RedisSyncIO getRedisSyncIO();
 }

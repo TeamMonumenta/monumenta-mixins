@@ -29,3 +29,5 @@ accessible field net/minecraft/world/scores/Scoreboard playerScores Ljava/util/M
 accessible class net/minecraft/world/scores/PlayerScores
 accessible method net/minecraft/world/scores/PlayerScores listRawScores ()Ljava/util/Map;
 accessible method net/minecraft/world/entity/LivingEntity getJumpPower ()F
+accessible method net/minecraft/server/players/PlayerList save (Lnet/minecraft/server/level/ServerPlayer;)V
+accessible field net/minecraft/server/PlayerAdvancements GSON Lcom/google/gson/Gson;
