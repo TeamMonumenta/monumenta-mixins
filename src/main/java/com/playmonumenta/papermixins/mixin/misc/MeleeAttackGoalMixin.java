@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.misc;
 
-import com.playmonumenta.mixinapi.CustomMeleeAttackGoal;
+import com.playmonumenta.mixinapi.v1.CustomMeleeAttackGoal;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftLivingEntity;

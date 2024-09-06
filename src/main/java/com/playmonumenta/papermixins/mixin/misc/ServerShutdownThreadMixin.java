@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.misc;
 
-import com.playmonumenta.papermixins.impl.MonumentaPaperAPIImpl;
+import com.playmonumenta.papermixins.impl.v1.MonumentaPaperAPIImpl;
 import org.bukkit.craftbukkit.v1_20_R3.util.ServerShutdownThread;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;

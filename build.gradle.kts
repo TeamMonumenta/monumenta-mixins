@@ -9,8 +9,6 @@ paperweight.awPath.set(file("src/main/resources/monumenta.accesswidener"))
 
 dependencies {
 	implementation(project("plugin-api"))
-	implementation(libs.semver)
-	implementation(libs.nbtapi)
 
 	shadowImplementation(project("plugin-api"))
 	shadowImplementation(libs.semver)

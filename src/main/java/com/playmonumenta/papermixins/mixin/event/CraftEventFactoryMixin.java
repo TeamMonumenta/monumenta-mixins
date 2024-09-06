@@ -3,7 +3,7 @@ package com.playmonumenta.papermixins.mixin.event;
 import com.google.common.base.Function;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.playmonumenta.papermixins.MonumentaMod;
-import com.playmonumenta.papermixins.impl.MonumentaPaperAPIImpl;
+import com.playmonumenta.papermixins.impl.v1.MonumentaPaperAPIImpl;
 import java.util.Map;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;

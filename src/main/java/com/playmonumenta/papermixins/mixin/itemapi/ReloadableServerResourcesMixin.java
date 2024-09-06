@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.mixin.itemapi;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.playmonumenta.papermixins.impl.resource.PluginDataListener;
+import com.playmonumenta.papermixins.impl.v1.resource.PluginDataListener;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;

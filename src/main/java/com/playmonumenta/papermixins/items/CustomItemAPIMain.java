@@ -1,8 +1,8 @@
 package com.playmonumenta.papermixins.items;
 
-import com.playmonumenta.mixinapi.item.CustomItemType;
+import com.playmonumenta.mixinapi.v1.item.CustomItemType;
 import com.playmonumenta.papermixins.MonumentaMod;
-import com.playmonumenta.papermixins.impl.item.CustomItemRegistryImpl;
+import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
 import com.playmonumenta.papermixins.util.nbt.CompoundTagBuilder;
 import java.util.Optional;
 import net.minecraft.core.registries.BuiltInRegistries;

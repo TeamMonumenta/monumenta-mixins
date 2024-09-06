@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
  * </ul>
  *
  * <h3>Registers</h3>
- * There are two "control registers" which represent the execution state:
+ * There are two "control registers" which represent the execution state, and an infinite amount of scratch registers:
  * <ul>
  *     <li>{@code %source (Source)}: The command source to use, set to modify the source of future instructions.</li>
  *     <li>{@code %ip (InstrAddress)}: The current/next instruction index, can be set to branch.</li>
@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  * </ul>
  *
  * <h3>Instruction Syntax</h3>
- * In documentation for various features, "mcfunction assembly pseudocode" is used. The syntax is described in the
+ * In documentation, "mcfunction assembly pseudocode" is used. The syntax is described in the
  * following block.
  * <pre>
  * {@code
@@ -53,7 +53,7 @@ import org.jetbrains.annotations.NotNull;
  * }
  *
  * RET ::= %ip = POP{InstrAddress}
- * </pre>
+ * }</pre>
  *
  * <h3>Base Pointer Stack</h3>
  * The base pointer stack is only really used for subroutine calls. It stores where to pop the stack to when

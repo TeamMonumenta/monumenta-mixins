@@ -1,8 +1,8 @@
 package com.playmonumenta.papermixins.items;
 
 import com.playmonumenta.papermixins.duck.ItemStackAccess;
-import com.playmonumenta.papermixins.impl.item.CustomItemRegistryImpl;
-import com.playmonumenta.papermixins.impl.item.CustomItemTypeImpl;
+import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
+import com.playmonumenta.papermixins.impl.v1.item.CustomItemTypeImpl;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

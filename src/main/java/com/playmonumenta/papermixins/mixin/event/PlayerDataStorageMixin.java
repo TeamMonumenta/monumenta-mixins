@@ -2,8 +2,8 @@ package com.playmonumenta.papermixins.mixin.event;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.playmonumenta.mixinapi.event.PlayerDataLoadEvent;
-import com.playmonumenta.mixinapi.event.PlayerDataSaveEvent;
+import com.destroystokyo.paper.event.player.PlayerDataLoadEvent;
+import com.destroystokyo.paper.event.player.PlayerDataSaveEvent;
 import com.playmonumenta.papermixins.MonumentaMod;
 import java.io.File;
 import java.nio.file.Files;

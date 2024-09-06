@@ -1,8 +1,8 @@
 package com.playmonumenta.papermixins.mixin.itemapi;
 
 import com.mojang.datafixers.DataFixer;
-import com.playmonumenta.papermixins.impl.item.CustomItemRegistryImpl;
-import com.playmonumenta.papermixins.impl.resource.PluginDataListener;
+import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
+import com.playmonumenta.papermixins.impl.v1.resource.PluginDataListener;
 import java.net.Proxy;
 import joptsimple.OptionSet;
 import net.minecraft.server.MinecraftServer;

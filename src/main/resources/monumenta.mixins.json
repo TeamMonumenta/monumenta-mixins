@@ -63,5 +63,8 @@
         "misc.branding.CraftServerMixin",
         "misc.branding.DedicatedServerMixin",
         "misc.branding.MinecraftServerMixin"
+    ],
+    "mixins": [
+        "misc.CommodoreMethodVisitorMixin"
     ]
 }

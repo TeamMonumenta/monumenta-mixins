@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.misc;
 
-import com.playmonumenta.papermixins.impl.MonumentaPaperAPIImpl;
+import com.playmonumenta.papermixins.impl.v1.MonumentaPaperAPIImpl;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;

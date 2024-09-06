@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.items;
 
-import com.playmonumenta.mixinapi.item.CustomItem;
-import com.playmonumenta.papermixins.impl.resource.ExtraItemDataImpl;
+import com.playmonumenta.mixinapi.v1.item.CustomItem;
+import com.playmonumenta.papermixins.impl.v1.resource.ExtraItemDataImpl;
 import com.playmonumenta.papermixins.util.nbt.CachedTagApplicator;
 import com.playmonumenta.papermixins.util.nbt.DirectTagApplicator;
 import com.playmonumenta.papermixins.util.nbt.ListTagBuilder;
