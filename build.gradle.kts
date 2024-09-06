@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.playmonumenta.papermixins"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 paperweight.awPath.set(file("src/main/resources/monumenta.accesswidener"))
 

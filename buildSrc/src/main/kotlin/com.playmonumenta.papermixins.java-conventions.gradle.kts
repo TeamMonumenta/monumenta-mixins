@@ -45,7 +45,18 @@ publishing {
             from(components["java"])
         }
     }
-
     repositories {
+        maven {
+            name = "MonumentaMaven"
+            url = when (version.toString().endsWith("SNAPSHOT")) {
+                true -> uri("https://maven.playmonumenta.com/snapshots")
+                false -> uri("https://maven.playmonumenta.com/releases")
+            }
+
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
     }
 }
