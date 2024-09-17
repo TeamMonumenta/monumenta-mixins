@@ -20,15 +20,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(SpawnerBlockEntity.class)
 public class SpawnerBlockEntityMixin {
-	@Shadow
-	@Final
-	private BaseSpawner spawner;
+    @Shadow
+    @Final
+    private BaseSpawner spawner;
 
-	@Inject(
-		method = "<init>",
-		at = @At("TAIL")
-	)
-	private void setBlockPosOnConstruction(BlockPos pos, BlockState state, CallbackInfo ci) {
-		((SpawnerAccess) this.spawner).monumenta$setBlockPos(pos);
-	}
+    @Inject(
+        method = "<init>",
+        at = @At("TAIL")
+    )
+    private void setBlockPosOnConstruction(BlockPos pos, BlockState state, CallbackInfo ci) {
+        ((SpawnerAccess) this.spawner).monumenta$setBlockPos(pos);
+    }
 }

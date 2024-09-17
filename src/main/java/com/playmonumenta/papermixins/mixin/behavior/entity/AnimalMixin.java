@@ -18,17 +18,17 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(Animal.class)
 public abstract class AnimalMixin extends AgeableMob {
-	protected AnimalMixin(EntityType<? extends AgeableMob> type, Level world) {
-		super(type, world);
-	}
+    protected AnimalMixin(EntityType<? extends AgeableMob> type, Level world) {
+        super(type, world);
+    }
 
-	/**
-	 * @author Flowey
-	 * @reason don't override for grass/light, use super value.
-	 */
-	@Overwrite
-	@Override
-	public float getWalkTargetValue(@NotNull BlockPos pos, @NotNull LevelReader world) {
-		return super.getWalkTargetValue(pos, world);
-	}
+    /**
+     * @author Flowey
+     * @reason don't override for grass/light, use super value.
+     */
+    @Overwrite
+    @Override
+    public float getWalkTargetValue(@NotNull BlockPos pos, @NotNull LevelReader world) {
+        return super.getWalkTargetValue(pos, world);
+    }
 }

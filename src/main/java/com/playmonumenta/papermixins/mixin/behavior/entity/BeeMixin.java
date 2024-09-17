@@ -13,21 +13,21 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(Bee.class)
 public class BeeMixin {
-	@Redirect(method = "doHurtTarget",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/animal/Bee;setHasStung(Z)V"
-		)
-	)
-	private void cancelSetHasStung(Bee instance, boolean hasStung) {
-	}
+    @Redirect(method = "doHurtTarget",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/animal/Bee;setHasStung(Z)V"
+        )
+    )
+    private void cancelSetHasStung(Bee instance, boolean hasStung) {
+    }
 
-	@Redirect(method = "doHurtTarget",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/animal/Bee;stopBeingAngry()V"
-		)
-	)
-	private void cancelStopBeingAngry(Bee instance) {
-	}
+    @Redirect(method = "doHurtTarget",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/animal/Bee;stopBeingAngry()V"
+        )
+    )
+    private void cancelStopBeingAngry(Bee instance) {
+    }
 }

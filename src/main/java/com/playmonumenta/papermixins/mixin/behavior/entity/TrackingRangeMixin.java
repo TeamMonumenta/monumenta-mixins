@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(TrackingRange.class)
 public class TrackingRangeMixin {
-	@ModifyReturnValue(
-		method = "getEntityTrackingRange",
-		at = @At("TAIL")
-	)
-	private static int increaseGiantTrackingRange(int original, Entity entity) {
-		if (entity instanceof Giant) {
-			return 96;
-		}
-		return original;
-	}
+    @ModifyReturnValue(
+        method = "getEntityTrackingRange",
+        at = @At("TAIL")
+    )
+    private static int increaseGiantTrackingRange(int original, Entity entity) {
+        if (entity instanceof Giant) {
+            return 96;
+        }
+        return original;
+    }
 }

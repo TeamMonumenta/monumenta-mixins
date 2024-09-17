@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.enchant;
 
+import com.playmonumenta.papermixins.MonumentaMod;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
@@ -14,13 +15,13 @@ import org.spongepowered.asm.mixin.Mixin;
  */
 @Mixin(VanishingCurseEnchantment.class)
 public class VanishingCurseEnchantmentMixin extends Enchantment {
-	protected VanishingCurseEnchantmentMixin(Rarity rarity, EnchantmentCategory target, EquipmentSlot[] slotTypes) {
-		super(rarity, target, slotTypes);
-	}
+    protected VanishingCurseEnchantmentMixin(Rarity rarity, EnchantmentCategory target, EquipmentSlot[] slotTypes) {
+        super(rarity, target, slotTypes);
+    }
 
-	// Mixin @Overrides will be properly mixed into the target class, which is convenient.
-	@Override
-	public int getMaxLevel() {
-		return 2;
-	}
+    // Mixin @Overrides will be properly mixed into the target class, which is convenient.
+    @Override
+    public int getMaxLevel() {
+        return MonumentaMod.getConfig().behavior.curseOfVanishingMaxLevel;
+    }
 }

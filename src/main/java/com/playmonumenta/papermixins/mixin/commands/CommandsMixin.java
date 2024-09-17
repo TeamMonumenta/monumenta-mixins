@@ -15,19 +15,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Commands.class)
 public abstract class CommandsMixin {
-	@Shadow
-	@Final
-	private CommandDispatcher<CommandSourceStack> dispatcher;
+    @Shadow
+    @Final
+    private CommandDispatcher<CommandSourceStack> dispatcher;
 
-	@Inject(
-		method = "<init>(Lnet/minecraft/commands/Commands$CommandSelection;" +
-			"Lnet/minecraft/commands/CommandBuildContext;)V",
-		at = @At("TAIL")
-	)
-	private void registerCommands(Commands.CommandSelection environment,
-								CommandBuildContext commandRegistryAccess,
-								CallbackInfo ci) {
-		CommandRegister.register(this.dispatcher);
-		Parser.init(commandRegistryAccess);
-	}
+    @Inject(
+        method = "<init>(Lnet/minecraft/commands/Commands$CommandSelection;" +
+            "Lnet/minecraft/commands/CommandBuildContext;)V",
+        at = @At("TAIL")
+    )
+    private void registerCommands(Commands.CommandSelection environment,
+                                  CommandBuildContext commandRegistryAccess,
+                                  CallbackInfo ci) {
+        CommandRegister.register(this.dispatcher);
+        Parser.init(commandRegistryAccess);
+    }
 }

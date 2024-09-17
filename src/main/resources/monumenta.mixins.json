@@ -60,11 +60,11 @@
         "misc.MeleeAttackGoalMixin",
         "misc.ServerGamePacketListenerImplMixin",
         "misc.ServerShutdownThreadMixin",
-        "misc.branding.CraftServerMixin",
-        "misc.branding.DedicatedServerMixin",
-        "misc.branding.MinecraftServerMixin"
+        "misc.CraftServerMixin",
+        "misc.DedicatedServerMixin",
+        "misc.MinecraftServerMixin"
     ],
     "mixins": [
-        "misc.CommodoreMethodVisitorMixin"
+        "bugfix.CommodoreMethodVisitorMixin"
     ]
 }

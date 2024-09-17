@@ -7,82 +7,82 @@ import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.Logger;
 
 public class Diagnostics {
-	private final List<Entry> diagnostics = new ArrayList<>();
-	private boolean hasError;
+    public enum Level {
+        WARN,
+        ERROR
+    }
 
-	private void report(Level level, int line, String format, Object... args) {
-		diagnostics.add(new Entry(level, line, String.format(format, args)));
-		if (level == Level.ERROR) {
-			hasError = true;
-		}
-	}
+    public record Entry(Level level, int line, String message) {
 
-	public void reportErr(int line, String format, Object... args) {
-		report(Level.ERROR, line, format, args);
-	}
+    }
 
-	public void reportWarn(int line, String format, Object... args) {
-		report(Level.WARN, line, format, args);
-	}
+    private final List<Entry> diagnostics = new ArrayList<>();
+    private boolean hasError;
 
-	public boolean hasError() {
-		return hasError;
-	}
+    private void report(Level level, int line, String format, Object... args) {
+        diagnostics.add(new Entry(level, line, String.format(format, args)));
+        if (level == Level.ERROR) {
+            hasError = true;
+        }
+    }
 
-	public void dumpErrors(int context, Logger logger, ResourceLocation id, List<String> lines) {
-		StringBuilder builder = new StringBuilder();
+    public void reportErr(int line, String format, Object... args) {
+        report(Level.ERROR, line, format, args);
+    }
 
-		if (diagnostics.isEmpty()) {
-			return;
-		}
+    public void reportWarn(int line, String format, Object... args) {
+        report(Level.WARN, line, format, args);
+    }
 
-		builder.append("While parsing function '").append(id).append("'\n");
+    public boolean hasError() {
+        return hasError;
+    }
 
-		for (final var diagnostic : diagnostics) {
-			if (diagnostic.level() == Level.ERROR) {
-				hasError = true;
-			}
+    public void dumpErrors(int context, Logger logger, ResourceLocation id, List<String> lines) {
+        StringBuilder builder = new StringBuilder();
 
-			builder.append(diagnostic.level())
-				.append(" (")
-				.append(id)
-				.append(":")
-				.append(diagnostic.line() + 1)
-				.append("): ")
-				.append(diagnostic.message())
-				.append("\n");
+        if (diagnostics.isEmpty()) {
+            return;
+        }
 
-			List<IntObjectPair<String>> lineEntry = new ArrayList<>();
-			for (int i = diagnostic.line() - context; i <= diagnostic.line() + context; i++) {
-				if (i >= 0 && i < lines.size()) {
-					lineEntry.add(IntObjectPair.of(i + 1, lines.get(i)));
-				}
-			}
+        builder.append("While parsing function '").append(id).append("'\n");
 
-			final var pad = Integer.toString(lineEntry.get(lineEntry.size() - 1).firstInt()).length();
-			for (var entry : lineEntry) {
-				boolean isErrLine = entry.firstInt() == diagnostic.line() + 1;
-				builder.append(String.format("%-" + pad + "d", entry.firstInt()))
-					.append(isErrLine ? " * " : " | ")
-					.append(entry.value());
+        for (final var diagnostic : diagnostics) {
+            if (diagnostic.level() == Level.ERROR) {
+                hasError = true;
+            }
 
-				if (isErrLine) {
-					builder.append(" <- HERE");
-				}
+            builder.append(diagnostic.level())
+                .append(" (")
+                .append(id)
+                .append(":")
+                .append(diagnostic.line() + 1)
+                .append("): ")
+                .append(diagnostic.message())
+                .append("\n");
 
-				builder.append("\n");
-			}
-		}
+            List<IntObjectPair<String>> lineEntry = new ArrayList<>();
+            for (int i = diagnostic.line() - context; i <= diagnostic.line() + context; i++) {
+                if (i >= 0 && i < lines.size()) {
+                    lineEntry.add(IntObjectPair.of(i + 1, lines.get(i)));
+                }
+            }
 
-		logger.warn(builder);
-	}
+            final var pad = Integer.toString(lineEntry.get(lineEntry.size() - 1).firstInt()).length();
+            for (var entry : lineEntry) {
+                boolean isErrLine = entry.firstInt() == diagnostic.line() + 1;
+                builder.append(String.format("%-" + pad + "d", entry.firstInt()))
+                    .append(isErrLine ? " * " : " | ")
+                    .append(entry.value());
 
-	public record Entry(Level level, int line, String message) {
+                if (isErrLine) {
+                    builder.append(" <- HERE");
+                }
 
-	}
+                builder.append("\n");
+            }
+        }
 
-	public enum Level {
-		WARN,
-		ERROR
-	}
+        logger.warn(builder);
+    }
 }

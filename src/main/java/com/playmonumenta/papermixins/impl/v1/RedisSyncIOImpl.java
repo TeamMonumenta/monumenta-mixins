@@ -50,7 +50,7 @@ public class RedisSyncIOImpl implements RedisSyncIO {
     }
 
     @Override
-    public String upgradePlayerAdvancements(String advancementsStr)  {
+    public String upgradePlayerAdvancements(String advancementsStr) {
         JsonReader jsonreader = new JsonReader(new StringReader(advancementsStr));
         jsonreader.setLenient(false);
         Dynamic<JsonElement> dynamic = new Dynamic<>(JsonOps.INSTANCE, Streams.parse(jsonreader));
@@ -60,11 +60,13 @@ public class RedisSyncIOImpl implements RedisSyncIO {
         }
 
         DataFixer dataFixer = ((CraftServer) Bukkit.getServer()).getHandle().getServer().getFixerUpper();
-        dynamic = DataFixTypes.ADVANCEMENTS.update(dataFixer, dynamic, dynamic.get("DataVersion").asInt(0), SharedConstants.getCurrentVersion().getDataVersion().getVersion());
+        dynamic = DataFixTypes.ADVANCEMENTS.update(dataFixer, dynamic, dynamic.get("DataVersion").asInt(0),
+            SharedConstants.getCurrentVersion().getDataVersion().getVersion());
         dynamic = dynamic.remove("DataVersion");
 
         JsonElement element = dynamic.getValue();
-        element.getAsJsonObject().addProperty("DataVersion", SharedConstants.getCurrentVersion().getDataVersion().getVersion());
+        element.getAsJsonObject().addProperty("DataVersion",
+            SharedConstants.getCurrentVersion().getDataVersion().getVersion());
         return PlayerAdvancements.GSON.toJson(element);
     }
 }

@@ -15,22 +15,22 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(ElderGuardian.class)
 public class ElderGuardianMixin extends Guardian {
-	public ElderGuardianMixin(EntityType<? extends Guardian> type, Level world) {
-		super(type, world);
-	}
+    public ElderGuardianMixin(EntityType<? extends Guardian> type, Level world) {
+        super(type, world);
+    }
 
-	/**
-	 * @author Flowey
-	 * @reason Remove mining fatigue logic
-	 * There might be a more portable way of doing this...
-	 * TODO: look for a more portable way.
-	 */
-	@Overwrite
-	public void customServerAiStep() {
-		super.customServerAiStep();
+    /**
+     * @author Flowey
+     * @reason Remove mining fatigue logic
+     * There might be a more portable way of doing this...
+     * TODO: look for a more portable way.
+     */
+    @Overwrite
+    public void customServerAiStep() {
+        super.customServerAiStep();
 
-		if (!this.hasRestriction()) {
-			this.restrictTo(this.blockPosition(), 16);
-		}
-	}
+        if (!this.hasRestriction()) {
+            this.restrictTo(this.blockPosition(), 16);
+        }
+    }
 }

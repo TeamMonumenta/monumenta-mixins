@@ -17,14 +17,6 @@ public interface MonumentaPaperAPI {
 
 	Semver getVersion();
 
-	int getFlyingTickTime();
-
-	void setFlyingTickTime(int time);
-
-	int getServerShutdownTime();
-
-	void setServerShutdownTime(int time);
-
 	@ApiStatus.Internal
 	DataLoaderRegistry getDataLoaderRegistryAPI();
 

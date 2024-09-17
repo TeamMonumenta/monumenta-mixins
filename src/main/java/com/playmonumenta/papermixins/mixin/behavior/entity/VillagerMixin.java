@@ -25,36 +25,36 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  */
 @Mixin(Villager.class)
 public abstract class VillagerMixin extends AbstractVillager {
-	public VillagerMixin(EntityType<? extends AbstractVillager> type, Level world) {
-		super(type, world);
-	}
+    public VillagerMixin(EntityType<? extends AbstractVillager> type, Level world) {
+        super(type, world);
+    }
 
-	@Shadow
-	public abstract VillagerData getVillagerData();
+    @Shadow
+    public abstract VillagerData getVillagerData();
 
-	@ModifyConstant(
-		method = "<init>(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;" +
-			"Lnet/minecraft/world/entity/npc/VillagerType;)V",
-		constant = @Constant(intValue = 1, ordinal = 0)
-	)
-	private int disableOpeningDoors(int constant) {
-		// False == 0 according to JVM
-		return 0;
-	}
+    @ModifyConstant(
+        method = "<init>(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;" +
+            "Lnet/minecraft/world/entity/npc/VillagerType;)V",
+        constant = @Constant(intValue = 1, ordinal = 0)
+    )
+    private int disableOpeningDoors(int constant) {
+        // False == 0 according to JVM
+        return 0;
+    }
 
-	/**
-	 * @author Flowey
-	 * @reason Disable more AI goals.
-	 */
-	@Overwrite
-	private void registerBrainGoals(Brain<Villager> brain) {
-		VillagerProfession profession = this.getVillagerData().getProfession();
+    /**
+     * @author Flowey
+     * @reason Disable more AI goals.
+     */
+    @Overwrite
+    private void registerBrainGoals(Brain<Villager> brain) {
+        VillagerProfession profession = this.getVillagerData().getProfession();
 
-		brain.addActivity(Activity.CORE, VillagerGoalPackages.getCorePackage(profession, 0.5F));
-		brain.addActivity(Activity.IDLE, VillagerGoalPackages.getIdlePackage(profession, 0.5F));
-		brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
-		brain.setDefaultActivity(Activity.IDLE);
-		brain.setActiveActivityIfPossible(Activity.IDLE);
-		brain.updateActivityFromSchedule(this.level().getDayTime(), this.level().getGameTime());
-	}
+        brain.addActivity(Activity.CORE, VillagerGoalPackages.getCorePackage(profession, 0.5F));
+        brain.addActivity(Activity.IDLE, VillagerGoalPackages.getIdlePackage(profession, 0.5F));
+        brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
+        brain.setDefaultActivity(Activity.IDLE);
+        brain.setActiveActivityIfPossible(Activity.IDLE);
+        brain.updateActivityFromSchedule(this.level().getDayTime(), this.level().getGameTime());
+    }
 }

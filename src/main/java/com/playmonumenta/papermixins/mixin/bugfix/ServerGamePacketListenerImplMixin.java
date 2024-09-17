@@ -14,25 +14,25 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(ServerGamePacketListenerImpl.class)
 public class ServerGamePacketListenerImplMixin {
-	@Redirect(
-		method = "handleMoveVehicle",
-		at = @At(
-			value = "INVOKE",
-			target = "Lorg/slf4j/Logger;debug(Ljava/lang/String;)V"
-		)
-	)
-	private void warnOnTooManyPackets(Logger instance, String str) {
-		instance.warn(str);
-	}
+    @Redirect(
+        method = "handleMoveVehicle",
+        at = @At(
+            value = "INVOKE",
+            target = "Lorg/slf4j/Logger;debug(Ljava/lang/String;)V"
+        )
+    )
+    private void warnOnTooManyPackets(Logger instance, String str) {
+        instance.warn(str);
+    }
 
-	@Redirect(
-		method = "handleMovePlayer",
-		at = @At(
-			value = "INVOKE",
-			target = "Lorg/slf4j/Logger;debug(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"
-		)
-	)
-	private void warnOnTooManyPackets(Logger instance, String str, Object o1, Object o2) {
-		instance.warn(str, o1, o2);
-	}
+    @Redirect(
+        method = "handleMovePlayer",
+        at = @At(
+            value = "INVOKE",
+            target = "Lorg/slf4j/Logger;debug(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"
+        )
+    )
+    private void warnOnTooManyPackets(Logger instance, String str, Object o1, Object o2) {
+        instance.warn(str, o1, o2);
+    }
 }

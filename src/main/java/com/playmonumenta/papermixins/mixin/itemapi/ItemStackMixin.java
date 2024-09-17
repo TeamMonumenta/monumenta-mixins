@@ -26,86 +26,86 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin implements ItemStackAccess {
-	@Unique
-	private final ItemStackStateManager monumenta$stateManager = new ItemStackStateManager();
+    @Unique
+    private final ItemStackStateManager monumenta$stateManager = new ItemStackStateManager();
 
-	@Shadow
-	@javax.annotation.Nullable
-	private Item item;
+    @Shadow
+    @javax.annotation.Nullable
+    private Item item;
 
-	// Item state loading logic
-	// TODO: this might be expensive
-	@Inject(
-		method = "<init>(Lnet/minecraft/world/level/ItemLike;I)V",
-		at = @At("TAIL")
-	)
-	private void computeItemOnInit(ItemLike item, int count, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState(((ItemStack) (Object) this));
-	}
+    // Item state loading logic
+    // TODO: this might be expensive
+    @Inject(
+        method = "<init>(Lnet/minecraft/world/level/ItemLike;I)V",
+        at = @At("TAIL")
+    )
+    private void computeItemOnInit(ItemLike item, int count, CallbackInfo ci) {
+        monumenta$stateManager.loadCustomState(((ItemStack) (Object) this));
+    }
 
-	@Inject(
-		method = "load",
-		at = @At("RETURN")
-	)
-	private void loadCustomItemData$load(CompoundTag tag, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState((ItemStack) (Object) this);
-	}
+    @Inject(
+        method = "load",
+        at = @At("RETURN")
+    )
+    private void loadCustomItemData$load(CompoundTag tag, CallbackInfo ci) {
+        monumenta$stateManager.loadCustomState((ItemStack) (Object) this);
+    }
 
-	@Inject(
-		method = "setTag",
-		at = @At("RETURN")
-	)
-	private void loadCustomItemData$setTag(CompoundTag tag, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState((ItemStack) (Object) this);
-	}
+    @Inject(
+        method = "setTag",
+        at = @At("RETURN")
+    )
+    private void loadCustomItemData$setTag(CompoundTag tag, CallbackInfo ci) {
+        monumenta$stateManager.loadCustomState((ItemStack) (Object) this);
+    }
 
-	// Fail on set item
-	// TODO: this may cause crashes in some cases
-	@Inject(
-		method = "setItem",
-		at = @At("HEAD")
-	)
-	private void computeItemOnSetItem(Item item, CallbackInfo ci) {
-		throw new UnsupportedOperationException();
-	}
+    // Fail on set item
+    // TODO: this may cause crashes in some cases
+    @Inject(
+        method = "setItem",
+        at = @At("HEAD")
+    )
+    private void computeItemOnSetItem(Item item, CallbackInfo ci) {
+        throw new UnsupportedOperationException();
+    }
 
-	// Handling saving logic
-	@Inject(
-		method = "save",
-		at = @At("HEAD")
-	)
-	private void recomputeOnSave(CompoundTag nbt, CallbackInfoReturnable<CompoundTag> cir) {
-		monumenta$stateManager.storeCustomState((ItemStack) (Object) this);
-	}
+    // Handling saving logic
+    @Inject(
+        method = "save",
+        at = @At("HEAD")
+    )
+    private void recomputeOnSave(CompoundTag nbt, CallbackInfoReturnable<CompoundTag> cir) {
+        monumenta$stateManager.storeCustomState((ItemStack) (Object) this);
+    }
 
-	@Override
-	public @Nullable ItemStackStateManager monumenta$getStateManager() {
-		return monumenta$stateManager;
-	}
+    @Override
+    public @Nullable ItemStackStateManager monumenta$getStateManager() {
+        return monumenta$stateManager;
+    }
 
-	@Override
-	public void monumenta$setItemRaw(Item item) {
-		this.item = item;
-	}
+    @Override
+    public void monumenta$setItemRaw(Item item) {
+        this.item = item;
+    }
 
-	@ModifyReturnValue(
-		at = @At("RETURN"),
-		method = "getAttributeModifiers"
-	)
-	public final Multimap<Attribute, AttributeModifier> addAttributes(Multimap<Attribute, AttributeModifier> returnValue, EquipmentSlot slot) {
-		final var state = monumenta$stateManager.getCustomState();
-		if (state == null)
-			return returnValue;
+    @ModifyReturnValue(
+        at = @At("RETURN"),
+        method = "getAttributeModifiers"
+    )
+    public final Multimap<Attribute, AttributeModifier> addAttributes(Multimap<Attribute, AttributeModifier> returnValue, EquipmentSlot slot) {
+        final var state = monumenta$stateManager.getCustomState();
+        if (state == null)
+            return returnValue;
 
-		for (var attr : state.item().getBaseAttributes().entries()) {
-			if (CraftEquipmentSlot.getNMS(Objects.requireNonNull(attr.getValue().getSlot())) != slot)
-				continue;
-			returnValue.put(
-				CraftAttribute.bukkitToMinecraft(attr.getKey()),
-				CraftAttributeInstance.convert(attr.getValue())
-			);
-		}
+        for (var attr : state.item().getBaseAttributes().entries()) {
+            if (CraftEquipmentSlot.getNMS(Objects.requireNonNull(attr.getValue().getSlot())) != slot)
+                continue;
+            returnValue.put(
+                CraftAttribute.bukkitToMinecraft(attr.getKey()),
+                CraftAttributeInstance.convert(attr.getValue())
+            );
+        }
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 }

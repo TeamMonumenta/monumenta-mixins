@@ -22,26 +22,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @SuppressWarnings("deprecation")
 @Mixin(CraftEventFactory.class)
 public class CraftEventFactoryMixin {
-	@Inject(
-		method = "handleLivingEntityDamageEvent",
-		at = @At(
-			value = "INVOKE",
-			target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
-			ordinal = 0
-		)
-	)
-	private static void addIframeModifier(
-		Entity damagee, DamageSource source,
-		double rawDamage, double hardHatModifier, double blockingModifier, double armorModifier,
-		double resistanceModifier, double magicModifier, double absorptionModifier,
-		Function<Double, Double> hardHat, Function<Double, Double> blocking, Function<Double, Double> armor,
-		Function<Double, Double> resistance, Function<Double, Double> magic, Function<Double, Double> absorption,
-		CallbackInfoReturnable<EntityDamageEvent> cir,
-		@Local(name = "modifiers") Map<EntityDamageEvent.DamageModifier, Double> modifiers,
-		@Local(name = "modifierFunctions") Map<EntityDamageEvent.DamageModifier, Function<? super Double, Double>> modifierFunctions
-	) {
-		final var api = MonumentaPaperAPIImpl.getInstance();
-		modifiers.put(api.getIframes(), MonumentaMod.IFRAME_VALUE.get());
-		modifierFunctions.put(api.getIframes(), (Function<? super Double, Double>) MonumentaMod.IFRAME_FUNC.get());
-	}
+    @Inject(
+        method = "handleLivingEntityDamageEvent",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+            ordinal = 0
+        )
+    )
+    private static void addIframeModifier(
+        Entity damagee, DamageSource source,
+        double rawDamage, double hardHatModifier, double blockingModifier, double armorModifier,
+        double resistanceModifier, double magicModifier, double absorptionModifier,
+        Function<Double, Double> hardHat, Function<Double, Double> blocking, Function<Double, Double> armor,
+        Function<Double, Double> resistance, Function<Double, Double> magic, Function<Double, Double> absorption,
+        CallbackInfoReturnable<EntityDamageEvent> cir,
+        @Local(name = "modifiers") Map<EntityDamageEvent.DamageModifier, Double> modifiers,
+        @Local(name = "modifierFunctions") Map<EntityDamageEvent.DamageModifier, Function<? super Double, Double>> modifierFunctions
+    ) {
+        final var api = MonumentaPaperAPIImpl.getInstance();
+        modifiers.put(api.getIframes(), MonumentaMod.IFRAME_VALUE.get());
+        modifierFunctions.put(api.getIframes(), (Function<? super Double, Double>) MonumentaMod.IFRAME_FUNC.get());
+    }
 }

@@ -17,17 +17,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(DimensionDataStorage.class)
 public class DimensionDataStorageMixin {
-	@Inject(
-		method = "readSavedData",
-		at = @At(
-			value = "INVOKE",
-			target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V",
-			shift = At.Shift.AFTER
-		)
-	)
-	private <T> void forceExitOnError(Function<CompoundTag, T> readFunction, DataFixTypes dataFixTypes,
-												String id, CallbackInfoReturnable<T> cir) {
-		// TODO: lol linux error codes are int8_t
-		System.exit(-9001);
-	}
+    @Inject(
+        method = "readSavedData",
+        at = @At(
+            value = "INVOKE",
+            target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V",
+            shift = At.Shift.AFTER
+        )
+    )
+    private <T> void forceExitOnError(Function<CompoundTag, T> readFunction, DataFixTypes dataFixTypes,
+                                      String id, CallbackInfoReturnable<T> cir) {
+        // TODO: lol linux error codes are int8_t
+        System.exit(-9001);
+    }
 }

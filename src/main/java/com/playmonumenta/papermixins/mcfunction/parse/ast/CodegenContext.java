@@ -6,26 +6,26 @@ import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
 public final class CodegenContext {
-	private @Nullable Label breakExitLabel;
-	private final Map<String, Label> subroutines = new HashMap<>();
+    private final Map<String, Label> subroutines = new HashMap<>();
+    private @Nullable Label breakExitLabel;
 
-	public CodegenContext(@Nullable Label breakExitLabel) {
-		this.breakExitLabel = breakExitLabel;
-	}
+    public CodegenContext(@Nullable Label breakExitLabel) {
+        this.breakExitLabel = breakExitLabel;
+    }
 
-	public CodegenContext() {
-		this(null);
-	}
+    public CodegenContext() {
+        this(null);
+    }
 
-	public @Nullable Label breakExitLabel() {
-		return breakExitLabel;
-	}
+    public @Nullable Label breakExitLabel() {
+        return breakExitLabel;
+    }
 
-	public void breakExitLabel(@Nullable Label breakExitLabel) {
-		this.breakExitLabel = breakExitLabel;
-	}
+    public void breakExitLabel(@Nullable Label breakExitLabel) {
+        this.breakExitLabel = breakExitLabel;
+    }
 
-	public Map<String, Label> subroutines() {
-		return subroutines;
-	}
+    public Map<String, Label> subroutines() {
+        return subroutines;
+    }
 }

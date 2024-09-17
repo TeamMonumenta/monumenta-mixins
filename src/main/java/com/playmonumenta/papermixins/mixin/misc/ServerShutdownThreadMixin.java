@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.misc;
 
-import com.playmonumenta.papermixins.impl.v1.MonumentaPaperAPIImpl;
+import com.playmonumenta.papermixins.MonumentaMod;
 import org.bukkit.craftbukkit.v1_20_R3.util.ServerShutdownThread;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  */
 @Mixin(ServerShutdownThread.class)
 public class ServerShutdownThreadMixin {
-	@ModifyConstant(
-		method = "run",
-		constant = @Constant(intValue = 1000)
-	)
-	private int modifyWaitTime(int constant) {
-		return MonumentaPaperAPIImpl.getInstance().getServerShutdownTime();
-	}
+    @ModifyConstant(
+        method = "run",
+        constant = @Constant(intValue = 1000)
+    )
+    private int modifyWaitTime(int constant) {
+        return MonumentaMod.getConfig().serverShutdownTime;
+    }
 }

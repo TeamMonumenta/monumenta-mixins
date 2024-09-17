@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.misc.branding;
+package com.playmonumenta.papermixins.mixin.misc;
 
 import com.playmonumenta.papermixins.VersionInfo;
 import net.minecraft.server.MinecraftServer;
@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  */
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-	@ModifyConstant(
-		method = "getServerModName",
-		constant = @Constant(stringValue = "Paper")
-	)
-	private String modifyGetServerModName(String old) {
-		return VersionInfo.IDENTIFIER;
-	}
+    @ModifyConstant(
+        method = "getServerModName",
+        constant = @Constant(stringValue = "Paper")
+    )
+    private String modifyGetServerModName(String old) {
+        return VersionInfo.IDENTIFIER;
+    }
 }

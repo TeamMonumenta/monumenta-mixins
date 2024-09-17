@@ -9,29 +9,29 @@ import net.minecraft.world.item.ItemStack;
  * Interface implemented by ItemStack in order to access the implementation.
  */
 public interface ItemStackAccess {
-	/**
-	 * Obtains the contained state manager.
-	 *
-	 * @return The state manager bound to an ItemStack.
-	 */
-	ItemStackStateManager monumenta$getStateManager();
+    static ItemStackAccess get(ItemStack stack) {
+        return Util.c(stack);
+    }
 
-	/**
-	 * Sets the item raw. This is needed because setItem throws.
-	 *
-	 * @param item The item to set.
-	 */
-	void monumenta$setItemRaw(Item item);
+    static ItemStackStateManager stateManager(ItemStack stack) {
+        return get(stack).monumenta$getStateManager();
+    }
 
-	static ItemStackAccess get(ItemStack stack) {
-		return Util.c(stack);
-	}
+    static void setItemRaw(ItemStack stack, Item item) {
+        get(stack).monumenta$setItemRaw(item);
+    }
 
-	static ItemStackStateManager stateManager(ItemStack stack) {
-		return get(stack).monumenta$getStateManager();
-	}
+    /**
+     * Obtains the contained state manager.
+     *
+     * @return The state manager bound to an ItemStack.
+     */
+    ItemStackStateManager monumenta$getStateManager();
 
-	static void setItemRaw(ItemStack stack, Item item) {
-		get(stack).monumenta$setItemRaw(item);
-	}
+    /**
+     * Sets the item raw. This is needed because setItem throws.
+     *
+     * @param item The item to set.
+     */
+    void monumenta$setItemRaw(Item item);
 }

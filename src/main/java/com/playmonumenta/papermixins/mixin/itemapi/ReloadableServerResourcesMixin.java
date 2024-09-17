@@ -13,17 +13,17 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ReloadableServerResources.class)
 public class ReloadableServerResourcesMixin {
-	@ModifyExpressionValue(
-		method = "listeners",
-		at = @At(
-			value = "INVOKE",
-			target = "Ljava/util/List;of(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;" +
-				"Ljava/lang/Object;)Ljava/util/List;"
-		)
-	)
-	private List<PreparableReloadListener> addCustomItemAPILoader(List<PreparableReloadListener> original) {
-		return Stream.of(original, List.of(PluginDataListener.INSTANCE))
-			.flatMap(Collection::stream)
-			.collect(Collectors.toList());
-	}
+    @ModifyExpressionValue(
+        method = "listeners",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/List;of(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;" +
+                "Ljava/lang/Object;)Ljava/util/List;"
+        )
+    )
+    private List<PreparableReloadListener> addCustomItemAPILoader(List<PreparableReloadListener> original) {
+        return Stream.of(original, List.of(PluginDataListener.INSTANCE))
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
+    }
 }

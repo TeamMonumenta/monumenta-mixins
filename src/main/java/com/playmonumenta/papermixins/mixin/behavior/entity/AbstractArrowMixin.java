@@ -17,26 +17,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(AbstractArrow.class)
 public abstract class AbstractArrowMixin extends Entity {
-	public AbstractArrowMixin(EntityType<?> type, Level world) {
-		super(type, world);
-	}
+    public AbstractArrowMixin(EntityType<?> type, Level world) {
+        super(type, world);
+    }
 
-	@Shadow
-	public abstract byte getPierceLevel();
+    @Shadow
+    public abstract byte getPierceLevel();
 
-	@Inject(
-		method = "onHitEntity",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/Entity;setRemainingFireTicks(I)V"
-		),
-		cancellable = true
-	)
-	private void disableBounce(EntityHitResult entityHitResult, CallbackInfo ci) {
-		if (getPierceLevel() <= 10) {
-			discard();
-		}
+    @Inject(
+        method = "onHitEntity",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/Entity;setRemainingFireTicks(I)V"
+        ),
+        cancellable = true
+    )
+    private void disableBounce(EntityHitResult entityHitResult, CallbackInfo ci) {
+        if (getPierceLevel() <= 10) {
+            discard();
+        }
 
-		ci.cancel();
-	}
+        ci.cancel();
+    }
 }

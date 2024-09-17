@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(Creeper.class)
 public class CreeperMixin {
-	/**
-	 * @author Flowey
-	 * @reason Disable skull drop.
-	 */
-	@Overwrite
-	public boolean canDropMobsSkull() {
-		return false;
-	}
+    /**
+     * @author Flowey
+     * @reason Disable skull drop.
+     */
+    @Overwrite
+    public boolean canDropMobsSkull() {
+        return false;
+    }
 }

@@ -8,21 +8,21 @@ import java.util.function.Consumer;
 import net.minecraft.commands.CommandSourceStack;
 
 public class BreakAST extends ASTNode {
-	private final int lineNo;
+    private final int lineNo;
 
-	public BreakAST(int lineNo) {
-		this.lineNo = lineNo;
-	}
+    public BreakAST(int lineNo) {
+        this.lineNo = lineNo;
+    }
 
-	@Override
-	public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
-		if (cgCtx.breakExitLabel() == null) {
-			diagnostics.reportErr(lineNo, "'break' may only be used inside iterative control flow");
-		}
-	}
+    @Override
+    public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
+        if (cgCtx.breakExitLabel() == null) {
+            diagnostics.reportErr(lineNo, "'break' may only be used inside iterative control flow");
+        }
+    }
 
-	@Override
-	public void visit(Consumer<ASTNode> visitor) {
+    @Override
+    public void visit(Consumer<ASTNode> visitor) {
 
-	}
+    }
 }

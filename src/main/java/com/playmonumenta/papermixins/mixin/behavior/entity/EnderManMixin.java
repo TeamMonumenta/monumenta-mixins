@@ -22,54 +22,54 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(EnderMan.class)
 public abstract class EnderManMixin extends Monster {
-	protected EnderManMixin(EntityType<? extends Monster> type, Level world) {
-		super(type, world);
-	}
+    protected EnderManMixin(EntityType<? extends Monster> type, Level world) {
+        super(type, world);
+    }
 
-	@ModifyExpressionValue(
-		method = "hurt",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/monster/EnderMan;tryEscape" +
-				"(Lcom/destroystokyo/paper/event/entity/EndermanEscapeEvent$Reason;)Z"
-		)
-	)
-	private boolean storeTryEscapeRes(
-		boolean original,
-		@Share("hasEscaped") LocalBooleanRef ref
-	) {
-		ref.set(original);
-		return original;
-	}
+    @ModifyExpressionValue(
+        method = "hurt",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/monster/EnderMan;tryEscape" +
+                "(Lcom/destroystokyo/paper/event/entity/EndermanEscapeEvent$Reason;)Z"
+        )
+    )
+    private boolean storeTryEscapeRes(
+        boolean original,
+        @Share("hasEscaped") LocalBooleanRef ref
+    ) {
+        ref.set(original);
+        return original;
+    }
 
-	@ModifyReturnValue(
-		method = "hurt",
-		at = @At("TAIL")
-	)
-	private boolean modifyHurtReturnValue(
-		boolean original, DamageSource source, float amount,
-		@Share("hasEscaped") LocalBooleanRef ref
-	) {
-		if (ref.get())
-			return original;
-		return original || super.hurt(source, amount);
-	}
+    @ModifyReturnValue(
+        method = "hurt",
+        at = @At("TAIL")
+    )
+    private boolean modifyHurtReturnValue(
+        boolean original, DamageSource source, float amount,
+        @Share("hasEscaped") LocalBooleanRef ref
+    ) {
+        if (ref.get())
+            return original;
+        return original || super.hurt(source, amount);
+    }
 
-	/**
-	 * @author Flowey
-	 * @reason Ignore carrying item.
-	 */
-	@Overwrite
-	public boolean requiresCustomPersistence() {
-		return super.requiresCustomPersistence();
-	}
+    /**
+     * @author Flowey
+     * @reason Ignore carrying item.
+     */
+    @Overwrite
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence();
+    }
 
-	/**
-	 * @author Flowey
-	 * @reason Disable TP.
-	 */
-	@Overwrite
-	public boolean teleport() {
-		return false;
-	}
+    /**
+     * @author Flowey
+     * @reason Disable TP.
+     */
+    @Overwrite
+    public boolean teleport() {
+        return false;
+    }
 }

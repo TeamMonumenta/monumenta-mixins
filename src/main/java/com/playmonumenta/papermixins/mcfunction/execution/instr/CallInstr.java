@@ -17,14 +17,14 @@ import net.minecraft.commands.execution.Frame;
  * @param target The instruction to jump to.
  */
 public record CallInstr<T>(int target) implements ControlInstr<T> {
-	@Override
-	public void modifyState(FuncExecState<T> state, ExecutionContext<T> context, Frame frame) {
-		state.stack.pushInstrAddress(state.instr);
-		state.instr = target;
-	}
+    @Override
+    public void modifyState(FuncExecState<T> state, ExecutionContext<T> context, Frame frame) {
+        state.stack.pushInstrAddress(state.instr);
+        state.instr = target;
+    }
 
-	@Override
-	public String toString() {
-		return "builtin::call[" + target + "]";
-	}
+    @Override
+    public String toString() {
+        return "builtin::call[" + target + "]";
+    }
 }

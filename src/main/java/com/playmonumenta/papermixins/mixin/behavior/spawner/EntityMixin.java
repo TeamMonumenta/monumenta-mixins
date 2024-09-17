@@ -15,29 +15,29 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityAccess {
 
-	@Unique
-	public BaseSpawner monumenta$spawnerSpawnedBy = null;
+    @Unique
+    public BaseSpawner monumenta$spawnerSpawnedBy = null;
 
-	@Unique
-	public boolean monumenta$delveReprime = false;
+    @Unique
+    public boolean monumenta$delveReprime = false;
 
-	@Override
-	public BaseSpawner monumenta$getSpawner() {
-		return monumenta$spawnerSpawnedBy;
-	}
+    @Override
+    public BaseSpawner monumenta$getSpawner() {
+        return monumenta$spawnerSpawnedBy;
+    }
 
-	@Override
-	public void monumenta$setSpawner(BaseSpawner spawner) {
-		monumenta$spawnerSpawnedBy = spawner;
-	}
+    @Override
+    public void monumenta$setSpawner(BaseSpawner spawner) {
+        monumenta$spawnerSpawnedBy = spawner;
+    }
 
-	@Override
-	public boolean monumenta$getDelveReprime() {
-		return monumenta$delveReprime;
-	}
+    @Override
+    public boolean monumenta$getDelveReprime() {
+        return monumenta$delveReprime;
+    }
 
-	@Override
-	public void monumenta$setDelveReprime(boolean delveReprime) {
-		this.monumenta$delveReprime = delveReprime;
-	}
+    @Override
+    public void monumenta$setDelveReprime(boolean delveReprime) {
+        this.monumenta$delveReprime = delveReprime;
+    }
 }

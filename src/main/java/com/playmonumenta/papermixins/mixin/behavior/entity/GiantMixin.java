@@ -29,48 +29,48 @@ import org.spongepowered.asm.mixin.Unique;
  */
 @Mixin(Giant.class)
 public class GiantMixin extends Monster {
-	protected GiantMixin(EntityType<? extends Monster> type, Level world) {
-		super(type, world);
-	}
+    protected GiantMixin(EntityType<? extends Monster> type, Level world) {
+        super(type, world);
+    }
 
-	@Override
-	protected void registerGoals() {
-		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
 
-		this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	}
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
 
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ZOMBIE_AMBIENT;
-	}
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.ZOMBIE_AMBIENT;
+    }
 
-	@Override
-	protected SoundEvent getHurtSound(@NotNull DamageSource source) {
-		return SoundEvents.ZOMBIE_HURT;
-	}
+    @Override
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return SoundEvents.ZOMBIE_HURT;
+    }
 
-	@Override
-	public SoundEvent getDeathSound() {
-		return SoundEvents.ZOMBIE_DEATH;
-	}
+    @Override
+    public SoundEvent getDeathSound() {
+        return SoundEvents.ZOMBIE_DEATH;
+    }
 
-	@Unique
-	protected SoundEvent monumenta$getStepSound() {
-		return SoundEvents.ZOMBIE_STEP;
-	}
+    @Unique
+    protected SoundEvent monumenta$getStepSound() {
+        return SoundEvents.ZOMBIE_STEP;
+    }
 
-	@Override
-	protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
-		this.playSound(this.monumenta$getStepSound(), 0.15F, 0.3F);
-	}
+    @Override
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
+        this.playSound(this.monumenta$getStepSound(), 0.15F, 0.3F);
+    }
 
-	@Override
-	public @NotNull MobType getMobType() {
-		return MobType.UNDEAD;
-	}
+    @Override
+    public @NotNull MobType getMobType() {
+        return MobType.UNDEAD;
+    }
 }

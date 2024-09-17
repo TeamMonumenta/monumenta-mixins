@@ -9,43 +9,43 @@ import java.util.function.Supplier;
 import net.minecraft.commands.execution.UnboundEntryAction;
 
 public interface Linkable<T> {
-	default List<Label> targets() {
-		return List.of();
-	}
+    static <T> Linkable<T> call(Label target) {
+        return wrap(List.of(target), () -> new CallInstr<>(target.offset()));
+    }
 
-	UnboundEntryAction<T> link();
+    static <T> Linkable<T> branch(Label target) {
+        return wrap(List.of(target), () -> new BranchInstr<T>(target.offset()));
+    }
 
-	static <T> Linkable<T> call(Label target) {
-		return wrap(List.of(target), () -> new CallInstr<>(target.offset()));
-	}
+    static <T> Linkable<T> pushInstrAddr(Label target) {
+        return wrap(List.of(target), () -> new PushInstrAddrInstr<T>(target.offset()));
+    }
 
-	static <T> Linkable<T> branch(Label target) {
-		return wrap(List.of(target), () -> new BranchInstr<T>(target.offset()));
-	}
+    static <T> Linkable<T> exit() {
+        return wrap(() -> new BranchInstr<T>(Integer.MAX_VALUE));
+    }
 
-	static <T> Linkable<T> pushInstrAddr(Label target) {
-		return wrap(List.of(target), () -> new PushInstrAddrInstr<T>(target.offset()));
-	}
+    static <T> Linkable<T> wrap(Supplier<ControlInstr<T>> gen) {
+        return gen::get;
+    }
 
-	static <T> Linkable<T> exit() {
-		return wrap(() -> new BranchInstr<T>(Integer.MAX_VALUE));
-	}
+    static <T> Linkable<T> wrap(List<Label> targets, Supplier<ControlInstr<T>> gen) {
+        return new Linkable<>() {
+            @Override
+            public List<Label> targets() {
+                return targets;
+            }
 
-	static <T> Linkable<T> wrap(Supplier<ControlInstr<T>> gen) {
-		return gen::get;
-	}
+            @Override
+            public UnboundEntryAction<T> link() {
+                return gen.get();
+            }
+        };
+    }
 
-	static <T> Linkable<T> wrap(List<Label> targets, Supplier<ControlInstr<T>> gen) {
-		return new Linkable<>() {
-			@Override
-			public List<Label> targets() {
-				return targets;
-			}
+    default List<Label> targets() {
+        return List.of();
+    }
 
-			@Override
-			public UnboundEntryAction<T> link() {
-				return gen.get();
-			}
-		};
-	}
+    UnboundEntryAction<T> link();
 }

@@ -1,251 +1,188 @@
 package com.playmonumenta.papermixins.mcfunction.parse.parser;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.context.ContextChain;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.playmonumenta.papermixins.MonumentaMod;
-import com.playmonumenta.papermixins.mcfunction.codegen.CodeGenerator;
-import com.playmonumenta.papermixins.mcfunction.codegen.DebugCodeGenerator;
-import com.playmonumenta.papermixins.mcfunction.parse.CommandLineReader;
+import com.playmonumenta.papermixins.mcfunction.CompileContext;
 import com.playmonumenta.papermixins.mcfunction.parse.Diagnostics;
-import com.playmonumenta.papermixins.mcfunction.parse.ParseContext;
 import com.playmonumenta.papermixins.mcfunction.parse.ParseFeatureSet;
-import com.playmonumenta.papermixins.mcfunction.parse.ast.*;
+import com.playmonumenta.papermixins.mcfunction.parse.ast.ASTNode;
+import com.playmonumenta.papermixins.mcfunction.parse.ast.BlockAST;
+import com.playmonumenta.papermixins.mcfunction.parse.ast.CommandAST;
+import com.playmonumenta.papermixins.mcfunction.parse.ast.TopLevelAST;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.subroutine.SubroutineDefinitionAST;
+import com.playmonumenta.papermixins.mcfunction.parse.reader.ExpandedFunctionSource;
+import com.playmonumenta.papermixins.mcfunction.parse.reader.MCFunctionLine;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.commands.execution.UnboundEntryAction;
-import net.minecraft.commands.execution.tasks.BuildContexts;
-import net.minecraft.commands.functions.CommandFunction;
-import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 public class Parser {
-	interface ParseHandler {
-		FeatureParseResult doParse(Parser parser, String text, int lineNo, ParseContext context);
-	}
+    interface ParseHandler {
+        FeatureParseResult doParse(
+            Parser parser,
+            String text,
+            int lineNo,
+            boolean isTopLevel,
+            boolean isInSubroutine
+        );
+    }
 
-	private record FeatureHandlerEntry(ParseHandler handler, boolean recvMacro, Predicate<ParseFeatureSet> enablePred,
-									String notEnabledWarning) {
-	}
+    private record FeatureHandlerEntry(ParseHandler handler, boolean recvMacro, Predicate<ParseFeatureSet> enablePred,
+                                       String notEnabledWarning) {
+    }
 
-	private static final Logger LOGGER = MonumentaMod.getLogger("FunctionParser");
-	private static final Map<String, FeatureHandlerEntry> FEATURE_HANDLER = new HashMap<>();
+    private static final Map<String, FeatureHandlerEntry> FEATURE_HANDLER = new HashMap<>();
+    private final CompileContext context;
+    private final ExpandedFunctionSource source;
+    private int index = 0;
 
-	static void register(
-		String name, boolean recvMacro, ParseHandler handler, Predicate<ParseFeatureSet> enablePred, String error
-	) {
-		FEATURE_HANDLER.put(name, new FeatureHandlerEntry(handler, recvMacro, enablePred, error));
-	}
+    public Parser(CompileContext context, ExpandedFunctionSource source) {
+        this.context = context;
+        this.source = source;
+    }
 
-	static void register(String name, boolean recvMacro, ParseHandler handler) {
-		register(name, recvMacro, handler, f -> true, null);
-	}
+    static void register(
+        String name, boolean recvMacro, ParseHandler handler, Predicate<ParseFeatureSet> enablePred, String error
+    ) {
+        FEATURE_HANDLER.put(name, new FeatureHandlerEntry(handler, recvMacro, enablePred, error));
+    }
 
-	public static void init(CommandBuildContext access) {
-		BaseParser.init();
-		ExtensionsControlFlowV1Parser.init(access);
-		ExtensionSubroutineParser.init();
-	}
+    static void register(String name, boolean recvMacro, ParseHandler handler) {
+        register(name, recvMacro, handler, f -> true, null);
+    }
 
-	final Diagnostics context;
-	final CommandLineReader reader;
-	final CommandSourceStack dummySource;
-	final CommandDispatcher<CommandSourceStack> dispatcher;
-	final ParseFeatureSet features = new ParseFeatureSet();
+    public static void init(CommandBuildContext access) {
+        ExtensionsControlFlowV1Parser.init(access);
+        ExtensionSubroutineParser.init();
+    }
 
-	Optional<UnboundEntryAction<CommandSourceStack>> parseCommand(CommandDispatcher<CommandSourceStack> dispatcher,
-																StringReader reader, Consumer<String> onError) {
-		final var parseResults = dispatcher.parse(reader, dummySource);
+    public static Set<String> controlFlowKeywords() {
+        return FEATURE_HANDLER.keySet();
+    }
 
-		try {
-			Commands.validateParseResults(parseResults);
-		} catch (CommandSyntaxException e) {
-			onError.accept(e.getMessage());
-			return Optional.empty();
-		}
+    public boolean present() {
+        return index < source.codeEntries().size();
+    }
 
-		final var chain = ContextChain.tryFlatten(parseResults.getContext().build(reader.getString()));
+    public MCFunctionLine curr() {
+        return source.codeEntries().get(index);
+    }
 
-		if (chain.isEmpty()) {
-			onError.accept(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownCommand().createWithContext(parseResults.getReader()).getMessage());
-			return Optional.empty();
-		}
+    public void next() {
+        index++;
+    }
 
-		return chain.map(x -> new BuildContexts.Unbound<>(reader.getString(), x));
-	}
+    public Diagnostics diagnostics() {
+        return context.diagnostics();
+    }
 
-	List<ASTNode> parseBlock(Supplier<ASTNode> parseOne, int startLineNo, String terminator, String onUnterminated) {
-		int prevIndex = -1;
+    public CommandDispatcher<CommandSourceStack> dispatcher() {
+        return context.dispatcher();
+    }
 
-		final var body = new ArrayList<ASTNode>();
+    public CommandSourceStack dummy() {
+        return context.dummy();
+    }
 
-		while (reader.present()) {
-			if (reader.index() == prevIndex) {
-				throw new IllegalStateException("internal error: parser failed to advance");
-			}
-			prevIndex = reader.index();
+    public List<ASTNode> parseBlock(Supplier<ASTNode> parseOne, int startLineNo, String terminator,
+                                    String onUnterminated) {
+        int prevIndex = -1;
 
-			if (reader.curr().equals(terminator)) {
-				reader.next();
-				return body;
-			}
+        final var body = new ArrayList<ASTNode>();
 
-			final var ast = parseOne.get();
+        while (present()) {
+            // Rather than leak memory by infinite loop, we check if the parser has eaten the next token
+            // This forces the parser to terminate in linear bounded time (context-sensitive grammar)
+            if (index == prevIndex) {
+                throw new IllegalStateException("internal error: parser failed to advance");
+            }
 
+            prevIndex = index;
 
-			if (ast != null) {
-				body.add(ast);
-			}
-		}
+            if (curr().type() == MCFunctionLine.Type.CONTROL_FLOW && curr().controlFlow().first().equals(terminator)) {
+                next();
+                return body;
+            }
 
-		context.reportErr(startLineNo, onUnterminated);
-		return body;
-	}
-
-	@Nullable
-	ASTNode parseNextCommand(boolean isTopLevel, boolean isInSubroutine) {
-		var prevIndex = -1;
-
-		while (reader.present()) {
-			// Rather than leak memory by infinite loop, we check if the parser has eaten the next token
-			// This forces the parser to terminate in linear bounded time (context-sensitive grammar)
-			if (reader.index() == prevIndex) {
-				throw new IllegalStateException("internal error: parser failed to advance");
-			}
-			prevIndex = reader.index();
-
-			// Stupid stuff
-			final var line = reader.curr();
-			final var isMacro = line.startsWith("$");
-			final var text = isMacro ? line.substring(1) : line;
-			final var lineNo = reader.lineNumber();
-
-			// Generate diagnostic for empty macro statements
-			if (isMacro && text.length() == 1) {
-				reader.next();
-				context.reportErr(lineNo, "empty macro statement is not allowed");
-			}
-
-			final var parts = text.split(" ", 2);
-			final var entry = FEATURE_HANDLER.get(parts[0]);
-
-			// Handle feature parsers
-			if (entry != null && (!isMacro || entry.recvMacro())) {
-				if (!entry.enablePred.test(features)) {
-					context.reportWarn(lineNo, entry.notEnabledWarning);
-				} else {
-					final var res = entry.handler.doParse(
-						this, text, lineNo,
-						new ParseContext(isMacro, isTopLevel, isInSubroutine)
-					);
-
-					switch (res.action()) {
-					case RETURN:
-						return res.value();
-					case CONTINUE:
-						continue;
-					case FALLTHROUGH:
-					}
-				}
-			}
-
-			// Handle vanilla
-			reader.next(); // Eat the current line
-			if (isMacro) {
-				// Handle vanilla macros
-				return new MacroAST(lineNo, text);
-			} else {
-				// Handle vanilla commands
-				final var res = parseCommand(
-					dispatcher, new StringReader(text),
-					msg -> context.reportErr(lineNo, "failed to parse command: '%s'", msg)
-				);
-
-				if (res.isPresent()) {
-					return new CommandAST(res.get());
-				}
-			}
-		}
+            final var ast = parseOne.get();
 
 
-		return null;
-	}
+            if (ast != null) {
+                body.add(ast);
+            }
+        }
 
-	private ASTNode parseTopLevel() {
-		final var children = new ArrayList<ASTNode>();
-		final var subroutine = new ArrayList<SubroutineDefinitionAST>();
+        diagnostics().reportErr(startLineNo, onUnterminated);
+        return body;
+    }
 
-		while (reader.present()) {
-			final var ast = parseNextCommand(true, false);
-			if (ast == null)
-				continue;
+    @Nullable
+    public ASTNode parseNextCommand(boolean isTopLevel, boolean isInSubroutine) {
+        var prevIndex = -1;
 
-			if (ast instanceof SubroutineDefinitionAST subroutineDefinitionAST) {
-				subroutine.add(subroutineDefinitionAST);
-			} else {
-				children.add(ast);
-			}
-		}
+        while (present()) {
+            // Rather than leak memory by infinite loop, we check if the parser has eaten the next token
+            // This forces the parser to terminate in linear bounded time (context-sensitive grammar)
+            if (index == prevIndex) {
+                throw new IllegalStateException("internal error: parser failed to advance");
+            }
 
-		return new TopLevelAST(new BlockAST(children), subroutine);
-	}
+            prevIndex = index;
 
-	private Parser(Diagnostics context, List<String> lines, CommandSourceStack dummySource,
-				CommandDispatcher<CommandSourceStack> dispatcher) {
-		this.context = context;
-		this.dispatcher = dispatcher;
-		this.reader = CommandLineReader.fromLines(context, lines);
-		this.dummySource = dummySource;
-	}
+            final var lineNo = curr().lineNumber();
 
-	/**
-	 * Parses a command function with extended syntax capabilities.
-	 *
-	 * @param dispatcher  The instance of minecraft's dispatcher.
-	 * @param dummySource A dummy command source.
-	 * @param lines       The source code.
-	 * @param id          The resource location of the function.
-	 * @return The parsed command function, or null if error.
-	 */
-	@Nullable
-	public static CommandFunction<CommandSourceStack> compileFunction(
-		CommandDispatcher<CommandSourceStack> dispatcher,
-		CommandSourceStack dummySource, List<String> lines, ResourceLocation id) {
-		final var diagnostics = new Diagnostics();
-		final var parser = new Parser(diagnostics, lines, dummySource, dispatcher);
-		final var ast = parser.parseTopLevel();
+            if (curr().type() == MCFunctionLine.Type.CONTROL_FLOW) {
+                final var data = curr().controlFlow();
+                final var entry = FEATURE_HANDLER.get(data.key());
 
-		if (diagnostics.hasError()) {
-			diagnostics.dumpErrors(2, LOGGER, id, lines);
-			return null;
-		}
+                // Handle feature parsers
+                // TODO: this branch should always be taken, but I'm not willing to try and confirm that.
+                if (entry != null) {
+                    if (!entry.enablePred.test(source.featureSet())) {
+                        diagnostics().reportWarn(lineNo, entry.notEnabledWarning);
+                    } else {
+                        final var res = entry.handler.doParse(
+                            this, data.second(), lineNo,
+                            isTopLevel, isInSubroutine
+                        );
 
-		final var context = new CodegenContext();
-		final var shouldDebugDump = parser.features.isDebugDump();
+                        switch (res.action()) {
+                        case RETURN:
+                            return res.value();
+                        case CONTINUE:
+                            continue;
+                        case FALLTHROUGH:
+                        }
+                    }
+                }
+            }
 
-		final CodeGenerator<CommandSourceStack> codegen = shouldDebugDump ? new DebugCodeGenerator<>() :
-			new CodeGenerator<>();
+            next();
 
-		ast.emit(diagnostics, context, codegen);
+            return new CommandAST(curr().preParsed());
+        }
 
-		if (shouldDebugDump) {
-			LOGGER.info("AST dump: \n{}\nCodegen dump: \n{}\n----", ast.dump(), codegen.dumpDisassembly());
-		}
+        return null;
+    }
 
-		diagnostics.dumpErrors(2, LOGGER, id, lines);
+    public ASTNode parseTopLevel() {
+        final var children = new ArrayList<ASTNode>();
+        final var subroutine = new ArrayList<SubroutineDefinitionAST>();
 
-		if (diagnostics.hasError()) {
-			return null;
-		}
+        while (present()) {
+            final var ast = parseNextCommand(true, false);
+            if (ast == null)
+                continue;
 
-		return codegen.define(id);
-	}
+            if (ast instanceof SubroutineDefinitionAST subroutineDefinitionAST) {
+                subroutine.add(subroutineDefinitionAST);
+            } else {
+                children.add(ast);
+            }
+        }
+
+        return new TopLevelAST(new BlockAST(children), subroutine);
+    }
 }

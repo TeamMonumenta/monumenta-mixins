@@ -14,93 +14,93 @@ import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomItemRegistryImpl implements CustomItemRegistry {
-	private final static CustomItemRegistryImpl INSTANCE = new CustomItemRegistryImpl();
-	private final Map<NamespacedKey, ItemVariantSet> registry = new HashMap<>();
-	private final Map<Material, CustomItemType> defaultRegistry = new EnumMap<>(Material.class);
-	private final List<String> giveCompletion = new ArrayList<>();
-	private boolean isFrozen = false;
+    private final static CustomItemRegistryImpl INSTANCE = new CustomItemRegistryImpl();
+    private final Map<NamespacedKey, ItemVariantSet> registry = new HashMap<>();
+    private final Map<Material, CustomItemType> defaultRegistry = new EnumMap<>(Material.class);
+    private final List<String> giveCompletion = new ArrayList<>();
+    private boolean isFrozen = false;
 
-	private CustomItemRegistryImpl() {
-	}
+    private CustomItemRegistryImpl() {
+    }
 
-	public static CustomItemRegistryImpl getInstance() {
-		return INSTANCE;
-	}
+    public static CustomItemRegistryImpl getInstance() {
+        return INSTANCE;
+    }
 
-	public static void onMutate() {
-		if (getInstance().isFrozen)
-			throw new IllegalStateException("registry frozen");
-	}
+    public static void onMutate() {
+        if (getInstance().isFrozen)
+            throw new IllegalStateException("registry frozen");
+    }
 
-	@Override
-	public @NotNull ItemVariantSet defineVariant(@NotNull NamespacedKey variantKey) {
-		Preconditions.checkNotNull(variantKey);
+    @Override
+    public @NotNull ItemVariantSet defineVariant(@NotNull NamespacedKey variantKey) {
+        Preconditions.checkNotNull(variantKey);
 
-		onMutate();
+        onMutate();
 
-		if (registry.containsKey(variantKey)) {
-			throw new IllegalArgumentException("duplicate key " + variantKey.asString());
-		}
+        if (registry.containsKey(variantKey)) {
+            throw new IllegalArgumentException("duplicate key " + variantKey.asString());
+        }
 
-		final var inst = new ItemVariantSetImpl(variantKey);
-		registry.put(variantKey, inst);
-		return inst;
-	}
+        final var inst = new ItemVariantSetImpl(variantKey);
+        registry.put(variantKey, inst);
+        return inst;
+    }
 
-	@Override
-	public void registerAsDefault(CustomItemType type) {
-		defaultRegistry.put(type.baseItem(), type);
-	}
+    @Override
+    public void registerAsDefault(CustomItemType type) {
+        defaultRegistry.put(type.baseItem(), type);
+    }
 
-	@Override
-	public @NotNull Set<NamespacedKey> keys() {
-		return Collections.unmodifiableSet(registry.keySet());
-	}
+    @Override
+    public @NotNull Set<NamespacedKey> keys() {
+        return Collections.unmodifiableSet(registry.keySet());
+    }
 
-	@Override
-	public @NotNull Set<Map.Entry<NamespacedKey, ItemVariantSet>> entries() {
-		return Collections.unmodifiableSet(registry.entrySet());
-	}
+    @Override
+    public @NotNull Set<Map.Entry<NamespacedKey, ItemVariantSet>> entries() {
+        return Collections.unmodifiableSet(registry.entrySet());
+    }
 
-	public void freeze() {
-		isFrozen = true;
+    public void freeze() {
+        isFrozen = true;
 
-		// validate variants have defaults
-		registry.entrySet().removeIf(entry -> {
-			if (((ItemVariantSetImpl) entry.getValue()).isInvalid()) {
-				CustomItemAPIMain.LOGGER.warn("Registered item variant set {} is invalid", entry.getKey());
-				return true;
-			}
+        // validate variants have defaults
+        registry.entrySet().removeIf(entry -> {
+            if (((ItemVariantSetImpl) entry.getValue()).isInvalid()) {
+                CustomItemAPIMain.LOGGER.warn("Registered item variant set {} is invalid", entry.getKey());
+                return true;
+            }
 
-			return false;
-		});
+            return false;
+        });
 
-		// compute stuff
-		registry.forEach((id, value) -> {
-			giveCompletion.add("\"" + id.toString() + "\"");
-			for (final var variantId : value.variants().keySet()) {
-				giveCompletion.add("\"" + id + "[" + variantId + "]\"");
-			}
-		});
+        // compute stuff
+        registry.forEach((id, value) -> {
+            giveCompletion.add("\"" + id.toString() + "\"");
+            for (final var variantId : value.variants().keySet()) {
+                giveCompletion.add("\"" + id + "[" + variantId + "]\"");
+            }
+        });
 
-		CustomItemAPIMain.LOGGER.info("Loaded {} items and {} defaults", registry.size(), defaultRegistry.size());
-	}
+        CustomItemAPIMain.LOGGER.info("Loaded {} items and {} defaults", registry.size(), defaultRegistry.size());
+    }
 
-	// getter methods
-	public @Nullable ItemVariantSetImpl get(NamespacedKey id) {
-		return (ItemVariantSetImpl) registry.get(id);
-	}
+    // getter methods
+    public @Nullable ItemVariantSetImpl get(NamespacedKey id) {
+        return (ItemVariantSetImpl) registry.get(id);
+    }
 
-	public List<String> getGiveCompletion() {
-		return giveCompletion;
-	}
+    public List<String> getGiveCompletion() {
+        return giveCompletion;
+    }
 
-	public CustomItemInstance create(Item item) {
-		final var type = defaultRegistry.get(CustomItemAPIMain.materialFromItem(item));
-		if (type == null) {
-			return null;
-		}
+    public CustomItemInstance create(Item item) {
+        final var type = defaultRegistry.get(CustomItemAPIMain.materialFromItem(item));
+        if (type == null) {
+            return null;
+        }
 
-		return ((CustomItemTypeImpl) type).factory().get();
-	}
+        return ((CustomItemTypeImpl) type).factory().get();
+    }
 }
