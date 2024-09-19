@@ -1,3 +1,6 @@
+import java.io.FileWriter
+import java.io.PrintStream
+
 plugins {
 	id("com.playmonumenta.papermixins.mod-conventions")
 }
@@ -11,10 +14,10 @@ dependencies {
 	implementation(project("plugin-api"))
 	implementation(libs.configurate)
 
-	shadowImplementation(project("plugin-api"))
-	shadowImplementation(libs.semver)
-	shadowImplementation(libs.nbtapi)
-	shadowImplementation(libs.configurate)
+	include(project("plugin-api"))
+	include(libs.semver)
+	include(libs.nbtapi)
+	include(libs.configurate)
 }
 
 tasks {
