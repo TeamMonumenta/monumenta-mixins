@@ -1,8 +1,6 @@
 metadata.format.version = "1.1"
 
 [versions]
-jetbrains-annotations = "24.1.0"
-
 fabricloader = "1.0.0"
 mixin-extras = "0.4.0"
 tinyremapper = "0.10.3"
@@ -40,8 +38,7 @@ gradle-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", ver
 gradle-paperweight = { module = "com.playmonumenta.paperweight-aw:paperweight-userdev", version.ref = "gradle-paperweight" }
 gradle-shadow = { module = "com.github.johnrengelman:shadow", version.ref = "gradle-shadow" }
 
-configurate = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
-
 dli = { module = "net.fabricmc:dev-launch-injector", version.ref = "dli" }
+
 [bundles]
 paperrt = ["maven-resolver-connector-basic", "maven-resolver-transport-http", "disruptor"]

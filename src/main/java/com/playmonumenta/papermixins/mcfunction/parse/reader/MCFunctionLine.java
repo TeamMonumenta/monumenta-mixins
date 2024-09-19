@@ -48,7 +48,7 @@ public class MCFunctionLine {
     @SuppressWarnings("unchecked")
     public UnboundEntryAction<CommandSourceStack> preParsed() {
         if (type != Type.PRE_PARSED) {
-            throw new IllegalStateException("not a macro");
+            throw new IllegalStateException("not a regular command");
         }
 
         return (UnboundEntryAction<CommandSourceStack>) data;
@@ -65,7 +65,7 @@ public class MCFunctionLine {
     @SuppressWarnings("unchecked")
     public Pair<String, String> controlFlow() {
         if (type != Type.CONTROL_FLOW) {
-            throw new IllegalStateException("not a macro");
+            throw new IllegalStateException("not control flow");
         }
 
         return (Pair<String, String>) data;

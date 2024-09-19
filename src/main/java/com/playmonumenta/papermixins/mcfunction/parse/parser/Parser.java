@@ -131,37 +131,39 @@ public class Parser {
 
             prevIndex = index;
 
+
             final var lineNo = curr().lineNumber();
 
             if (curr().type() == MCFunctionLine.Type.CONTROL_FLOW) {
                 final var data = curr().controlFlow();
                 final var entry = FEATURE_HANDLER.get(data.key());
 
+                if(entry == null) {
+                    throw new IllegalStateException("Internal parser error: illegal control flow: " + data.key());
+                }
+
                 // Handle feature parsers
                 // TODO: this branch should always be taken, but I'm not willing to try and confirm that.
-                if (entry != null) {
-                    if (!entry.enablePred.test(source.featureSet())) {
-                        diagnostics().reportWarn(lineNo, entry.notEnabledWarning);
-                    } else {
-                        final var res = entry.handler.doParse(
-                            this, data.second(), lineNo,
-                            isTopLevel, isInSubroutine
-                        );
+                if (!entry.enablePred.test(source.featureSet())) {
+                    diagnostics().reportWarn(lineNo, entry.notEnabledWarning);
+                } else {
+                    final var res = entry.handler.doParse(
+                        this, data.second(), lineNo,
+                        isTopLevel, isInSubroutine
+                    );
 
-                        switch (res.action()) {
-                        case RETURN:
-                            return res.value();
-                        case CONTINUE:
-                            continue;
-                        case FALLTHROUGH:
-                        }
+                    switch (res.action()) {
+                    case RETURN:
+                        return res.value();
+                    case CONTINUE:
+                        continue;
                     }
                 }
             }
 
+            final var ast = new CommandAST(curr().preParsed());
             next();
-
-            return new CommandAST(curr().preParsed());
+            return ast;
         }
 
         return null;

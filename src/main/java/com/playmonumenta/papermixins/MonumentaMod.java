@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 public class MonumentaMod {
     public static final Logger LOGGER = getLogger("");
@@ -24,9 +24,8 @@ public class MonumentaMod {
     // State management
     public static final ThreadLocal<Function<? super Double, Double>> IFRAME_FUNC = new ThreadLocal<>();
     public static final ThreadLocal<Double> IFRAME_VALUE = new ThreadLocal<>();
-    private static final Path CONFIG_PATH = Path.of("config/MonumentaMixins.conf");
-    private static final HoconConfigurationLoader CONFIG_LOADER = HoconConfigurationLoader.builder()
-        .prettyPrinting(true)
+    private static final Path CONFIG_PATH = Path.of("config/monumenta-mixins.yml");
+    private static final YamlConfigurationLoader CONFIG_LOADER = YamlConfigurationLoader.builder()
         .source(() -> Files.newBufferedReader(CONFIG_PATH))
         .sink(() -> Files.newBufferedWriter(CONFIG_PATH))
         .build();

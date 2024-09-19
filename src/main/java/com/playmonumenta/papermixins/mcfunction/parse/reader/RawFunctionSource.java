@@ -119,9 +119,9 @@ public class RawFunctionSource {
                 } catch (CommandSyntaxException e) {
                     context.diagnostics().reportErr(index, ERR_FAILED_PARSE_PRAGMA, e.getMessage());
                 }
-            }
 
-            if (!handleLineDiagnostics(context.diagnostics(), line, index)) {
+
+            } else if (!handleLineDiagnostics(context.diagnostics(), line, index)) {
                 break;
             }
         }

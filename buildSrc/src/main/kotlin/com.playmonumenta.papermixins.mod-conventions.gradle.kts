@@ -42,6 +42,7 @@ val libs = the<LibrariesForLibs>()
 //
 // NOTE: you need run/paperclip.jar for development enviroment to work, not sure how loom solves this issue.
 // TODO: research loom & fabric a bit more
+// TODO: there's an issue: if we run in a dev env with FAWE, things explode. Figure out why.
 val modImplementation by configurations.creating
 val include by configurations.creating
 
@@ -52,12 +53,16 @@ dependencies {
     modImplementation(libs.paper.server) {
         isTransitive = false
     }
-    implementation(libs.paper.server)
-    implementation(libs.fabricloader)
+
     modImplementation(libs.mixin.extras)
-    runtimeOnly(libs.dli)
+
     compileOnly(paperweight.paperDevBundle(libs.versions.paper.api.get()))
+
+    implementation(libs.fabricloader)
     implementation(libs.bundles.paperrt) // Required for server to start when running "Minecraft Server"
+
+    runtimeOnly(libs.dli)
+
     remapper(libs.tinyremapper) { // Tiny remapper
         artifact {
             classifier = "fat"

@@ -52,6 +52,7 @@ public class ServerFunctionLibraryMixin {
     private static Map<ResourceLocation, Resource> disableFunctionOnFirstLoad(FileToIdConverter instance,
                                                                               ResourceManager resourceManager) {
         if (monumenta$isInitialFunctionLoad) {
+            LOGGER.info("Skipping function loading since this is the initial function load!");
             return Map.of();
         } else {
             return instance.listMatchingResources(resourceManager);

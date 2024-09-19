@@ -7,7 +7,6 @@ class FeatureParseResult {
     enum Action {
         RETURN,
         CONTINUE,
-        FALLTHROUGH
     }
 
     private final Action action;
@@ -21,10 +20,6 @@ class FeatureParseResult {
 
     public static FeatureParseResult parseNext() {
         return new FeatureParseResult(Action.CONTINUE, null);
-    }
-
-    public static FeatureParseResult fallthrough() {
-        return new FeatureParseResult(Action.FALLTHROUGH, null);
     }
 
     public static FeatureParseResult ast(ASTNode node) {
