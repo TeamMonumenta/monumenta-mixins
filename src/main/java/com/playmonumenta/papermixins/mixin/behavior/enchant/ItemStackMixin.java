@@ -14,20 +14,20 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
  */
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
-    @ModifyVariable(
-        method = "hurt",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getItemEnchantmentLevel" +
-                "(Lnet/minecraft/world/item/enchantment/Enchantment;Lnet/minecraft/world/item/ItemStack;)I",
-            shift = At.Shift.AFTER
-        ),
-        argsOnly = true,
-        index = 1
-    )
-    private int curveAmount(int amount) {
-        return MonumentaMod.getConfig().behavior.normalizeArmourUnbreaking ?
-            (int) Math.min(amount, Math.sqrt(amount * 4)) :
-            amount;
-    }
+	@ModifyVariable(
+		method = "hurt",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getItemEnchantmentLevel" +
+				"(Lnet/minecraft/world/item/enchantment/Enchantment;Lnet/minecraft/world/item/ItemStack;)I",
+			shift = At.Shift.AFTER
+		),
+		argsOnly = true,
+		index = 1
+	)
+	private int curveAmount(int amount) {
+		return MonumentaMod.getConfig().behavior.normalizeArmourUnbreaking ?
+			(int) Math.min(amount, Math.sqrt(amount * 4)) :
+			amount;
+	}
 }

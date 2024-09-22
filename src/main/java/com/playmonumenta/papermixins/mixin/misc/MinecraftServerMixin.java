@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  */
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-    @ModifyConstant(
-        method = "getServerModName",
-        constant = @Constant(stringValue = "Paper")
-    )
-    private String modifyGetServerModName(String old) {
-        return VersionInfo.IDENTIFIER;
-    }
+	@ModifyConstant(
+		method = "getServerModName",
+		constant = @Constant(stringValue = "Paper")
+	)
+	private String modifyGetServerModName(String old) {
+		return VersionInfo.IDENTIFIER;
+	}
 }

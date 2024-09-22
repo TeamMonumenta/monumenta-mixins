@@ -19,29 +19,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(Shulker.class)
 public abstract class ShulkerMixin extends AbstractGolem {
-    protected ShulkerMixin(EntityType<? extends AbstractGolem> type, Level world) {
-        super(type, world);
-    }
+	protected ShulkerMixin(EntityType<? extends AbstractGolem> type, Level world) {
+		super(type, world);
+	}
 
-    @Inject(
-        method = "setRawPeekAmount",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private void cancelSetPeekAmountIfNoAI(int peekAmount, CallbackInfo ci) {
-        if (isNoAi()) {
-            ci.cancel();
-        }
-    }
+	@Inject(
+		method = "setRawPeekAmount",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void cancelSetPeekAmountIfNoAI(int peekAmount, CallbackInfo ci) {
+		if (isNoAi()) {
+			ci.cancel();
+		}
+	}
 
-    @ModifyExpressionValue(
-        method = "hurt",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/monster/Shulker;isClosed()Z"
-        )
-    )
-    private boolean allowArrowsOnClosed(boolean original) {
-        return false;
-    }
+	@ModifyExpressionValue(
+		method = "hurt",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/monster/Shulker;isClosed()Z"
+		)
+	)
+	private boolean allowArrowsOnClosed(boolean original) {
+		return false;
+	}
 }

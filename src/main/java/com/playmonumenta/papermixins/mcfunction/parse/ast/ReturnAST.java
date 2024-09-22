@@ -10,18 +10,18 @@ import net.minecraft.commands.CommandSourceStack;
  * Exit from the currently executing MCFunction
  */
 public class ReturnAST extends ASTNode {
-    @Override
-    public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
-        gen.emitControl(BranchInstr.exit());
-    }
+	@Override
+	public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
+		gen.emitControl(BranchInstr.exit());
+	}
 
-    @Override
-    public void visit(Consumer<ASTNode> visitor) {
+	@Override
+	public void visit(Consumer<ASTNode> visitor) {
 
-    }
+	}
 
-    @Override
-    public String toString() {
-        return "ReturnAST";
-    }
+	@Override
+	public String toString() {
+		return "ReturnAST";
+	}
 }

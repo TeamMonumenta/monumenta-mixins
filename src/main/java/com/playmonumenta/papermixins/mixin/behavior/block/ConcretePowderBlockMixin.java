@@ -18,49 +18,49 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(ConcretePowderBlock.class)
 public class ConcretePowderBlockMixin {
-    /**
-     * @author Flowey
-     * @reason Remove concrete hardening.
-     */
-    @Inject(
-        method = "shouldSolidify",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private static void shouldSolidify(BlockGetter world, BlockPos pos, BlockState state,
-                                       CallbackInfoReturnable<Boolean> cir) {
-        if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
-            cir.setReturnValue(false);
-        }
-    }
+	/**
+	 * @author Flowey
+	 * @reason Remove concrete hardening.
+	 */
+	@Inject(
+		method = "shouldSolidify",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private static void shouldSolidify(BlockGetter world, BlockPos pos, BlockState state,
+									CallbackInfoReturnable<Boolean> cir) {
+		if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
+			cir.setReturnValue(false);
+		}
+	}
 
-    /**
-     * @author Flowey
-     * @reason Remove concrete hardening.
-     */
-    @Inject(
-        method = "touchesLiquid",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private static void touchesLiquid(BlockGetter world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
-            cir.setReturnValue(false);
-        }
-    }
+	/**
+	 * @author Flowey
+	 * @reason Remove concrete hardening.
+	 */
+	@Inject(
+		method = "touchesLiquid",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private static void touchesLiquid(BlockGetter world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+		if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
+			cir.setReturnValue(false);
+		}
+	}
 
-    /**
-     * @author Flowey
-     * @reason Remove concrete hardening.
-     */
-    @Inject(
-        method = "canSolidify",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private static void canSolidify(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
-            cir.setReturnValue(false);
-        }
-    }
+	/**
+	 * @author Flowey
+	 * @reason Remove concrete hardening.
+	 */
+	@Inject(
+		method = "canSolidify",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private static void canSolidify(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+		if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
+			cir.setReturnValue(false);
+		}
+	}
 }

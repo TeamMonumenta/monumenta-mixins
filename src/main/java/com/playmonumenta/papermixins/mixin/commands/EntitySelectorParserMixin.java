@@ -24,58 +24,58 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(EntitySelectorParser.class)
 public class EntitySelectorParserMixin implements EntitySelectorParserAccess {
-    @Shadow
-    private boolean worldLimited;
+	@Shadow
+	private boolean worldLimited;
 
-    @Unique
-    private boolean monumenta$worldLimitedSet = false;
+	@Unique
+	private boolean monumenta$worldLimitedSet = false;
 
-    // TODO: validate this guy
-    @ModifyConstant(
-        method = "lambda$new$8",
-        constant = @Constant(
-            intValue = 1
-        )
-    )
-    private static int modifyDefaultPredicate(int constant, Entity e) {
-        return e.isAlive() ? 1 : 0;
-    }
+	// TODO: validate this guy
+	@ModifyConstant(
+		method = "lambda$new$8",
+		constant = @Constant(
+			intValue = 1
+		)
+	)
+	private static int modifyDefaultPredicate(int constant, Entity e) {
+		return e.isAlive() ? 1 : 0;
+	}
 
-    @Inject(
-        method = "<init>(Lcom/mojang/brigadier/StringReader;ZZ)V",
-        at = @At("RETURN")
-    )
-    private void setWorldLimited(StringReader reader, boolean atAllowed,
-                                 boolean parsingEntityArgumentSuggestions, CallbackInfo ci) {
-        this.worldLimited = true;
-    }
+	@Inject(
+		method = "<init>(Lcom/mojang/brigadier/StringReader;ZZ)V",
+		at = @At("RETURN")
+	)
+	private void setWorldLimited(StringReader reader, boolean atAllowed,
+								boolean parsingEntityArgumentSuggestions, CallbackInfo ci) {
+		this.worldLimited = true;
+	}
 
-    // impl the I-face
-    @Override
-    public boolean monumenta$getWorldLimited() {
-        return worldLimited;
-    }
+	// impl the I-face
+	@Override
+	public boolean monumenta$getWorldLimited() {
+		return worldLimited;
+	}
 
-    @Override
-    public void monumenta$setWorldLimited(boolean b) {
-        worldLimited = b;
-    }
+	@Override
+	public void monumenta$setWorldLimited(boolean b) {
+		worldLimited = b;
+	}
 
-    @Override
-    public boolean monumenta$getWorldLimitedSet() {
-        return monumenta$worldLimitedSet;
-    }
+	@Override
+	public boolean monumenta$getWorldLimitedSet() {
+		return monumenta$worldLimitedSet;
+	}
 
-    @Override
-    public void monumenta$setWorldLimitedSet(boolean b) {
-        monumenta$worldLimitedSet = b;
-    }
+	@Override
+	public void monumenta$setWorldLimitedSet(boolean b) {
+		monumenta$worldLimitedSet = b;
+	}
 
-    /**
-     * @author Flowey
-     * @reason Prevent the use of the world limited setter for default MC behaviour
-     */
-    @Overwrite
-    public void setWorldLimited() {
-    }
+	/**
+	 * @author Flowey
+	 * @reason Prevent the use of the world limited setter for default MC behaviour
+	 */
+	@Overwrite
+	public void setWorldLimited() {
+	}
 }

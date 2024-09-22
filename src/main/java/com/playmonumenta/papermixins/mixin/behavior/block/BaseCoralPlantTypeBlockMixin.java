@@ -18,19 +18,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(BaseCoralPlantTypeBlock.class)
 public class BaseCoralPlantTypeBlockMixin {
-    /**
-     * @author Flowey
-     * @reason Disable coral death.
-     */
-    @Inject(
-        method = "scanForWater",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private static void scanForWater(BlockState state, BlockGetter world, BlockPos pos,
-                                     CallbackInfoReturnable<Boolean> cir) {
-        if (MonumentaMod.getConfig().behavior.disableCoralDeath) {
-            cir.setReturnValue(true);
-        }
-    }
+	/**
+	 * @author Flowey
+	 * @reason Disable coral death.
+	 */
+	@Inject(
+		method = "scanForWater",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private static void scanForWater(BlockState state, BlockGetter world, BlockPos pos,
+									CallbackInfoReturnable<Boolean> cir) {
+		if (MonumentaMod.getConfig().behavior.disableCoralDeath) {
+			cir.setReturnValue(true);
+		}
+	}
 }

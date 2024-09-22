@@ -14,24 +14,24 @@ import net.minecraft.commands.execution.Frame;
  * </pre>
  **/
 public class RetInstr<T> implements ControlInstr<T> {
-    private static final RetInstr<?> INSTANCE = new RetInstr<>();
+	private static final RetInstr<?> INSTANCE = new RetInstr<>();
 
-    private RetInstr() {
+	private RetInstr() {
 
-    }
+	}
 
-    @SuppressWarnings("unchecked")
-    public static <T> RetInstr<T> get() {
-        return (RetInstr<T>) INSTANCE;
-    }
+	@SuppressWarnings("unchecked")
+	public static <T> RetInstr<T> get() {
+		return (RetInstr<T>) INSTANCE;
+	}
 
-    @Override
-    public void modifyState(FuncExecState<T> state, ExecutionContext<T> context, Frame frame) {
-        state.instr = state.stack.popInstrAddress();
-    }
+	@Override
+	public void modifyState(FuncExecState<T> state, ExecutionContext<T> context, Frame frame) {
+		state.instr = state.stack.popInstrAddress();
+	}
 
-    @Override
-    public String toString() {
-        return "builtin::ret";
-    }
+	@Override
+	public String toString() {
+		return "builtin::ret";
+	}
 }

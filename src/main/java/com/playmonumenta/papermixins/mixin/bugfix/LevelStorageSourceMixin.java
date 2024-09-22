@@ -13,15 +13,15 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(LevelStorageSource.class)
 public class LevelStorageSourceMixin {
-    @ModifyExpressionValue(
-        method = "validateAndCreateAccess",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/level/validation/DirectoryValidator;validateDirectory(Ljava/nio/file/Path;" +
-                "Z)Ljava/util/List;"
-        )
-    )
-    private List<ForbiddenSymlinkInfo> removeSymlinkValidation(List<ForbiddenSymlinkInfo> original) {
-        return List.of();
-    }
+	@ModifyExpressionValue(
+		method = "validateAndCreateAccess",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/level/validation/DirectoryValidator;validateDirectory(Ljava/nio/file/Path;" +
+				"Z)Ljava/util/List;"
+		)
+	)
+	private List<ForbiddenSymlinkInfo> removeSymlinkValidation(List<ForbiddenSymlinkInfo> original) {
+		return List.of();
+	}
 }

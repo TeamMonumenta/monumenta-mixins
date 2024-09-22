@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  */
 @Mixin(ServerShutdownThread.class)
 public class ServerShutdownThreadMixin {
-    @ModifyConstant(
-        method = "run",
-        constant = @Constant(intValue = 1000)
-    )
-    private int modifyWaitTime(int constant) {
-        return MonumentaMod.getConfig().serverShutdownTime;
-    }
+	@ModifyConstant(
+		method = "run",
+		constant = @Constant(intValue = 1000)
+	)
+	private int modifyWaitTime(int constant) {
+		return MonumentaMod.getConfig().serverShutdownTime;
+	}
 }

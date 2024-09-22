@@ -55,16 +55,17 @@
         "itemapi.DedicatedServerMixin",
         "itemapi.ItemStackMixin",
         "itemapi.ReloadableServerResourcesMixin",
+        "misc.CraftServerMixin",
+        "misc.DedicatedServerMixin",
         "misc.DimensionDataStorageMixin",
         "misc.InventoryMixin",
         "misc.MeleeAttackGoalMixin",
+        "misc.MinecraftServerMixin",
         "misc.ServerGamePacketListenerImplMixin",
-        "misc.ServerShutdownThreadMixin",
-        "misc.CraftServerMixin",
-        "misc.DedicatedServerMixin",
-        "misc.MinecraftServerMixin"
+        "misc.ServerShutdownThreadMixin"
     ],
     "mixins": [
-        "bugfix.CommodoreMethodVisitorMixin"
+        "bugfix.CommodoreMethodVisitorMixin",
+        "commands.ReturnCommandMixin"
     ]
 }

@@ -16,17 +16,17 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(Mob.class)
 public abstract class MobMixin extends LivingEntity {
-    protected MobMixin(EntityType<? extends LivingEntity> type, Level world) {
-        super(type, world);
-    }
+	protected MobMixin(EntityType<? extends LivingEntity> type, Level world) {
+		super(type, world);
+	}
 
-    /**
-     * @author Flowey
-     * @reason Remove passenger AI checks.
-     */
-    @Overwrite
-    @Nullable
-    public LivingEntity getControllingPassenger() {
-        return null;
-    }
+	/**
+	 * @author Flowey
+	 * @reason Remove passenger AI checks.
+	 */
+	@Overwrite
+	@Nullable
+	public LivingEntity getControllingPassenger() {
+		return null;
+	}
 }

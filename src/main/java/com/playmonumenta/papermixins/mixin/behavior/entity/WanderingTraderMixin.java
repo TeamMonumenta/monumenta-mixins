@@ -20,19 +20,19 @@ import org.spongepowered.asm.mixin.Overwrite;
  */
 @Mixin(WanderingTrader.class)
 public abstract class WanderingTraderMixin extends AbstractVillager {
-    public WanderingTraderMixin(EntityType<? extends AbstractVillager> type, Level world) {
-        super(type, world);
-    }
+	public WanderingTraderMixin(EntityType<? extends AbstractVillager> type, Level world) {
+		super(type, world);
+	}
 
-    /**
-     * @author Flowey
-     * @reason Remove AI.
-     */
-    @Overwrite
-    public void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
-        this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
-        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
-    }
+	/**
+	 * @author Flowey
+	 * @reason Remove AI.
+	 */
+	@Overwrite
+	public void registerGoals() {
+		this.goalSelector.addGoal(0, new FloatGoal(this));
+		this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
+		this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
+		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+	}
 }

@@ -13,38 +13,38 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-    @Shadow
-    public int invulnerableDuration;
+	@Shadow
+	public int invulnerableDuration;
 
-    @Shadow
-    public float lastHurt;
+	@Shadow
+	public float lastHurt;
 
-    public LivingEntityMixin(EntityType<?> type, Level world) {
-        super(type, world);
-    }
+	public LivingEntityMixin(EntityType<?> type, Level world) {
+		super(type, world);
+	}
 
-    @ModifyVariable(
-        method = "actuallyHurt",
-        at = @At(
-            value = "NEW",
-            target = "(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/damagesource/DamageSource;)" +
-                "Lnet/minecraft/world/entity/LivingEntity$1;"
-        ),
-        index = 2,
-        argsOnly = true
-    )
-    private float setupIframeHandlers(float value) {
-        Function<Double, Double> iframes = f -> {
-            if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F) {
-                return -(Math.max(f - Math.max(f - lastHurt, 0.0F), 0.0F));
-            }
-            return 0.0;
-        };
+	@ModifyVariable(
+		method = "actuallyHurt",
+		at = @At(
+			value = "NEW",
+			target = "(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/damagesource/DamageSource;)" +
+				"Lnet/minecraft/world/entity/LivingEntity$1;"
+		),
+		index = 2,
+		argsOnly = true
+	)
+	private float setupIframeHandlers(float value) {
+		Function<Double, Double> iframes = f -> {
+			if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F) {
+				return -(Math.max(f - Math.max(f - lastHurt, 0.0F), 0.0F));
+			}
+			return 0.0;
+		};
 
-        var iframesModifier = iframes.apply((double) value);
-        MonumentaMod.IFRAME_VALUE.set(iframesModifier);
-        MonumentaMod.IFRAME_FUNC.set(iframes);
-        value += iframesModifier.floatValue();
-        return value;
-    }
+		var iframesModifier = iframes.apply((double) value);
+		MonumentaMod.IFRAME_VALUE.set(iframesModifier);
+		MonumentaMod.IFRAME_FUNC.set(iframes);
+		value += iframesModifier.floatValue();
+		return value;
+	}
 }

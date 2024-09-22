@@ -17,23 +17,23 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(ReloadableServerResources.class)
 public class ReloadableServerResourcesMixin {
-    @Unique
-    private static Commands monumenta$commandsInstance = null;
+	@Unique
+	private static Commands monumenta$commandsInstance = null;
 
-    @WrapOperation(
-        method = "<init>",
-        at = @At(
-            value = "NEW",
-            target = "(Lnet/minecraft/commands/Commands$CommandSelection;Lnet/minecraft/commands/CommandBuildContext;" +
-                ")Lnet/minecraft/commands/Commands;"
-        )
-    )
-    private Commands cacheCommandInstance(Commands.CommandSelection commandSelection,
-                                          CommandBuildContext environment, Operation<Commands> original) {
-        if (monumenta$commandsInstance == null) {
-            monumenta$commandsInstance = original.call(commandSelection, environment);
-        }
+	@WrapOperation(
+		method = "<init>",
+		at = @At(
+			value = "NEW",
+			target = "(Lnet/minecraft/commands/Commands$CommandSelection;Lnet/minecraft/commands/CommandBuildContext;" +
+				")Lnet/minecraft/commands/Commands;"
+		)
+	)
+	private Commands cacheCommandInstance(Commands.CommandSelection commandSelection,
+										CommandBuildContext environment, Operation<Commands> original) {
+		if (monumenta$commandsInstance == null) {
+			monumenta$commandsInstance = original.call(commandSelection, environment);
+		}
 
-        return monumenta$commandsInstance;
-    }
+		return monumenta$commandsInstance;
+	}
 }

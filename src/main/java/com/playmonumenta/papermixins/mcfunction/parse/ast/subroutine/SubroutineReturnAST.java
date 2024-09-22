@@ -13,17 +13,17 @@ import net.minecraft.commands.CommandSourceStack;
  * <a href="https://minecraft.wiki/w/Commands/return">vanilla</a> command, which roughly corresponds to "exit"
  */
 public class SubroutineReturnAST extends ASTNode {
-    @Override
-    public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
-        gen.emitControl(SubroutineRetInstr.get());
-    }
+	@Override
+	public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
+		gen.emitControl(SubroutineRetInstr.get());
+	}
 
-    @Override
-    public void visit(Consumer<ASTNode> visitor) {
-    }
+	@Override
+	public void visit(Consumer<ASTNode> visitor) {
+	}
 
-    @Override
-    public String toString() {
-        return "SubroutineReturnAST";
-    }
+	@Override
+	public String toString() {
+		return "SubroutineReturnAST";
+	}
 }

@@ -11,44 +11,44 @@ import org.semver4j.Semver;
 
 @SuppressWarnings("deprecation")
 public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
-    private static MonumentaPaperAPIImpl INSTANCE = null;
-    private final EntityDamageEvent.DamageModifier iframes = EntityDamageEvent.DamageModifier.valueOf("IFRAMES");
+	private static MonumentaPaperAPIImpl INSTANCE = null;
+	private final EntityDamageEvent.DamageModifier iframes = EntityDamageEvent.DamageModifier.valueOf("IFRAMES");
 
-    public static MonumentaPaperAPIImpl getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new MonumentaPaperAPIImpl();
-        }
+	public static MonumentaPaperAPIImpl getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new MonumentaPaperAPIImpl();
+		}
 
-        return INSTANCE;
-    }
+		return INSTANCE;
+	}
 
-    @Override
-    public EntityDamageEvent.DamageModifier getIframes() {
-        return iframes;
-    }
+	@Override
+	public EntityDamageEvent.DamageModifier getIframes() {
+		return iframes;
+	}
 
-    @Override
-    public Semver getVersion() {
-        return VersionInfo.VERSION;
-    }
+	@Override
+	public Semver getVersion() {
+		return VersionInfo.VERSION;
+	}
 
-    @Override
-    public DataLoaderRegistry getDataLoaderRegistryAPI() {
-        return DataLoaderRegistry.getInstance();
-    }
+	@Override
+	public DataLoaderRegistry getDataLoaderRegistryAPI() {
+		return DataLoaderRegistry.getInstance();
+	}
 
-    @Override
-    public CustomItemRegistry getCustomItemRegistryAPI() {
-        return CustomItemRegistry.getInstance();
-    }
+	@Override
+	public CustomItemRegistry getCustomItemRegistryAPI() {
+		return CustomItemRegistry.getInstance();
+	}
 
-    @Override
-    public CustomItems getCustomItemsAPI() {
-        return CustomItems.getInstance();
-    }
+	@Override
+	public CustomItems getCustomItemsAPI() {
+		return CustomItems.getInstance();
+	}
 
-    @Override
-    public RedisSyncIO getRedisSyncIO() {
-        return RedisSyncIOImpl.getInstance();
-    }
+	@Override
+	public RedisSyncIO getRedisSyncIO() {
+		return RedisSyncIOImpl.getInstance();
+	}
 }

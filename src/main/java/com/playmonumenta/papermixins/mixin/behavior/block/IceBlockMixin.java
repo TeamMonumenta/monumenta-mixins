@@ -19,35 +19,35 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(IceBlock.class)
 public class IceBlockMixin {
-    /**
-     * @author Flowey
-     * @reason Disable all special ice behaviour when harvested with non-silk touch tool.
-     */
-    @Inject(
-        method = "afterDestroy",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;dimensionType()" +
-            "Lnet/minecraft/world/level/dimension/DimensionType;"),
-        cancellable = true
-    )
-    public void afterDestroy(Level world, BlockPos pos, ItemStack tool, CallbackInfo ci) {
-        if (MonumentaMod.getConfig().behavior.disableIceBreakBehavior) {
-            world.removeBlock(pos, false);
-            ci.cancel();
-        }
-    }
+	/**
+	 * @author Flowey
+	 * @reason Disable all special ice behaviour when harvested with non-silk touch tool.
+	 */
+	@Inject(
+		method = "afterDestroy",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;dimensionType()" +
+			"Lnet/minecraft/world/level/dimension/DimensionType;"),
+		cancellable = true
+	)
+	public void afterDestroy(Level world, BlockPos pos, ItemStack tool, CallbackInfo ci) {
+		if (MonumentaMod.getConfig().behavior.disableIceBreakBehavior) {
+			world.removeBlock(pos, false);
+			ci.cancel();
+		}
+	}
 
-    /**
-     * @author Flowey
-     * @reason Disable ice melting.
-     */
-    @Inject(
-        method = "melt",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    public void melt(BlockState state, Level world, BlockPos pos, CallbackInfo ci) {
-        if (MonumentaMod.getConfig().behavior.disableIceMelting) {
-            ci.cancel();
-        }
-    }
+	/**
+	 * @author Flowey
+	 * @reason Disable ice melting.
+	 */
+	@Inject(
+		method = "melt",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	public void melt(BlockState state, Level world, BlockPos pos, CallbackInfo ci) {
+		if (MonumentaMod.getConfig().behavior.disableIceMelting) {
+			ci.cancel();
+		}
+	}
 }

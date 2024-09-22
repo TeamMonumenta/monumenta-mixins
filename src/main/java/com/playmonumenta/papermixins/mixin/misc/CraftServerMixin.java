@@ -16,25 +16,25 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  */
 @Mixin(CraftServer.class)
 public class CraftServerMixin {
-    @ModifyConstant(
-        method = "<init>",
-        constant = @Constant(stringValue = "Paper")
-    )
-    private String modifyServerName(String string) {
-        return VersionInfo.IDENTIFIER + string;
-    }
+	@ModifyConstant(
+		method = "<init>",
+		constant = @Constant(stringValue = "Paper")
+	)
+	private String modifyServerName(String string) {
+		return VersionInfo.IDENTIFIER + string;
+	}
 
-    @ModifyExpressionValue(
-        method = "<init>",
-        at = @At(
-            target = "Ljava/lang/Package;getImplementationVersion()Ljava/lang/String;",
-            value = "INVOKE"
-        )
-    )
-    private String modifyImplementationVersion(String original) {
-        if (original == null) {
-            return VersionInfo.IDENTIFIER + "-Paper";
-        }
-        return original.replace("Paper", VersionInfo.IDENTIFIER + "-Paper");
-    }
+	@ModifyExpressionValue(
+		method = "<init>",
+		at = @At(
+			target = "Ljava/lang/Package;getImplementationVersion()Ljava/lang/String;",
+			value = "INVOKE"
+		)
+	)
+	private String modifyImplementationVersion(String original) {
+		if (original == null) {
+			return VersionInfo.IDENTIFIER + "-Paper";
+		}
+		return original.replace("Paper", VersionInfo.IDENTIFIER + "-Paper");
+	}
 }

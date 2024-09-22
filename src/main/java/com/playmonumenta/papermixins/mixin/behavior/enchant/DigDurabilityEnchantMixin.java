@@ -17,19 +17,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(DigDurabilityEnchantment.class)
 public class DigDurabilityEnchantMixin {
-    /**
-     * @author Flowey
-     * @reason All items work like tools for unbreaking.
-     */
-    @Inject(
-        method = "shouldIgnoreDurabilityDrop",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private static void shouldIgnoreDurabilityDrop(ItemStack item, int level, RandomSource random,
-                                                   CallbackInfoReturnable<Boolean> cir) {
-        if (MonumentaMod.getConfig().behavior.normalizeArmourUnbreaking) {
-            cir.setReturnValue(random.nextInt(level + 1) > 0);
-        }
-    }
+	/**
+	 * @author Flowey
+	 * @reason All items work like tools for unbreaking.
+	 */
+	@Inject(
+		method = "shouldIgnoreDurabilityDrop",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private static void shouldIgnoreDurabilityDrop(ItemStack item, int level, RandomSource random,
+												CallbackInfoReturnable<Boolean> cir) {
+		if (MonumentaMod.getConfig().behavior.normalizeArmourUnbreaking) {
+			cir.setReturnValue(random.nextInt(level + 1) > 0);
+		}
+	}
 }

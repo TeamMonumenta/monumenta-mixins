@@ -62,27 +62,27 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> The command source type.
  */
 public class FuncExecState<T> {
-    public final FuncExecStack<T> stack = new FuncExecStack<>();
-    public final IntStack basePointerStack = new IntArrayList();
+	public final FuncExecStack<T> stack = new FuncExecStack<>();
+	public final IntStack basePointerStack = new IntArrayList();
 
-    @NotNull
-    public T source;
-    public int instr = 0;
+	@NotNull
+	public T source;
+	public int instr = 0;
 
-    public FuncExecState(@NotNull T source) {
-        this.source = source;
-    }
+	public FuncExecState(@NotNull T source) {
+		this.source = source;
+	}
 
-    public void pushSource() {
-        stack.pushSource(source);
-    }
+	public void pushSource() {
+		stack.pushSource(source);
+	}
 
-    public void popSource() {
-        source = stack.popSource();
-    }
+	public void popSource() {
+		source = stack.popSource();
+	}
 
-    @Override
-    public String toString() {
-        return String.format("[instr = %d, stack = %s]", instr, stack);
-    }
+	@Override
+	public String toString() {
+		return String.format("[instr = %d, stack = %s]", instr, stack);
+	}
 }

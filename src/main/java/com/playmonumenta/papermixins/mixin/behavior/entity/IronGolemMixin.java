@@ -14,15 +14,15 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
  */
 @Mixin(IronGolem.class)
 public abstract class IronGolemMixin {
-    @ModifyArg(
-        method = "doHurtTarget",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
-        ),
-        index = 1
-    )
-    private float modifyAttackDamage(float amount, @Local(ordinal = 0) float f) {
-        return f;
-    }
+	@ModifyArg(
+		method = "doHurtTarget",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+		),
+		index = 1
+	)
+	private float modifyAttackDamage(float amount, @Local(ordinal = 0) float f) {
+		return f;
+	}
 }
