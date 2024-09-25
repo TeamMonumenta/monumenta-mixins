@@ -1,11 +1,14 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
+import com.playmonumenta.papermixins.MonumentaMod;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.ElderGuardian;
 import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author Flowey
@@ -25,12 +28,20 @@ public class ElderGuardianMixin extends Guardian {
 	 * There might be a more portable way of doing this...
 	 * TODO: look for a more portable way.
 	 */
-	@Overwrite
-	public void customServerAiStep() {
-		super.customServerAiStep();
+	@Inject(
+		method = "customServerAiStep",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	public void customServerAiStep(CallbackInfo ci) {
+		if(MonumentaMod.getConfig().behavior.disableGuardianMiningFatigue) {
+			super.customServerAiStep();
 
-		if (!this.hasRestriction()) {
-			this.restrictTo(this.blockPosition(), 16);
+			if (!this.hasRestriction()) {
+				this.restrictTo(this.blockPosition(), 16);
+			}
+
+			ci.cancel();
 		}
 	}
 }

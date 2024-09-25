@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * @author Flowey
  * @mm-patch 0031-Monumenta-Patched-movement-exploit.patch
  * <p>
- * Mojank is bad at math.
+ * Mojank is bad at logging levels
  */
 @Mixin(ServerGamePacketListenerImpl.class)
 public class ServerGamePacketListenerImplMixin {

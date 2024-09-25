@@ -3,6 +3,7 @@ package com.playmonumenta.papermixins.mixin.commands;
 import com.google.common.collect.ImmutableMap;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.datafixers.util.Pair;
 import com.playmonumenta.papermixins.mcfunction.Compiler;
@@ -118,11 +119,11 @@ public class ServerFunctionLibraryMixin {
 	)
 	private <T extends ExecutionCommandSource<T>> CommandFunction<T> redirectFunctionParsing(
 		ResourceLocation id, CommandDispatcher<T> dispatcher, T source,
-		List<String> lines
+		List<String> lines, @Local(argsOnly = true) Map.Entry<ResourceLocation, Resource> map
 	) {
 		return (CommandFunction<T>) Compiler.compileFunction(
 			(CommandDispatcher<CommandSourceStack>) dispatcher,
-			(CommandSourceStack) source, lines, id
+			(CommandSourceStack) source, lines, id, map.getValue().sourcePackId()
 		);
 	}
 }

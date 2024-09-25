@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 public class MonumentaMod {
@@ -28,19 +29,21 @@ public class MonumentaMod {
 	private static final YamlConfigurationLoader CONFIG_LOADER = YamlConfigurationLoader.builder()
 		.source(() -> Files.newBufferedReader(CONFIG_PATH))
 		.sink(() -> Files.newBufferedWriter(CONFIG_PATH))
+		.nodeStyle(NodeStyle.BLOCK)
+		.indent(4)
 		.build();
 	// config
 	private static Config config;
 
 	public static Config getConfig() {
 		if (config == null) {
-			throw new IllegalStateException("Used config before load");
+			loadConfig();
 		}
 
 		return config;
 	}
 
-	public static void loadConfig() {
+	private static void loadConfig() {
 		LOGGER.info("Loading configuration from {}", CONFIG_PATH);
 		try {
 			Files.createDirectories(Path.of("config"));

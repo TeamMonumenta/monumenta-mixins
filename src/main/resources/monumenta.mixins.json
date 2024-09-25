@@ -6,7 +6,7 @@
     "compatibilityLevel": "JAVA_16",
     "server": [
         "api.DamageModifierMixin",
-        "behavior.MerchantOfferMixin",
+        "behavior.entity.MerchantOfferMixin",
         "behavior.block.BaseCoralPlantTypeBlockMixin",
         "behavior.block.ConcretePowderBlockMixin",
         "behavior.block.CoralBlockMixin",
@@ -57,12 +57,12 @@
         "itemapi.ReloadableServerResourcesMixin",
         "misc.CraftServerMixin",
         "misc.DedicatedServerMixin",
-        "misc.DimensionDataStorageMixin",
-        "misc.InventoryMixin",
-        "misc.MeleeAttackGoalMixin",
+        "behavior.DimensionDataStorageMixin",
+        "bugfix.InventoryMixin",
+        "api.MeleeAttackGoalMixin",
         "misc.MinecraftServerMixin",
-        "misc.ServerGamePacketListenerImplMixin",
-        "misc.ServerShutdownThreadMixin"
+        "behavior.ServerGamePacketListenerImplMixin",
+        "behavior.ServerShutdownThreadMixin"
     ],
     "mixins": [
         "bugfix.CommodoreMethodVisitorMixin",

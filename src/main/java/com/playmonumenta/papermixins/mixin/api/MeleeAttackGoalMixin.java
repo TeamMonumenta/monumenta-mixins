@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.misc;
+package com.playmonumenta.papermixins.mixin.api;
 
 import com.playmonumenta.mixinapi.v1.CustomMeleeAttackGoal;
 import net.minecraft.world.entity.PathfinderMob;

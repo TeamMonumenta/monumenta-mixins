@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.misc;
+package com.playmonumenta.papermixins.mixin.behavior;
 
 import com.playmonumenta.papermixins.MonumentaMod;
 import org.bukkit.craftbukkit.v1_20_R3.util.ServerShutdownThread;

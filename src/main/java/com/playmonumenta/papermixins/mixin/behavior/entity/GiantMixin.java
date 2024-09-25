@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
+import com.playmonumenta.papermixins.MonumentaMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 
 /**
  * @author Flowey
@@ -35,6 +35,11 @@ public class GiantMixin extends Monster {
 
 	@Override
 	protected void registerGoals() {
+		super.registerGoals();
+		if (!MonumentaMod.getConfig().behavior.addGolemAi) {
+			return;
+		}
+
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -59,14 +64,9 @@ public class GiantMixin extends Monster {
 		return SoundEvents.ZOMBIE_DEATH;
 	}
 
-	@Unique
-	protected SoundEvent monumenta$getStepSound() {
-		return SoundEvents.ZOMBIE_STEP;
-	}
-
 	@Override
 	protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
-		this.playSound(this.monumenta$getStepSound(), 0.15F, 0.3F);
+		this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 0.3F);
 	}
 
 	@Override

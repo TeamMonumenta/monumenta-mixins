@@ -6,7 +6,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import org.semver4j.Semver;
 
 public class VersionInfo {
-	public static final String IDENTIFIER = "Monumenta";
+	public static final String IDENTIFIER = "MonumentaMixins";
 	public static final String MOD_ID = "monumenta";
 	public static final ModContainer MOD = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow();
 	public static final ModMetadata METADATA = MOD.getMetadata();

@@ -40,13 +40,14 @@ public class Compiler {
 		format.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
 	});
 
-	private static PlainTextFunction<CommandSourceStack> compileImpl(ResourceLocation id, CompileContext context,
+	private static PlainTextFunction<CommandSourceStack> compileImpl(ResourceLocation id, String pack,
+																	CompileContext context,
 																	ExpandedFunctionSource source) {
 		final var parser = new Parser(context, source);
 		final var ast = parser.parseTopLevel();
 
 		if (context.diagnostics().hasError()) {
-			context.diagnostics().dumpErrors(2, LOGGER, id, source.rawSource());
+			context.diagnostics().dumpErrors(LOGGER, pack, id, source.rawSource());
 			return null;
 		}
 
@@ -65,7 +66,7 @@ public class Compiler {
 			LOGGER.info("AST dump: \n{}\nCodegen dump: \n{}\n----", ast.dump(), codegen.dumpDisassembly());
 		}
 
-		context.diagnostics().dumpErrors(2, LOGGER, id, source.rawSource());
+		context.diagnostics().dumpErrors(LOGGER, pack, id, source.rawSource());
 
 		if (context.diagnostics().hasError()) {
 			return null;
@@ -74,8 +75,7 @@ public class Compiler {
 		return codegen.define(id);
 	}
 
-	private static CommandFunction<CommandSourceStack> compileMacro(ResourceLocation id,
-																	RawFunctionSource rawFunctionSource) {
+	private static CommandFunction<CommandSourceStack> compileMacro(ResourceLocation id, String pack, RawFunctionSource rawFunctionSource) {
 		return new CommandFunction<>() {
 			@Override
 			public @NotNull ResourceLocation id() {
@@ -113,10 +113,10 @@ public class Compiler {
 					));
 
 				final var res = rawFunctionSource.instantiate(context, macroArgs)
-					.map(x -> compileImpl(id, context, x))
+					.map(x -> compileImpl(id, pack, context, x))
 					.orElseThrow(() -> INSTANTIATION_EXCEPTION);
 
-				context.diagnostics().dumpErrors(2, LOGGER, id, rawFunctionSource.rawSource());
+				context.diagnostics().dumpErrors(LOGGER,pack,  id, rawFunctionSource.rawSource());
 
 				if (context.diagnostics().hasError()) {
 					throw INSTANTIATION_EXCEPTION;
@@ -139,23 +139,22 @@ public class Compiler {
 	@Nullable
 	public static CommandFunction<CommandSourceStack> compileFunction(
 		CommandDispatcher<CommandSourceStack> dispatcher,
-		CommandSourceStack dummySource, List<String> lines, ResourceLocation id) {
+		CommandSourceStack dummySource, List<String> lines, ResourceLocation id, String pack) {
 
 		final var context = new CompileContext(new Diagnostics(), dispatcher, dummySource);
 		final var reader = RawFunctionSource.fromLines(context, lines);
 
 		if (reader.hasMacro()) {
 			if (context.diagnostics().hasError()) {
-				context.diagnostics().dumpErrors(MonumentaMod.getConfig().mcFunction.diagnosticContext, LOGGER, id,
-					lines);
+				context.diagnostics().dumpErrors(LOGGER, pack, id, lines);
 				return null;
 			}
 
-			return compileMacro(id, reader);
+			return compileMacro(id, pack, reader);
 		} else {
 			// compile it immediately!
 			return reader.instantiate(context, Map.of())
-				.map(x -> compileImpl(id, context, x))
+				.map(x -> compileImpl(id, pack, context, x))
 				.orElse(null);
 		}
 	}

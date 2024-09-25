@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mcfunction.parse;
 
+import com.playmonumenta.papermixins.MonumentaMod;
 import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +39,15 @@ public class Diagnostics {
 		return hasError;
 	}
 
-	public void dumpErrors(int context, Logger logger, ResourceLocation id, List<String> lines) {
+	public void dumpErrors(Logger logger, String pack, ResourceLocation id, List<String> lines) {
+		int context = MonumentaMod.getConfig().mcFunction.diagnosticContext;
 		StringBuilder builder = new StringBuilder();
 
 		if (diagnostics.isEmpty()) {
 			return;
 		}
 
-		builder.append("While parsing function '").append(id).append("'\n");
+		builder.append("While parsing function '").append(id).append("' from pack '").append(pack).append("'\n");
 
 		for (final var diagnostic : diagnostics) {
 			if (diagnostic.level() == Level.ERROR) {

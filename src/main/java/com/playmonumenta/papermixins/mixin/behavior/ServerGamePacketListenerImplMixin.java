@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.misc;
+package com.playmonumenta.papermixins.mixin.behavior;
 
 import com.playmonumenta.papermixins.MonumentaMod;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;

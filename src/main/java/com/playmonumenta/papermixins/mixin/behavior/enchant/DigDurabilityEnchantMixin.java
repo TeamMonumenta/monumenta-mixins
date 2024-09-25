@@ -28,7 +28,8 @@ public class DigDurabilityEnchantMixin {
 	)
 	private static void shouldIgnoreDurabilityDrop(ItemStack item, int level, RandomSource random,
 												CallbackInfoReturnable<Boolean> cir) {
-		if (MonumentaMod.getConfig().behavior.normalizeArmourUnbreaking) {
+		// I can't inject into the instanceof check...
+		if (MonumentaMod.getConfig().behavior.normalizeArmorUnbreaking) {
 			cir.setReturnValue(random.nextInt(level + 1) > 0);
 		}
 	}

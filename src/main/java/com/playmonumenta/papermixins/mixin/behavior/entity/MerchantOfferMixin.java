@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.behavior;
+package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;

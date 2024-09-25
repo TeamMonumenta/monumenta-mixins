@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author Flowey
- * @mm-patch 0011-Monumenta-Selectors-require-targets-to-be-alive.patch
  * @mm-patch 0019-Monumenta-Added-all_worlds-selector-argument.patch
  * <p>
  * Ensure that entity selectors requires entity is alive by default

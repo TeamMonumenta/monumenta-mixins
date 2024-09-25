@@ -26,7 +26,7 @@ public class ItemStackMixin {
 		index = 1
 	)
 	private int curveAmount(int amount) {
-		return MonumentaMod.getConfig().behavior.normalizeArmourUnbreaking ?
+		return MonumentaMod.getConfig().behavior.normalizeArmorUnbreaking ?
 			(int) Math.min(amount, Math.sqrt(amount * 4)) :
 			amount;
 	}

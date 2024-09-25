@@ -22,16 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(CraftLootTable.class)
 public class CraftLootTableMixin {
-	/// <parameter minecraft:explosion_radius>,
-	// <parameter minecraft:direct_killer_entity>,
-	// <parameter minecraft:tool>,
-	// <parameter minecraft:block_state>,
-	// <parameter minecraft:killer_entity>
-	// , <parameter minecraft:block_entity>,
-	// <parameter minecraft:last_damage_player>,
-	// <parameter minecraft:this_entity>,
-	// <parameter minecraft:damage_source>
-
 	@Inject(
 		method = "convertContext(Lorg/bukkit/loot/LootContext;Ljava/util/Random;)" +
 			"Lnet/minecraft/world/level/storage/loot/LootParams;",

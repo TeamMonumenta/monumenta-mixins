@@ -1,9 +1,11 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.playmonumenta.papermixins.MonumentaMod;
 import net.minecraft.world.entity.monster.Zombie;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
  * @author Flowey
@@ -13,13 +15,16 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(Zombie.class)
 public class ZombieMixin {
-	@Redirect(
+	@WrapOperation(
 		method = "tick",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/world/entity/monster/Zombie;startUnderWaterConversion(I)V"
 		)
 	)
-	private void disableConversion(Zombie instance, int ticksUntilWaterConversion) {
+	private void disableConversion(Zombie instance, int ticksUntilWaterConversion, Operation<Void> original) {
+		if (!MonumentaMod.getConfig().behavior.disableDrownConversion) {
+			original.call(instance, ticksUntilWaterConversion);
+		}
 	}
 }
