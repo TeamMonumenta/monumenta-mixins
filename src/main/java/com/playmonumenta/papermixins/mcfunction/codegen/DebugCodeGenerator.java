@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 public class DebugCodeGenerator<T extends ExecutionCommandSource<T>> extends CodeGenerator<T> {
 	private final List<String> disassembly = new ArrayList<>();
 	private final IntList linkableDisassemblyIndex = new IntArrayList();
+	private boolean defined = false;
 
 	@Override
 	public void emitPlain(UnboundEntryAction<T> instr) {
@@ -52,11 +53,15 @@ public class DebugCodeGenerator<T extends ExecutionCommandSource<T>> extends Cod
 			disassembly.set(linkableDisassemblyIndex.getInt(i), "  " + result + " [" + String.join(", ",
 				linkableInfo.second().targets().stream().map(Label::toString).toList()) + "]");
 		}
-
+		defined = true;
 		return new PlainTextFunction<>(id, entries);
 	}
 
 	public String dumpDisassembly() {
+		if(!defined) {
+			throw new IllegalStateException("function must be linked before disassembly");
+		}
+
 		return String.join("\n", disassembly);
 	}
 }

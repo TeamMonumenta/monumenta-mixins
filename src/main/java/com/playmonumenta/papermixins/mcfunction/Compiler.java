@@ -61,18 +61,19 @@ public class Compiler {
 
 		ast.emit(context.diagnostics(), codegenContext, codegen);
 
-
-		if (shouldDebugDump) {
-			LOGGER.info("AST dump: \n{}\nCodegen dump: \n{}\n----", ast.dump(), codegen.dumpDisassembly());
-		}
-
 		context.diagnostics().dumpErrors(LOGGER, pack, id, source.rawSource());
 
 		if (context.diagnostics().hasError()) {
 			return null;
 		}
 
-		return codegen.define(id);
+		final var res = codegen.define(id);
+
+		if (shouldDebugDump) {
+			LOGGER.info("AST dump: \n{}\nCodegen dump: \n{}\n----", ast.dump(), codegen.dumpDisassembly());
+		}
+
+		return res;
 	}
 
 	private static CommandFunction<CommandSourceStack> compileMacro(ResourceLocation id, String pack, RawFunctionSource rawFunctionSource) {
