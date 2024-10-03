@@ -4,9 +4,12 @@
     "package": "com.playmonumenta.papermixins.mixin",
     "target": "@env(DEFAULT)",
     "compatibilityLevel": "JAVA_16",
-    "server": [
+    "mixins": [
         "api.DamageModifierMixin",
-        "behavior.entity.MerchantOfferMixin",
+        "api.MeleeAttackGoalMixin",
+        "behavior.DimensionDataStorageMixin",
+        "behavior.ServerGamePacketListenerImplMixin",
+        "behavior.ServerShutdownThreadMixin",
         "behavior.block.BaseCoralPlantTypeBlockMixin",
         "behavior.block.ConcretePowderBlockMixin",
         "behavior.block.CoralBlockMixin",
@@ -23,6 +26,7 @@
         "behavior.entity.GiantMixin",
         "behavior.entity.IronGolemMixin",
         "behavior.entity.LivingEntityMixin",
+        "behavior.entity.MerchantOfferMixin",
         "behavior.entity.MobMixin",
         "behavior.entity.ProjectileUtilMixin",
         "behavior.entity.ShulkerMixin",
@@ -38,7 +42,9 @@
         "behavior.spawner.MobMixin",
         "behavior.spawner.ServerPlayerMixin",
         "behavior.spawner.SpawnerBlockEntityMixin",
+        "bugfix.CommodoreMethodVisitorMixin",
         "bugfix.CraftLootTableMixin",
+        "bugfix.InventoryMixin",
         "bugfix.LevelStorageSourceMixin",
         "bugfix.ServerGamePacketListenerImplMixin",
         "commands.CallFunctionMixin",
@@ -46,6 +52,7 @@
         "commands.EntitySelectorOptionsMixin",
         "commands.EntitySelectorParserMixin",
         "commands.ReloadableServerResourcesMixin",
+        "commands.ReturnCommandMixin",
         "commands.ServerFunctionLibraryMixin",
         "event.CraftEventFactoryMixin",
         "event.LivingEntityMixin",
@@ -57,15 +64,8 @@
         "itemapi.ReloadableServerResourcesMixin",
         "misc.CraftServerMixin",
         "misc.DedicatedServerMixin",
-        "behavior.DimensionDataStorageMixin",
-        "bugfix.InventoryMixin",
-        "api.MeleeAttackGoalMixin",
         "misc.MinecraftServerMixin",
-        "behavior.ServerGamePacketListenerImplMixin",
-        "behavior.ServerShutdownThreadMixin"
-    ],
-    "mixins": [
-        "bugfix.CommodoreMethodVisitorMixin",
-        "commands.ReturnCommandMixin"
+        "optimize.AdvancementTreeMixin",
+        "optimize.ServerAdvancementManagerMixin"
     ]
 }

@@ -8,10 +8,12 @@ import com.google.gson.JsonElement;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import net.minecraft.FileUtil;
 import net.minecraft.server.PlayerAdvancements;
@@ -118,24 +120,24 @@ public class PlayerAdvancementsMixin {
 	}
 
 	// We should use the data supplied by the event if possible
-	@ModifyArg(
+	@Redirect(
 		method = "load",
 		at = @At(
 			value = "INVOKE",
-			target = "Lcom/google/gson/stream/JsonReader;<init>(Ljava/io/Reader;)V"
-		),
-		index = 0
+			target = "Ljava/nio/file/Files;newBufferedReader(Ljava/nio/file/Path;Ljava/nio/charset/Charset;)" +
+				"Ljava/io/BufferedReader;"
+		)
 	)
-	private Reader modifyLoadReadSource(
-		Reader reader,
-		@Share("event") LocalRef<PlayerAdvancementDataLoadEvent> eventRef
-	) {
+	private BufferedReader modifyLoadReadSource(
+		Path path, Charset cs, @Share("event") LocalRef<PlayerAdvancementDataLoadEvent> eventRef
+	) throws IOException {
 		var evData = eventRef.get().getJsonData();
+
 		if (evData != null) {
-			return new StringReader(evData);
+			return new BufferedReader(new StringReader(evData));
 		}
 
-		return reader;
+		return Files.newBufferedReader(path, cs);
 	}
 
 	// Fix logging, this isn't really idea
@@ -185,8 +187,9 @@ public class PlayerAdvancementsMixin {
 		CallbackInfo ci,
 		@Share("event") LocalRef<PlayerAdvancementDataSaveEvent> eventRef
 	) {
-		if (!eventRef.get().callEvent())
+		if (!eventRef.get().callEvent()) {
 			ci.cancel();
+		}
 	}
 
 	@Redirect(
