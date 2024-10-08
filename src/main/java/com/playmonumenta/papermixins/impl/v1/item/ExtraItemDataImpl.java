@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.impl.v1.resource;
+package com.playmonumenta.papermixins.impl.v1.item;
 
 import com.google.common.base.Preconditions;
 import com.playmonumenta.mixinapi.v1.item.ExtraItemData;
