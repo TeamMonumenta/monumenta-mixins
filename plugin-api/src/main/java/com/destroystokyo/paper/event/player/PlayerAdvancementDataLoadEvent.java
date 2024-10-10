@@ -81,4 +81,13 @@ public class PlayerAdvancementDataLoadEvent extends PlayerEvent {
 	public HandlerList getHandlers() {
 		return handlers;
 	}
+
+	@Override
+	public String toString() {
+		return "PlayerAdvancementDataLoadEvent{" +
+			"jsonData='" + jsonData + '\'' +
+			", path=" + path +
+			", player=" + player.getName() +
+			'}';
+	}
 }

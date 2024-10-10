@@ -43,7 +43,7 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 		final var roots = new ArrayList<AdvancementHolder>();
 
 		// list of all nodes with an invalid parent
-		final var invalidRoots = new ArrayList<AdvancementHolder>();
+		final var invalidRoots = new HashMap<ResourceLocation, ArrayList<AdvancementHolder>>();
 
 		for (final var advancement : advancements) {
 			final var parentOptional = advancement.value().parent();
@@ -58,7 +58,8 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 				} else if (nodes.containsKey(parent)) {
 					roots.add(advancement);
 				} else {
-					invalidRoots.add(advancement);
+					invalidRoots.computeIfAbsent(advancement.value().parent().get(), r -> new ArrayList<>())
+						.add(advancement);
 				}
 			}
 		}
@@ -88,28 +89,32 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 		}
 
 		// do the same for all invalid roots
-		for (final var root : invalidRoots) {
-			queue.push(root);
+		invalidRoots.forEach((parent, invalidRootEntries) -> {
 			final var transitiveChildren = new ArrayList<AdvancementHolder>();
 
-			while (!queue.isEmpty()) {
-				final var entry = queue.pop();
-				loopSet.remove(entry);
-				final var children = edges.getOrDefault(entry.id(), List.of());
-				transitiveChildren.addAll(children);
-				queue.addAll(children);
+			for (final var root : invalidRootEntries) {
+				queue.push(root);
+
+				while (!queue.isEmpty()) {
+					final var entry = queue.pop();
+					loopSet.remove(entry);
+					final var children = edges.getOrDefault(entry.id(), List.of());
+					transitiveChildren.addAll(children);
+					queue.addAll(children);
+				}
 			}
 
 			// log them
 			LOGGER.error(
-				"Failed to load advancement {} because the parent {} does not exist. " +
+				"Missing parent {} caused {} advancements to load: [{}] " +
 					"Transitively, {} advancements failed to load: [{}]",
-				root.id(),
-				root.value().parent().orElseThrow(),
+				parent,
+				invalidRootEntries.size(),
+				invalidRootEntries.stream().map(x -> x.id().toString()).collect(Collectors.joining(", ")),
 				transitiveChildren.size(),
 				transitiveChildren.stream().map(x -> x.id().toString()).collect(Collectors.joining(", "))
 			);
-		}
+		});
 
 		// now, we process loops
 		while (!loopSet.isEmpty()) {

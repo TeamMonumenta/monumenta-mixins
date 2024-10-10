@@ -54,10 +54,10 @@ public class ItemStackStateManager {
 	}
 
 	public void loadCustomState(ItemStack stack) {
-		final var rootTag = stack.getOrCreateTagElement(ROOT_TAG_KEY);
+		final var rootTag = stack.getTagElement(ROOT_TAG_KEY);
 
 		// Vanilla item, check to see if there is a default
-		if (!rootTag.contains(KEY_ID)) {
+		if (rootTag == null || !rootTag.contains(KEY_ID)) {
 			customState = CustomItemRegistryImpl.getInstance().create(stack.getItem());
 		} else {
 			final var id = NamespacedKey.fromString(rootTag.getString(KEY_ID));
@@ -87,11 +87,13 @@ public class ItemStackStateManager {
 			return;
 		}
 
-		if (rootTag.contains(KEY_SAVE_DATA)) {
-			rootTag.put(KEY_SAVE_DATA, new CompoundTag());
+		final var realTag = stack.getOrCreateTagElement(ROOT_TAG_KEY);
+
+		if (!realTag.contains(KEY_SAVE_DATA)) {
+			realTag.put(KEY_SAVE_DATA, new CompoundTag());
 		}
 
-		customState.item().readSaveData(new NBTContainer(rootTag));
+		customState.item().readSaveData(new NBTContainer(realTag));
 		storeCustomState(stack);
 		recomputeDisplay(stack);
 	}

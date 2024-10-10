@@ -16,6 +16,8 @@ import org.bukkit.craftbukkit.v1_20_R3.CraftEquipmentSlot;
 import org.bukkit.craftbukkit.v1_20_R3.attribute.CraftAttribute;
 import org.bukkit.craftbukkit.v1_20_R3.attribute.CraftAttributeInstance;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,6 +34,8 @@ public class ItemStackMixin implements ItemStackAccess {
 	@Shadow
 	@javax.annotation.Nullable
 	private Item item;
+
+	@Shadow @Final private static Logger LOGGER;
 
 	// Item state loading logic
 	// TODO: this might be expensive
@@ -59,14 +63,17 @@ public class ItemStackMixin implements ItemStackAccess {
 		monumenta$stateManager.loadCustomState((ItemStack) (Object) this);
 	}
 
-	// Fail on set item
 	// TODO: this may cause crashes in some cases
 	@Inject(
 		method = "setItem",
-		at = @At("HEAD")
-	)
-	private void computeItemOnSetItem(Item item, CallbackInfo ci) {
-		throw new UnsupportedOperationException();
+		at = @At("HEAD"),
+        cancellable = true
+    )
+	private void deprecateSetItem(Item item, CallbackInfo ci) {
+        ci.cancel();
+		LOGGER.error("setItem() has been deprecated and should not be used, try cloning the stack instead.");
+		LOGGER.error("This call has been ignored, since setting items directly interferes with Custom Item API logic");
+		LOGGER.error("Please fix or nag the plugin developer to fix: ", new UnsupportedOperationException());
 	}
 
 	// Handling saving logic

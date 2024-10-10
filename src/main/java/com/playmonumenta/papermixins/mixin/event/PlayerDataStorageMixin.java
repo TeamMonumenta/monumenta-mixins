@@ -4,7 +4,6 @@ import com.destroystokyo.paper.event.player.PlayerDataLoadEvent;
 import com.destroystokyo.paper.event.player.PlayerDataSaveEvent;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.playmonumenta.papermixins.MonumentaMod;
 import java.io.File;
 import java.nio.file.Files;
 import net.minecraft.Util;
@@ -18,9 +17,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author Flowey
@@ -68,29 +68,36 @@ public class PlayerDataStorageMixin {
 		}
 	}
 
-	@ModifyVariable(
+	@Redirect(
 		method = "load",
-		at = @At(value = "LOAD", ordinal = 0),
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/io/File;exists()Z"
+		),
 		slice = @Slice(
 			from = @At(
 				value = "INVOKE",
 				target = "Ljava/util/logging/Logger;warning(Ljava/lang/String;)V"
 			),
 			to = @At(
-				value = "INVOKE:LAST",
-				target = "Ljava/io/File;exists()Z"
+				value = "INVOKE",
+				target = "Ljava/io/File;isFile()Z"
 			)
 		)
 	)
-	private File emitLoadEvent(File file, Player player, @Local LocalRef<CompoundTag> tag) {
+	private boolean emitLoadEvent(File file,
+								@Local(argsOnly = true) Player player,
+								@Local LocalRef<CompoundTag> tag,
+								@Local LocalRef<File> localFile) {
 		PlayerDataLoadEvent event = new PlayerDataLoadEvent((CraftPlayer) (player.getBukkitEntity()), file);
 		event.callEvent();
 
 		if (event.getData() != null) {
 			tag.set((CompoundTag) event.getData());
-			return MonumentaMod.FAKE_FILE;
+			return false; // cancel this if statement
 		}
 
-		return event.getPath();
+		localFile.set(event.getPath());
+		return event.getPath().exists();
 	}
 }

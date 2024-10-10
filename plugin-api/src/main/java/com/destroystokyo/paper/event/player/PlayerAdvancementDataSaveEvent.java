@@ -78,4 +78,14 @@ public class PlayerAdvancementDataSaveEvent extends PlayerEvent implements Cance
 	public HandlerList getHandlers() {
 		return handlers;
 	}
+
+	@Override
+	public String toString() {
+		return "PlayerAdvancementDataSaveEvent{" +
+			"player=" + player.getName() +
+			", cancel=" + cancel +
+			", path=" + path +
+			", jsonData='" + jsonData + '\'' +
+			'}';
+	}
 }

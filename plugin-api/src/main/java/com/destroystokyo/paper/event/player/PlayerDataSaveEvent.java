@@ -69,4 +69,14 @@ public class PlayerDataSaveEvent extends PlayerEvent implements Cancellable {
 	public HandlerList getHandlers() {
 		return handlers;
 	}
+
+	@Override
+	public String toString() {
+		return "PlayerDataSaveEvent{" +
+			"player=" + player.getName() +
+			", cancel=" + cancel +
+			", path=" + path +
+			", data=" + data +
+			'}';
+	}
 }

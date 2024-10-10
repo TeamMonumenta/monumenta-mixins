@@ -38,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PlayerAdvancementsMixin {
 	@Shadow
 	@Final
-	private static Gson GSON;
+	public static Gson GSON;
 	@Unique
 	private final ThreadLocal<File> monumenta$actualPlayerSavePath = new ThreadLocal<>();
 	@Shadow

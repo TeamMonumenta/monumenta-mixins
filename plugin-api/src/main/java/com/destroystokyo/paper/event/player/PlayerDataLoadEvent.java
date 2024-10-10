@@ -83,4 +83,13 @@ public class PlayerDataLoadEvent extends PlayerEvent {
 	public HandlerList getHandlers() {
 		return handlers;
 	}
+
+	@Override
+	public String toString() {
+		return "PlayerDataLoadEvent{" +
+			"data=" + data +
+			", path=" + path +
+			", player=" + player.getName() +
+			'}';
+	}
 }
