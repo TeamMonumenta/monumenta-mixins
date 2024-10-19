@@ -59,6 +59,7 @@
         "event.MinecraftServerMixin",
         "event.PlayerAdvancementsMixin",
         "event.PlayerDataStorageMixin",
+        "hook.EntityMixin",
         "itemapi.DedicatedServerMixin",
         "itemapi.ItemStackMixin",
         "itemapi.ReloadableServerResourcesMixin",

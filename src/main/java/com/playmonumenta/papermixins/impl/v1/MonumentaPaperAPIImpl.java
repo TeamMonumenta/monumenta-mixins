@@ -6,6 +6,8 @@ import com.playmonumenta.mixinapi.v1.item.CustomItemRegistry;
 import com.playmonumenta.mixinapi.v1.item.CustomItems;
 import com.playmonumenta.mixinapi.v1.resource.DataLoaderRegistry;
 import com.playmonumenta.papermixins.VersionInfo;
+import com.playmonumenta.papermixins.impl.paperapi.v1.HookAPIImpl;
+import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.semver4j.Semver;
 
@@ -50,5 +52,10 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 	@Override
 	public RedisSyncIO getRedisSyncIO() {
 		return RedisSyncIOImpl.getInstance();
+	}
+
+	@Override
+	public HookAPI getHookAPI() {
+		return HookAPIImpl.getInstance();
 	}
 }
