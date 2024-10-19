@@ -3,6 +3,7 @@ package com.playmonumenta.mixinapi.v1;
 import com.playmonumenta.mixinapi.v1.item.CustomItemRegistry;
 import com.playmonumenta.mixinapi.v1.item.CustomItems;
 import com.playmonumenta.mixinapi.v1.resource.DataLoaderRegistry;
+import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.ApiStatus;
 import org.semver4j.Semver;
@@ -31,4 +32,7 @@ public interface MonumentaPaperAPI {
 
 	@ApiStatus.Internal
 	DataFix getDataFix();
+
+	@ApiStatus.Internal
+	HookAPI getHookAPI();
 }
