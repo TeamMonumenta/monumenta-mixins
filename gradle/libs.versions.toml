@@ -1,44 +1,27 @@
 metadata.format.version = "1.1"
 
 [versions]
-fabricloader = "1.0.0"
+fabricloader = "1.0.1"
 mixin-extras = "0.4.0"
 tinyremapper = "0.10.3"
 
-paper-server = "userdev-1.20.4-R0.1-SNAPSHOT"
 paper-api = "1.20.4-R0.1-SNAPSHOT"
 nbtapi = "2.12.4"
 semver = "5.3.0"
-configurate = "4.0.0"
-
-maven-resolver = "1.9.19"
-disruptor = "3.4.2"
 
 gradle-spotless = "6.25.0"
 gradle-paperweight = "1.1.2"
 gradle-shadow = "8.1.1"
-
-dli = "0.2.1+build.8"
 
 [libraries]
 fabricloader = { module = "com.floweytf.fabricpaperloader:fabric-paper-loader", version.ref = "fabricloader" }
 mixin-extras = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixin-extras" }
 tinyremapper = { module = "net.fabricmc:tiny-remapper", version.ref = "tinyremapper" }
 
-paper-server = { module = "io.papermc.paper:paper-server", version.ref = "paper-server" }
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
 nbtapi = { module = "de.tr7zw:item-nbt-api", version.ref = "nbtapi" }
 semver = { module = "org.semver4j:semver4j", version.ref = "semver" }
 
-maven-resolver-connector-basic = { module = "org.apache.maven.resolver:maven-resolver-connector-basic", version.ref = "maven-resolver" }
-maven-resolver-transport-http = { module = "org.apache.maven.resolver:maven-resolver-transport-http", version.ref = "maven-resolver" }
-disruptor = { module = "com.lmax:disruptor", version.ref = "disruptor" }
-
 gradle-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "gradle-spotless" }
 gradle-paperweight = { module = "com.playmonumenta.paperweight-aw:paperweight-userdev", version.ref = "gradle-paperweight" }
 gradle-shadow = { module = "com.github.johnrengelman:shadow", version.ref = "gradle-shadow" }
-
-dli = { module = "net.fabricmc:dev-launch-injector", version.ref = "dli" }
-
-[bundles]
-paperrt = ["maven-resolver-connector-basic", "maven-resolver-transport-http", "disruptor"]
