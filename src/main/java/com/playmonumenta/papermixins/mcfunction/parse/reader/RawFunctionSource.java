@@ -75,7 +75,7 @@ public class RawFunctionSource {
 		}
 
 		if (line.startsWith("/")) {
-			context.reportErr(index, ERR_FORWARD_SLASH, line.substring(1));
+			context.reportErr(index, ERR_FORWARD_SLASH, line, line.substring(1));
 			return true;
 		}
 
