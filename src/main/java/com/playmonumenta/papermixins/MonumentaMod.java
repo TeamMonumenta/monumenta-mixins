@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +27,7 @@ public class MonumentaMod {
 	public static final ThreadLocal<Function<? super Double, Double>> IFRAME_FUNC = new ThreadLocal<>();
 	public static final ThreadLocal<Double> IFRAME_VALUE = new ThreadLocal<>();
 	private static final Path CONFIG_PATH = Path.of("config/monumenta-mixins.yml");
+	public static boolean HAS_PLUGINS = true;
 	private static final YamlConfigurationLoader CONFIG_LOADER = YamlConfigurationLoader.builder()
 		.source(() -> Files.newBufferedReader(CONFIG_PATH))
 		.sink(() -> Files.newBufferedWriter(CONFIG_PATH))

@@ -64,6 +64,8 @@
         "itemapi.ReloadableServerResourcesMixin",
         "misc.CraftServerMixin",
         "misc.DedicatedServerMixin",
+        "misc.MainMixin",
+        "misc.MainOptParserMixin",
         "misc.MinecraftServerMixin",
         "optimize.AdvancementTreeMixin",
         "optimize.ServerAdvancementManagerMixin"
