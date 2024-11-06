@@ -47,4 +47,5 @@ public class Config {
 	public Behavior behavior = new Behavior();
 	public MCFunction mcFunction = new MCFunction();
 	public boolean disableSymlinkValidation = false;
+	public boolean noPlugins = false;
 }
