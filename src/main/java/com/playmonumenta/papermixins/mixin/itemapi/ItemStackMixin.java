@@ -67,10 +67,10 @@ public class ItemStackMixin implements ItemStackAccess {
 	@Inject(
 		method = "setItem",
 		at = @At("HEAD"),
-        cancellable = true
-    )
+		cancellable = true
+	)
 	private void deprecateSetItem(Item item, CallbackInfo ci) {
-        ci.cancel();
+		ci.cancel();
 		LOGGER.error("setItem() has been deprecated and should not be used, try cloning the stack instead.");
 		LOGGER.error("This call has been ignored, since setting items directly interferes with Custom Item API logic");
 		LOGGER.error("Please fix or nag the plugin developer to fix: ", new UnsupportedOperationException());

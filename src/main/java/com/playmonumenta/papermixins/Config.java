@@ -28,6 +28,8 @@ public class Config {
 		public boolean addGolemAi = false;
 		public boolean fixShulkerNoAi = false;
 		public boolean crashOnScoreboardLoadFail = false;
+		public boolean forceUpgradeIncludeEntities = false;
+		public boolean forceUpgradeEagerBlockStates = false;
 
 		public int giantTrackingRange = 96;
 
