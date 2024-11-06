@@ -1,7 +1,6 @@
 package com.playmonumenta.papermixins.mixin.bugfix.upgrade;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.serialization.Codec;
 import com.playmonumenta.papermixins.MonumentaMod;
 import com.playmonumenta.papermixins.duck.WorldInfoAccess;
@@ -27,85 +26,85 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ThreadedWorldUpgrader.ConvertTask.class)
 public class ConvertTaskMixin {
-    @Unique
-    private static final Codec<List<BlockState>> MONUMENTA$PALETTE_CODEC = BlockState.CODEC.listOf();
+	@Unique
+	private static final Codec<List<BlockState>> MONUMENTA$PALETTE_CODEC = BlockState.CODEC.listOf();
 
-    @Shadow
-    @Final
-    private ThreadedWorldUpgrader.WorldInfo worldInfo;
+	@Shadow
+	@Final
+	private ThreadedWorldUpgrader.WorldInfo worldInfo;
 
-    @Inject(
-        method = "run",
-        at = @At(
-            value = "INVOKE",
-            target = "Ljava/util/Optional;orElse(Ljava/lang/Object;)Ljava/lang/Object;"
-        )
-    )
-    private void upgradeEntity(CallbackInfo ci, @Local ChunkPos pos) throws IOException {
-        if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
-            return;
-        }
+	@Inject(
+		method = "run",
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/util/Optional;orElse(Ljava/lang/Object;)Ljava/lang/Object;"
+		)
+	)
+	private void upgradeEntity(CallbackInfo ci, @Local ChunkPos pos) throws IOException {
+		if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+			return;
+		}
 
-        final var entityRegion = ((WorldInfoAccess) (Object) worldInfo).monumenta$getRegion();
+		final var entityRegion = ((WorldInfoAccess) (Object) worldInfo).monumenta$getRegion();
 
-        final var data = entityRegion.read(pos);
+		final var data = entityRegion.read(pos);
 
-        if (data == null) {
-            return;
-        }
+		if (data == null) {
+			return;
+		}
 
-        final var dataVersion = data.getInt("DataVersion");
-        final var targetVersion = SharedConstants.getCurrentVersion().getDataVersion().getVersion();
+		final var dataVersion = data.getInt("DataVersion");
+		final var targetVersion = SharedConstants.getCurrentVersion().getDataVersion().getVersion();
 
-        if (dataVersion >= targetVersion) {
-            return;
-        }
+		if (dataVersion >= targetVersion) {
+			return;
+		}
 
-        ThreadedWorldUpgrader.LOGGER.info("[monumenta] upgrading entity chunk @({}, {}) {} -> {}", pos.x, pos.z,
-            dataVersion, targetVersion);
-        final var update = DataFixTypes.ENTITY_CHUNK.update(DataFixers.getDataFixer(), data, dataVersion,
-            targetVersion);
-        update.putInt("DataVersion", targetVersion);
-        entityRegion.write(pos, update);
-    }
+		ThreadedWorldUpgrader.LOGGER.info("[monumenta] upgrading entity chunk @({}, {}) {} -> {}", pos.x, pos.z,
+			dataVersion, targetVersion);
+		final var update = DataFixTypes.ENTITY_CHUNK.update(DataFixers.getDataFixer(), data, dataVersion,
+			targetVersion);
+		update.putInt("DataVersion", targetVersion);
+		entityRegion.write(pos, update);
+	}
 
-    @ModifyVariable(
-        method = "run",
-        at = @At("STORE"),
-        name = "modified"
-    )
-    private boolean upgradeBlockStates(boolean modified, @Local CompoundTag chunkNBT) {
-        if (!MonumentaMod.getConfig().behavior.forceUpgradeEagerBlockStates) {
-            return modified;
-        }
+	@ModifyVariable(
+		method = "run",
+		at = @At("STORE"),
+		name = "modified"
+	)
+	private boolean upgradeBlockStates(boolean modified, @Local CompoundTag chunkNBT) {
+		if (!MonumentaMod.getConfig().behavior.forceUpgradeEagerBlockStates) {
+			return modified;
+		}
 
-        for (Tag tag : chunkNBT.getList("sections", CompoundTag.TAG_COMPOUND)) {
-            final var states = ((CompoundTag) tag).getCompound("block_states");
-            if (states == null) {
-                continue;
-            }
+		for (Tag tag : chunkNBT.getList("sections", CompoundTag.TAG_COMPOUND)) {
+			final var states = ((CompoundTag) tag).getCompound("block_states");
+			if (states == null) {
+				continue;
+			}
 
-            final var oldPalette = states.getList("palette", Tag.TAG_COMPOUND);
-            if (oldPalette == null) {
-                continue;
-            }
+			final var oldPalette = states.getList("palette", Tag.TAG_COMPOUND);
+			if (oldPalette == null) {
+				continue;
+			}
 
-            final var blockStateList = MONUMENTA$PALETTE_CODEC.decode(NbtOps.INSTANCE, oldPalette)
-                .getOrThrow(false, string -> {
-                })
-                .getFirst();
+			final var blockStateList = MONUMENTA$PALETTE_CODEC.decode(NbtOps.INSTANCE, oldPalette)
+				.getOrThrow(false, string -> {
+				})
+				.getFirst();
 
-            final var newPalette = BlockState.CODEC.listOf().encodeStart(NbtOps.INSTANCE, blockStateList)
-                .getOrThrow(false, string -> {
-                });
+			final var newPalette = BlockState.CODEC.listOf().encodeStart(NbtOps.INSTANCE, blockStateList)
+				.getOrThrow(false, string -> {
+				});
 
-            if (!newPalette.equals(oldPalette)) {
-                modified |= true;
-            }
+			if (!newPalette.equals(oldPalette)) {
+				modified |= true;
+			}
 
-            states.put("palette", newPalette);
-        }
+			states.put("palette", newPalette);
+		}
 
-        return modified;
-    }
+		return modified;
+	}
 }

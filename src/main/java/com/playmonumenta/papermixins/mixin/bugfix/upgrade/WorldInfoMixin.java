@@ -8,16 +8,16 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(ThreadedWorldUpgrader.WorldInfo.class)
 public class WorldInfoMixin implements WorldInfoAccess {
-    @Unique
-    private ServerLevel.EntityRegionFileStorage monumenta$entityRegionFileStorage;
+	@Unique
+	private ServerLevel.EntityRegionFileStorage monumenta$entityRegionFileStorage;
 
-    @Override
-    public ServerLevel.EntityRegionFileStorage monumenta$getRegion() {
-        return monumenta$entityRegionFileStorage;
-    }
+	@Override
+	public ServerLevel.EntityRegionFileStorage monumenta$getRegion() {
+		return monumenta$entityRegionFileStorage;
+	}
 
-    @Override
-    public void monumenta$setRegion(ServerLevel.EntityRegionFileStorage region) {
-        monumenta$entityRegionFileStorage = region;
-    }
+	@Override
+	public void monumenta$setRegion(ServerLevel.EntityRegionFileStorage region) {
+		monumenta$entityRegionFileStorage = region;
+	}
 }

@@ -21,74 +21,74 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ThreadedWorldUpgrader.class)
 public class ThreadedWorldUpgraderMixin {
-    @WrapOperation(
-        method = "convert",
-        at = @At(
-            value = "INVOKE",
-            target = "Ljava/io/File;listFiles(Ljava/io/FilenameFilter;)[Ljava/io/File;"
-        )
-    )
-    private File[] addEntityOnlyChunksToRegionList(
-        File instance, FilenameFilter filter, Operation<File[]> original, @Local(ordinal = 0) File worldFolder,
-        @Share("chunkPosSet") LocalRef<Set<ChunkPos>> chunkPosSet
-    ) {
-        if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
-            return original.call(instance, filter);
-        }
+	@WrapOperation(
+		method = "convert",
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/io/File;listFiles(Ljava/io/FilenameFilter;)[Ljava/io/File;"
+		)
+	)
+	private File[] addEntityOnlyChunksToRegionList(
+		File instance, FilenameFilter filter, Operation<File[]> original, @Local(ordinal = 0) File worldFolder,
+		@Share("chunkPosSet") LocalRef<Set<ChunkPos>> chunkPosSet
+	) {
+		if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+			return original.call(instance, filter);
+		}
 
-        chunkPosSet.set(new HashSet<>());
+		chunkPosSet.set(new HashSet<>());
 
-        return ObjectArrays.concat(
-            original.call(instance, filter),
-            original.call(new File(worldFolder, "entities"), filter),
-            File.class
-        );
-    }
+		return ObjectArrays.concat(
+			original.call(instance, filter),
+			original.call(new File(worldFolder, "entities"), filter),
+			File.class
+		);
+	}
 
-    @ModifyExpressionValue(
-        method = "convert",
-        at = @At(
-            value = "NEW",
-            target = "(Ljava/util/function/Supplier;Lnet/minecraft/world/level/chunk/storage/ChunkStorage;" +
-                "ZLnet/minecraft/resources/ResourceKey;Ljava/util/Optional;)" +
-                "Lio/papermc/paper/world/ThreadedWorldUpgrader$WorldInfo;"
-        )
-    )
-    private ThreadedWorldUpgrader.WorldInfo addEntityChunkLoader(ThreadedWorldUpgrader.WorldInfo original,
-                                                                 @Local(ordinal = 0) File worldFolder) {
-        if (MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
-            final var path = worldFolder.toPath().resolve("entities");
+	@ModifyExpressionValue(
+		method = "convert",
+		at = @At(
+			value = "NEW",
+			target = "(Ljava/util/function/Supplier;Lnet/minecraft/world/level/chunk/storage/ChunkStorage;" +
+				"ZLnet/minecraft/resources/ResourceKey;Ljava/util/Optional;)" +
+				"Lio/papermc/paper/world/ThreadedWorldUpgrader$WorldInfo;"
+		)
+	)
+	private ThreadedWorldUpgrader.WorldInfo addEntityChunkLoader(ThreadedWorldUpgrader.WorldInfo original,
+																@Local(ordinal = 0) File worldFolder) {
+		if (MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+			final var path = worldFolder.toPath().resolve("entities");
 
-            ThreadedWorldUpgrader.LOGGER.info("[monumenta] entity region is {}", path);
+			ThreadedWorldUpgrader.LOGGER.info("[monumenta] entity region is {}", path);
 
-            ((WorldInfoAccess) (Object) original).monumenta$setRegion(new ServerLevel.EntityRegionFileStorage(
-                worldFolder.toPath().resolve("entities"),
-                true
-            ));
-        }
+			((WorldInfoAccess) (Object) original).monumenta$setRegion(new ServerLevel.EntityRegionFileStorage(
+				worldFolder.toPath().resolve("entities"),
+				true
+			));
+		}
 
-        return original;
-    }
+		return original;
+	}
 
-    @ModifyExpressionValue(
-        method = "convert",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/level/chunk/storage/RegionFileStorage;getRegionFileCoordinates" +
-                "(Ljava/nio/file/Path;)Lnet/minecraft/world/level/ChunkPos;"
-        )
-    )
-    private ChunkPos deduplicateChunks(ChunkPos chunkPos, @Share("chunkPosSet") LocalRef<Set<ChunkPos>> chunkPosSet) {
-        if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
-            return chunkPos;
-        }
+	@ModifyExpressionValue(
+		method = "convert",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/level/chunk/storage/RegionFileStorage;getRegionFileCoordinates" +
+				"(Ljava/nio/file/Path;)Lnet/minecraft/world/level/ChunkPos;"
+		)
+	)
+	private ChunkPos deduplicateChunks(ChunkPos chunkPos, @Share("chunkPosSet") LocalRef<Set<ChunkPos>> chunkPosSet) {
+		if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+			return chunkPos;
+		}
 
-        final var set = chunkPosSet.get();
+		final var set = chunkPosSet.get();
 
-        if (set.contains(chunkPos)) {
-            return null;
-        }
-        set.add(chunkPos);
-        return chunkPos;
-    }
+		if (set.contains(chunkPos)) {
+			return null;
+		}
+		set.add(chunkPos);
+		return chunkPos;
+	}
 }
