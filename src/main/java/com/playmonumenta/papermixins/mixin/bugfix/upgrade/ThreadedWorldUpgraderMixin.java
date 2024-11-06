@@ -28,10 +28,14 @@ public class ThreadedWorldUpgraderMixin {
             target = "Ljava/io/File;listFiles(Ljava/io/FilenameFilter;)[Ljava/io/File;"
         )
     )
-    private File[] bypassExpensiveCalculationIfNecessary(
+    private File[] addEntityOnlyChunksToRegionList(
         File instance, FilenameFilter filter, Operation<File[]> original, @Local(ordinal = 0) File worldFolder,
         @Share("chunkPosSet") LocalRef<Set<ChunkPos>> chunkPosSet
     ) {
+        if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+            return original.call(instance, filter);
+        }
+
         chunkPosSet.set(new HashSet<>());
 
         return ObjectArrays.concat(
@@ -48,12 +52,11 @@ public class ThreadedWorldUpgraderMixin {
             target = "(Ljava/util/function/Supplier;Lnet/minecraft/world/level/chunk/storage/ChunkStorage;" +
                 "ZLnet/minecraft/resources/ResourceKey;Ljava/util/Optional;)" +
                 "Lio/papermc/paper/world/ThreadedWorldUpgrader$WorldInfo;"
-        ),
-        require = 1
+        )
     )
     private ThreadedWorldUpgrader.WorldInfo addEntityChunkLoader(ThreadedWorldUpgrader.WorldInfo original,
                                                                  @Local(ordinal = 0) File worldFolder) {
-        if (MonumentaMod.getConfig().behavior.fixWorldUpgrader) {
+        if (MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
             final var path = worldFolder.toPath().resolve("entities");
 
             ThreadedWorldUpgrader.LOGGER.info("[monumenta] entity region is {}", path);
@@ -76,6 +79,10 @@ public class ThreadedWorldUpgraderMixin {
         )
     )
     private ChunkPos deduplicateChunks(ChunkPos chunkPos, @Share("chunkPosSet") LocalRef<Set<ChunkPos>> chunkPosSet) {
+        if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+            return chunkPos;
+        }
+
         final var set = chunkPosSet.get();
 
         if (set.contains(chunkPos)) {
