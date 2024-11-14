@@ -28,4 +28,7 @@ public interface MonumentaPaperAPI {
 
 	@ApiStatus.Internal
 	RedisSyncIO getRedisSyncIO();
+
+	@ApiStatus.Internal
+	DataFix getDataFix();
 }
