@@ -1,6 +1,6 @@
 package com.playmonumenta.mixinapi.v1;
 
-import de.tr7zw.changeme.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTContainer;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,7 +49,7 @@ public interface DataFix {
 	 *
 	 * @return The API.
 	 * @author Floweynt
-	 * @since 1.0.2
+	 * @since 1.0.3
 	 */
 	@NotNull
 	static DataFix getInstance() {
@@ -57,4 +57,6 @@ public interface DataFix {
 	}
 
 	NBTContainer dataFix(NBTContainer input, Types type, int currentVersion, int targetVersion);
+
+	int currentDataVersion();
 }

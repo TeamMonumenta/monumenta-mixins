@@ -1,6 +1,6 @@
 package com.playmonumenta.mixinapi.v1.item;
 
-import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.meta.BookMeta;

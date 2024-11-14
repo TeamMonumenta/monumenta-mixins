@@ -4,8 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.DSL;
 import com.mojang.serialization.Dynamic;
 import com.playmonumenta.mixinapi.v1.DataFix;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTContainer;
 import java.util.Map;
+import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.datafix.DataFixers;
@@ -66,5 +67,10 @@ public class DataFixImpl implements DataFix {
 		);
 
 		return new NBTContainer(res.getValue());
+	}
+
+	@Override
+	public int currentDataVersion() {
+		return SharedConstants.getCurrentVersion().getDataVersion().getVersion();
 	}
 }

@@ -20,6 +20,7 @@ tinyremapper = { module = "net.fabricmc:tiny-remapper", version.ref = "tinyremap
 
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
 nbtapi = { module = "de.tr7zw:item-nbt-api", version.ref = "nbtapi" }
+nbtapi-plugin = { module = "de.tr7zw:item-nbt-api-plugin", version.ref = "nbtapi" }
 semver = { module = "org.semver4j:semver4j", version.ref = "semver" }
 
 gradle-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "gradle-spotless" }

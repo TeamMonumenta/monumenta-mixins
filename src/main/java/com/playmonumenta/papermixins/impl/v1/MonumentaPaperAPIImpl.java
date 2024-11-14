@@ -55,6 +55,6 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 
 	@Override
 	public DataFix getDataFix() {
-		return DataFix.getInstance();
+		return DataFixImpl.getInstance();
 	}
 }

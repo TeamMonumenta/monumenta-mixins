@@ -6,7 +6,7 @@ import com.playmonumenta.papermixins.util.nbt.CachedTagApplicator;
 import com.playmonumenta.papermixins.util.nbt.DirectTagApplicator;
 import com.playmonumenta.papermixins.util.nbt.ListTagBuilder;
 import com.playmonumenta.papermixins.util.nbt.TagApplicator;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTContainer;
 import javax.annotation.Nullable;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
