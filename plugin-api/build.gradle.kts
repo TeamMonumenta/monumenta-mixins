@@ -7,6 +7,6 @@ version = rootProject.version
 group = "com.playmonumenta.papermixins"
 dependencies {
 	compileOnly(libs.paper.api)
-	api(libs.nbtapi)
+	compileOnly(libs.nbtapi.plugin)
 	api(libs.semver)
 }

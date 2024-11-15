@@ -2,8 +2,8 @@ package com.playmonumenta.papermixins.impl.v1.item;
 
 import com.google.common.base.Preconditions;
 import com.playmonumenta.mixinapi.v1.item.ExtraItemData;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
-import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import java.util.ArrayList;
 import java.util.List;
 import net.kyori.adventure.text.Component;
