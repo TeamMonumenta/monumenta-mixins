@@ -140,10 +140,16 @@ public class PlayerAdvancementsMixin {
 		return Files.newBufferedReader(path, cs);
 	}
 
-	// Fix logging, this isn't really idea
+	// Fix logging, this isn't really ideal
 	// I'd like to avoid doing this in the future
-	@ModifyArg(method = "lambda$applyFrom$0", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn" +
-		"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), require = 1, index = 2)
+	@ModifyArg(
+		method = "lambda$applyFrom$0",
+		at = @At(
+			value = "INVOKE",
+			target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"
+		),
+		index = 2
+	)
 	private Object modifyLoadLoggedPath(Object arg) {
 		return monumenta$actualPlayerSavePath;
 	}

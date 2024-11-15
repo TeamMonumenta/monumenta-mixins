@@ -31,3 +31,8 @@ accessible method net/minecraft/world/scores/PlayerScores listRawScores ()Ljava/
 accessible method net/minecraft/world/entity/LivingEntity getJumpPower ()F
 accessible method net/minecraft/server/players/PlayerList save (Lnet/minecraft/server/level/ServerPlayer;)V
 accessible field net/minecraft/server/PlayerAdvancements GSON Lcom/google/gson/Gson;
+accessible class net/minecraft/server/level/ServerLevel$EntityRegionFileStorage
+accessible class io/papermc/paper/world/ThreadedWorldUpgrader$ConvertTask
+accessible class io/papermc/paper/world/ThreadedWorldUpgrader$WorldInfo
+accessible field io/papermc/paper/world/ThreadedWorldUpgrader LOGGER Lorg/apache/logging/log4j/Logger;
+accessible method net/minecraft/server/level/ServerLevel$EntityRegionFileStorage write (Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/nbt/CompoundTag;)V

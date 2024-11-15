@@ -26,6 +26,7 @@ public class MonumentaMod {
 	public static final ThreadLocal<Function<? super Double, Double>> IFRAME_FUNC = new ThreadLocal<>();
 	public static final ThreadLocal<Double> IFRAME_VALUE = new ThreadLocal<>();
 	private static final Path CONFIG_PATH = Path.of("config/monumenta-mixins.yml");
+	public static boolean HAS_PLUGINS = true;
 	private static final YamlConfigurationLoader CONFIG_LOADER = YamlConfigurationLoader.builder()
 		.source(() -> Files.newBufferedReader(CONFIG_PATH))
 		.sink(() -> Files.newBufferedWriter(CONFIG_PATH))
