@@ -68,6 +68,8 @@
         "misc.CraftServerMixin",
         "misc.DedicatedServerMixin",
         "misc.MinecraftServerMixin",
+        "misc.PlayerScoresMixin",
+        "misc.ScoreboardMixin",
         "optimize.AdvancementTreeMixin",
         "optimize.ServerAdvancementManagerMixin"
     ]
