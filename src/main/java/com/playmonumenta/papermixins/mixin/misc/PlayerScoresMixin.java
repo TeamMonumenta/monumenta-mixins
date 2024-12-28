@@ -59,4 +59,3 @@ public class PlayerScoresMixin {
         });
     }
 }
-0
