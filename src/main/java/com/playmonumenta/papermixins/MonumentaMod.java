@@ -1,6 +1,5 @@
 package com.playmonumenta.papermixins;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,20 +12,10 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 public class MonumentaMod {
 	public static final Logger LOGGER = getLogger("");
 
-	// we create this dummy file object that never exists
-	// this tricks MC into not reading from file
-	public static final File FAKE_FILE = new File("") {
-		@Override
-		public boolean exists() {
-			return false;
-		}
-	};
-
 	// State management
 	public static final ThreadLocal<Function<? super Double, Double>> IFRAME_FUNC = new ThreadLocal<>();
 	public static final ThreadLocal<Double> IFRAME_VALUE = new ThreadLocal<>();
 	private static final Path CONFIG_PATH = Path.of("config/monumenta-mixins.yml");
-	public static boolean HAS_PLUGINS = true;
 	private static final YamlConfigurationLoader CONFIG_LOADER = YamlConfigurationLoader.builder()
 		.source(() -> Files.newBufferedReader(CONFIG_PATH))
 		.sink(() -> Files.newBufferedWriter(CONFIG_PATH))

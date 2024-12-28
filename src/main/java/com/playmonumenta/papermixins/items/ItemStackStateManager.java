@@ -54,13 +54,19 @@ public class ItemStackStateManager {
 	}
 
 	public void loadCustomState(ItemStack stack) {
-		final var rootTag = stack.getTagElement(ROOT_TAG_KEY);
+		final var customItemRootTag = stack.getTagElement(ROOT_TAG_KEY);
+
+		// datafix item stacks with a missing
+		if(customItemRootTag != null && customItemRootTag.isEmpty()) {
+			// make sure this doesn't exist
+			stack.getOrCreateTag().remove(ROOT_TAG_KEY);
+		}
 
 		// Vanilla item, check to see if there is a default
-		if (rootTag == null || !rootTag.contains(KEY_ID)) {
+		if (customItemRootTag == null || !customItemRootTag.contains(KEY_ID)) {
 			customState = CustomItemRegistryImpl.getInstance().create(stack.getItem());
 		} else {
-			final var id = NamespacedKey.fromString(rootTag.getString(KEY_ID));
+			final var id = NamespacedKey.fromString(customItemRootTag.getString(KEY_ID));
 
 			if (id == null) {
 				throw new IllegalStateException("Failed to parse id");
@@ -72,8 +78,8 @@ public class ItemStackStateManager {
 				throw new IllegalStateException("Unknown variantSet with id " + id);
 			}
 
-			final var type = rootTag.contains(KEY_VARIANT) ?
-				variants.variants().get(rootTag.getString(KEY_VARIANT)) :
+			final var type = customItemRootTag.contains(KEY_VARIANT) ?
+				variants.variants().get(customItemRootTag.getString(KEY_VARIANT)) :
 				variants.defaultVariant();
 
 			if (type == null) {

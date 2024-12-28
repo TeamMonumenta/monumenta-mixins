@@ -35,6 +35,8 @@ public class Config {
 
 		// NOTE: this will be removed when we update to a version with data-driven enchants
 		public int curseOfVanishingMaxLevel = 1;
+
+		public int packetLengthVarIntSize = 3;
 	}
 
 	@ConfigSerializable
