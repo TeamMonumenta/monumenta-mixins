@@ -41,6 +41,7 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 		// Since logic is inverted, we need to use !=
 		// Also we should check for difficulty
 		// TODO: there is probably a clever way of doing this without getting cancer
+		// TODO: look at @Expression from MixinExtras (currently beta)
 		return world.getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL;
 	}
 
@@ -63,9 +64,14 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 	)
 	private int setFlagIfCancelled(
 		int constant,
-		@Local PreSpawnerSpawnEvent ev
+		@Local PreSpawnerSpawnEvent ev,
+		@Local boolean flag
 	) {
-		return ev.shouldAbortSpawn() ? 1 : 0;
+		if(ev.shouldAbortSpawn()) {
+			return 1; // true
+		}
+
+		return flag ? 1 : 0;
 	}
 
 	@ModifyExpressionValue(
