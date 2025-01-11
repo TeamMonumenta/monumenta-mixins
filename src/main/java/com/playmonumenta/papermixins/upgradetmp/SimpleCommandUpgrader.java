@@ -4,6 +4,7 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.context.CommandContextBuilder;
 import com.mojang.brigadier.context.ParsedCommandNode;
 import it.unimi.dsi.fastutil.Pair;
+import java.nio.file.Path;
 import java.util.List;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -13,6 +14,7 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.spongepowered.asm.util.Files;
 
 // devtest tellraw @s "test"
 public class SimpleCommandUpgrader {
