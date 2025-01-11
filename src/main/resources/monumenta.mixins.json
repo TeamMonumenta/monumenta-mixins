@@ -72,6 +72,8 @@
         "misc.PlayerScoresMixin",
         "misc.ScoreboardMixin",
         "optimize.AdvancementTreeMixin",
-        "optimize.ServerAdvancementManagerMixin"
+        "optimize.ServerAdvancementManagerMixin",
+        "updatetmp.EntitySelectorParserMixin",
+        "updatetmp.TellRawCommandMixin"
     ]
 }

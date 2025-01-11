@@ -1,7 +1,7 @@
 metadata.format.version = "1.1"
 
 [versions]
-fabricloader = "1.0.1"
+fabricloader = "1.0.2"
 mixin-extras = "0.4.0"
 tinyremapper = "0.10.3"
 

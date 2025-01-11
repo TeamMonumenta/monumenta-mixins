@@ -55,6 +55,11 @@ public class CompoundTagBuilder implements Supplier<Tag> {
 		return this;
 	}
 
+	public CompoundTagBuilder put(String key, boolean value) {
+		tag.putBoolean(key, value);
+		return this;
+	}
+
 	@Override
 	public CompoundTag get() {
 		return tag;

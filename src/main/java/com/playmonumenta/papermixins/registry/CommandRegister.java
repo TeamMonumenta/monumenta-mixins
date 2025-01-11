@@ -10,8 +10,14 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
 import com.playmonumenta.papermixins.items.CustomItemAPIMain;
+import com.playmonumenta.papermixins.upgradetmp.CommandFunctionDumpUpgrader;
+import com.playmonumenta.papermixins.upgradetmp.CommandJsonDumpUpgrader;
+import com.playmonumenta.papermixins.upgradetmp.CommandSQJsonDumpUpgrader;
+import com.playmonumenta.papermixins.upgradetmp.SimpleCommandUpgrader;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.CompoundTagArgument;
@@ -95,5 +101,27 @@ public class CommandRegister {
 
 	public static void register(CommandDispatcher<CommandSourceStack> sender) {
 		sender.register(giveCustomCommand());
+		sender.register(lit("devtest", arg("cmd", StringArgumentType.greedyString(),  c -> {
+			System.out.println(SimpleCommandUpgrader.updateSingle(StringArgumentType.getString(c, "cmd")));
+			return 0;
+		})));
+		sender.register(lit("updatecommandjson", c -> {
+			CommandJsonDumpUpgrader.doUpdate();
+			return 0;
+		}));
+		sender.register(lit("updatecommandmeow", c -> {
+			CommandFunctionDumpUpgrader.doUpdate();
+			return 0;
+		}));
+		sender.register(lit("devtest2", c -> {
+			for (ChatFormatting value : ChatFormatting.values()) {
+				c.getSource().getBukkitSender().sendMessage(MiniMessage.miniMessage().deserialize("<%1$s>%1$s".formatted(value.getName().toLowerCase())));
+			}
+			return 0;
+		}));
+		sender.register(lit("updatecommandsqjson", c -> {
+			CommandSQJsonDumpUpgrader.doUpdate();
+			return 0;
+		}));
 	}
 }
