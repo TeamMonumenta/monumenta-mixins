@@ -10,6 +10,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
 import com.playmonumenta.papermixins.items.CustomItemAPIMain;
+import com.playmonumenta.papermixins.upgradetmp.CommandJsonDumpUpgrader;
+import com.playmonumenta.papermixins.upgradetmp.SimpleCommandUpgrader;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import net.minecraft.commands.CommandSourceStack;
@@ -95,5 +97,13 @@ public class CommandRegister {
 
 	public static void register(CommandDispatcher<CommandSourceStack> sender) {
 		sender.register(giveCustomCommand());
+		sender.register(lit("devtest", arg("cmd", StringArgumentType.greedyString(),  c -> {
+			SimpleCommandUpgrader.updateSingle(StringArgumentType.getString(c, "cmd"));
+			return 0;
+		})));
+		sender.register(lit("updatecommandjson", c -> {
+			CommandJsonDumpUpgrader.doUpdate();
+			return 0;
+		}));
 	}
 }
