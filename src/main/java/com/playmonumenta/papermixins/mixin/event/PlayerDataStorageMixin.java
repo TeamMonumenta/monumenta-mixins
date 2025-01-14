@@ -61,7 +61,6 @@ public class PlayerDataStorageMixin {
 			var file = Files.createTempFile(this.playerDir.toPath(), player.getStringUUID() + "-", ".dat");
 			NbtIo.writeCompressed((CompoundTag) event.getData(), file);
 			Util.safeReplaceFile(event.getPath().toPath(), file, playerDataOld.toPath());
-			ci.cancel();
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
