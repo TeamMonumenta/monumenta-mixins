@@ -1,6 +1,8 @@
 package com.playmonumenta.papermixins.registry;
 
-import static com.playmonumenta.papermixins.util.CommandUtil.*;
+import static com.playmonumenta.papermixins.util.CommandUtil.arg;
+import static com.playmonumenta.papermixins.util.CommandUtil.lit;
+import static com.playmonumenta.papermixins.util.CommandUtil.mcArg;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -10,6 +12,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
 import com.playmonumenta.papermixins.items.CustomItemAPIMain;
+import com.playmonumenta.papermixins.registry.commands.TellMiniCommand;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import net.minecraft.commands.CommandSourceStack;
@@ -93,7 +96,8 @@ public class CommandRegister {
 		);
 	}
 
-	public static void register(CommandDispatcher<CommandSourceStack> sender) {
-		sender.register(giveCustomCommand());
+	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+		// sender.register(giveCustomCommand());
+		TellMiniCommand.register(dispatcher);
 	}
 }
