@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 public class CommandSQJsonDumpUpgrader {
 	private static final Logger LOGGER = LoggerFactory.getLogger("CommandSQJsonDumpUpgrader");
-	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().serializeNulls().create();
 
 	private static void process(Path path) throws IOException {
 		JsonElement data;

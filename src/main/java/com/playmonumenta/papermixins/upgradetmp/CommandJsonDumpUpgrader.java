@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class CommandJsonDumpUpgrader {
-	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().serializeNulls().create();
 
 	private static void process(Path path) throws IOException {
 		JsonElement data;
