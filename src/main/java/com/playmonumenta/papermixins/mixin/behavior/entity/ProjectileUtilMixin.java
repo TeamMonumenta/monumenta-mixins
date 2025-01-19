@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -26,7 +26,7 @@ public class ProjectileUtilMixin {
 	)
 	private static void returnMainhandIfBow(LivingEntity entity, Item item,
 											CallbackInfoReturnable<InteractionHand> cir) {
-		if (Items.BOW == item && MonumentaMod.getConfig().behavior.requireMobBowMainhand) {
+		if (Items.BOW == item && ConfigManager.getConfig().behavior.requireMobBowMainhand) {
 			cir.setReturnValue(InteractionHand.MAIN_HAND);
 			cir.cancel();
 		}

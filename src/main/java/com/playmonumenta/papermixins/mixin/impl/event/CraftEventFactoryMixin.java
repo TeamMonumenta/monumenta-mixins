@@ -1,8 +1,8 @@
-package com.playmonumenta.papermixins.mixin.event;
+package com.playmonumenta.papermixins.mixin.impl.event;
 
 import com.google.common.base.Function;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.MixinState;
 import com.playmonumenta.papermixins.impl.v1.MonumentaPaperAPIImpl;
 import java.util.Map;
 import net.minecraft.world.damagesource.DamageSource;
@@ -41,7 +41,7 @@ public class CraftEventFactoryMixin {
 		@Local(name = "modifierFunctions") Map<EntityDamageEvent.DamageModifier, Function<? super Double, Double>> modifierFunctions
 	) {
 		final var api = MonumentaPaperAPIImpl.getInstance();
-		modifiers.put(api.getIframes(), MonumentaMod.IFRAME_VALUE.get());
-		modifierFunctions.put(api.getIframes(), (Function<? super Double, Double>) MonumentaMod.IFRAME_FUNC.get());
+		modifiers.put(api.getIframes(), MixinState.IFRAME_VALUE.get());
+		modifierFunctions.put(api.getIframes(), (Function<? super Double, Double>) MixinState.IFRAME_FUNC.get());
 	}
 }

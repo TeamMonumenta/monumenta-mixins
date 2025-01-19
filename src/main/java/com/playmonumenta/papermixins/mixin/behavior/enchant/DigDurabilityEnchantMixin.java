@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.enchant;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.DigDurabilityEnchantment;
@@ -29,7 +29,7 @@ public class DigDurabilityEnchantMixin {
 	private static void shouldIgnoreDurabilityDrop(ItemStack item, int level, RandomSource random,
 												CallbackInfoReturnable<Boolean> cir) {
 		// I can't inject into the instanceof check...
-		if (MonumentaMod.getConfig().behavior.normalizeArmorUnbreaking) {
+		if (ConfigManager.getConfig().behavior.normalizeArmorUnbreaking) {
 			cir.setReturnValue(random.nextInt(level + 1) > 0);
 		}
 	}

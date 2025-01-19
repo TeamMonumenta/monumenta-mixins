@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.block;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.ConcretePowderBlock;
@@ -29,7 +29,7 @@ public class ConcretePowderBlockMixin {
 	)
 	private static void shouldSolidify(BlockGetter world, BlockPos pos, BlockState state,
 									CallbackInfoReturnable<Boolean> cir) {
-		if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
+		if (ConfigManager.getConfig().behavior.disableConcreteHardening) {
 			cir.setReturnValue(false);
 		}
 	}
@@ -44,7 +44,7 @@ public class ConcretePowderBlockMixin {
 		cancellable = true
 	)
 	private static void touchesLiquid(BlockGetter world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-		if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
+		if (ConfigManager.getConfig().behavior.disableConcreteHardening) {
 			cir.setReturnValue(false);
 		}
 	}
@@ -59,7 +59,7 @@ public class ConcretePowderBlockMixin {
 		cancellable = true
 	)
 	private static void canSolidify(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-		if (MonumentaMod.getConfig().behavior.disableConcreteHardening) {
+		if (ConfigManager.getConfig().behavior.disableConcreteHardening) {
 			cir.setReturnValue(false);
 		}
 	}

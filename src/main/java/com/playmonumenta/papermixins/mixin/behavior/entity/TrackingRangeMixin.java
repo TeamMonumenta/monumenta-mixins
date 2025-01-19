@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Giant;
 import org.spigotmc.TrackingRange;
@@ -22,7 +22,7 @@ public class TrackingRangeMixin {
 	)
 	private static int increaseGiantTrackingRange(int original, Entity entity) {
 		if (entity instanceof Giant) {
-			return MonumentaMod.getConfig().behavior.giantTrackingRange;
+			return ConfigManager.getConfig().behavior.giantTrackingRange;
 		}
 
 		return original;

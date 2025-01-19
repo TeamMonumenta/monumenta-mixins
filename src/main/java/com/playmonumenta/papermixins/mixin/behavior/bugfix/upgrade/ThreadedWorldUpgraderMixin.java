@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.bugfix.upgrade;
+package com.playmonumenta.papermixins.mixin.behavior.bugfix.upgrade;
 
 import com.google.common.collect.ObjectArrays;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -7,8 +7,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import com.playmonumenta.papermixins.duck.WorldInfoAccess;
+import com.playmonumenta.papermixins.util.Util;
 import io.papermc.paper.world.ThreadedWorldUpgrader;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -32,7 +33,7 @@ public class ThreadedWorldUpgraderMixin {
 		File instance, FilenameFilter filter, Operation<File[]> original, @Local(ordinal = 0) File worldFolder,
 		@Share("chunkPosSet") LocalRef<Set<ChunkPos>> chunkPosSet
 	) {
-		if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+		if (!ConfigManager.getConfig().behavior.forceUpgradeIncludeEntities) {
 			return original.call(instance, filter);
 		}
 
@@ -56,12 +57,12 @@ public class ThreadedWorldUpgraderMixin {
 	)
 	private ThreadedWorldUpgrader.WorldInfo addEntityChunkLoader(ThreadedWorldUpgrader.WorldInfo original,
 																@Local(ordinal = 0) File worldFolder) {
-		if (MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+		if (ConfigManager.getConfig().behavior.forceUpgradeIncludeEntities) {
 			final var path = worldFolder.toPath().resolve("entities");
 
 			ThreadedWorldUpgrader.LOGGER.info("[monumenta] entity region is {}", path);
 
-			((WorldInfoAccess) (Object) original).monumenta$setRegion(new ServerLevel.EntityRegionFileStorage(
+			Util.<WorldInfoAccess>c(this).monumenta$setRegion(new ServerLevel.EntityRegionFileStorage(
 				worldFolder.toPath().resolve("entities"),
 				true
 			));
@@ -79,7 +80,7 @@ public class ThreadedWorldUpgraderMixin {
 		)
 	)
 	private ChunkPos deduplicateChunks(ChunkPos chunkPos, @Share("chunkPosSet") LocalRef<Set<ChunkPos>> chunkPosSet) {
-		if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+		if (!ConfigManager.getConfig().behavior.forceUpgradeIncludeEntities) {
 			return chunkPos;
 		}
 

@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.misc;
+package com.playmonumenta.papermixins.mixin.misc.branding;
 
 import com.playmonumenta.papermixins.VersionInfo;
 import net.minecraft.server.MinecraftServer;

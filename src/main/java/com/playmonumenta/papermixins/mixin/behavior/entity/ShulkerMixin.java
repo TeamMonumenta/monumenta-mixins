@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.monster.Shulker;
@@ -33,7 +33,7 @@ public abstract class ShulkerMixin extends AbstractGolem {
 		cancellable = true
 	)
 	private void cancelSetPeekAmountIfNoAI(int peekAmount, CallbackInfo ci) {
-		if (MonumentaMod.getConfig().behavior.fixShulkerNoAi && isNoAi()) {
+		if (ConfigManager.getConfig().behavior.fixShulkerNoAi && isNoAi()) {
 			ci.cancel();
 		}
 	}
@@ -46,6 +46,6 @@ public abstract class ShulkerMixin extends AbstractGolem {
 		)
 	)
 	private boolean allowArrowsOnClosed(boolean original) {
-		return MonumentaMod.getConfig().behavior.closedShulkerHurtByArrows ? false : isClosed();
+		return ConfigManager.getConfig().behavior.closedShulkerHurtByArrows ? false : isClosed();
 	}
 }

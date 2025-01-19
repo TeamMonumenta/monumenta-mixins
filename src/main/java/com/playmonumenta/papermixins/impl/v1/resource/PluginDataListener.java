@@ -12,9 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import org.apache.logging.log4j.Logger;
 import org.bukkit.craftbukkit.v1_20_R3.util.CraftNamespacedKey;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 public class PluginDataListener extends SimplePreparableReloadListener<Void> {
 	public static final Logger LOGGER = MonumentaMod.getLogger("Datapack");

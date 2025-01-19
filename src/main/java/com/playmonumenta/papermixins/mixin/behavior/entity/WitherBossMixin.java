@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -34,7 +34,7 @@ public abstract class WitherBossMixin extends Monster {
 		)
 	)
 	private boolean disableArrowInvulnerability(boolean original) {
-		return !MonumentaMod.getConfig().behavior.disableWitherArrowInvuln && original;
+		return !ConfigManager.getConfig().behavior.disableWitherArrowInvuln && original;
 	}
 
 	/**
@@ -47,7 +47,7 @@ public abstract class WitherBossMixin extends Monster {
 		cancellable = true
 	)
 	public void dropCustomDeathLoot(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
-		if(MonumentaMod.getConfig().behavior.disableWitherStarDrop) {
+		if(ConfigManager.getConfig().behavior.disableWitherStarDrop) {
 			super.dropCustomDeathLoot(source, lootingMultiplier, allowDrops);
 			ci.cancel();
 		}

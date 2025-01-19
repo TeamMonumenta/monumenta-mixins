@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.bugfix.upgrade;
+package com.playmonumenta.papermixins.mixin.behavior.bugfix.upgrade;
 
 import com.playmonumenta.papermixins.duck.WorldInfoAccess;
 import io.papermc.paper.world.ThreadedWorldUpgrader;

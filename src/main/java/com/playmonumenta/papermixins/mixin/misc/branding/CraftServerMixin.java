@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.misc;
+package com.playmonumenta.papermixins.mixin.misc.branding;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.playmonumenta.papermixins.VersionInfo;

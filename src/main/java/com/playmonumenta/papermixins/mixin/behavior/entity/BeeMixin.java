@@ -2,7 +2,7 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.animal.Bee;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +22,7 @@ public class BeeMixin {
 		)
 	)
 	private void cancelSetHasStung(Bee instance, boolean hasStung, Operation<Void> original) {
-		if(!MonumentaMod.getConfig().behavior.keepBeeAgroAfterSting) {
+		if(!ConfigManager.getConfig().behavior.keepBeeAgroAfterSting) {
 			original.call(instance, hasStung);
 		}
 	}
@@ -34,7 +34,7 @@ public class BeeMixin {
 		)
 	)
 	private void cancelStopBeingAngry(Bee instance, Operation<Void> original) {
-		if(!MonumentaMod.getConfig().behavior.keepBeeAgroAfterSting) {
+		if(!ConfigManager.getConfig().behavior.keepBeeAgroAfterSting) {
 			original.call(instance);
 		}
 	}

@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.enchant;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +26,7 @@ public class ItemStackMixin {
 		index = 1
 	)
 	private int curveAmount(int amount) {
-		return MonumentaMod.getConfig().behavior.normalizeArmorUnbreaking ?
+		return ConfigManager.getConfig().behavior.normalizeArmorUnbreaking ?
 			(int) Math.min(amount, Math.sqrt(amount * 4)) :
 			amount;
 	}

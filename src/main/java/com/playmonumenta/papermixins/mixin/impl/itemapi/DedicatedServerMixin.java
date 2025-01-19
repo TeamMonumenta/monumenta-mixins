@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.itemapi;
+package com.playmonumenta.papermixins.mixin.impl.itemapi;
 
 import com.mojang.datafixers.DataFixer;
 import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;

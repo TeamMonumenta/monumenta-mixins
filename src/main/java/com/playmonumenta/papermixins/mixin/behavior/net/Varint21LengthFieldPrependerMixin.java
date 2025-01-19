@@ -2,7 +2,7 @@ package com.playmonumenta.papermixins.mixin.behavior.net;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.network.Varint21LengthFieldPrepender;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,7 +15,7 @@ public class Varint21LengthFieldPrependerMixin {
 		at = @At(value = "CONSTANT", args = "intValue=3")
 	)
 	public int encode0(int constant) {
-		return MonumentaMod.getConfig().behavior.packetLengthVarIntSize;
+		return ConfigManager.getConfig().behavior.packetLengthVarIntSize;
 	}
 
 	@ModifyArg(
@@ -29,7 +29,7 @@ public class Varint21LengthFieldPrependerMixin {
 	public String modifyExceptionMessage(String msg, @Local(ordinal = 0) int i) {
 		return "unable to encode %s as a %s byte varint".formatted(
 			i,
-			MonumentaMod.getConfig().behavior.packetLengthVarIntSize
+			ConfigManager.getConfig().behavior.packetLengthVarIntSize
 		);
 	}
 }

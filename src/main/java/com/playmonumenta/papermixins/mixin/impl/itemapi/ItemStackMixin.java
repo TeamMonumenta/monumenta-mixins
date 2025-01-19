@@ -1,9 +1,10 @@
-package com.playmonumenta.papermixins.mixin.itemapi;
+package com.playmonumenta.papermixins.mixin.impl.itemapi;
 
 import com.google.common.collect.Multimap;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.playmonumenta.papermixins.duck.ItemStackAccess;
 import com.playmonumenta.papermixins.items.ItemStackStateManager;
+import com.playmonumenta.papermixins.util.Util;
 import java.util.Objects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -44,7 +45,7 @@ public class ItemStackMixin implements ItemStackAccess {
 		at = @At("TAIL")
 	)
 	private void computeItemOnInit(ItemLike item, int count, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState(((ItemStack) (Object) this));
+		monumenta$stateManager.loadCustomState(Util.c(this));
 	}
 
 	@Inject(
@@ -52,7 +53,7 @@ public class ItemStackMixin implements ItemStackAccess {
 		at = @At("RETURN")
 	)
 	private void loadCustomItemData$load(CompoundTag tag, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState((ItemStack) (Object) this);
+		monumenta$stateManager.loadCustomState(Util.c(this));
 	}
 
 	@Inject(
@@ -60,7 +61,7 @@ public class ItemStackMixin implements ItemStackAccess {
 		at = @At("RETURN")
 	)
 	private void loadCustomItemData$setTag(CompoundTag tag, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState((ItemStack) (Object) this);
+		monumenta$stateManager.loadCustomState(Util.c(this));
 	}
 
 	// TODO: this may cause crashes in some cases

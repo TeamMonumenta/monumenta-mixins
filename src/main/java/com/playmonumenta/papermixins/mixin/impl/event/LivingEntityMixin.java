@@ -1,7 +1,7 @@
-package com.playmonumenta.papermixins.mixin.event;
+package com.playmonumenta.papermixins.mixin.impl.event;
 
 import com.google.common.base.Function;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.MixinState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,8 +42,8 @@ public abstract class LivingEntityMixin extends Entity {
 		};
 
 		var iframesModifier = iframes.apply((double) value);
-		MonumentaMod.IFRAME_VALUE.set(iframesModifier);
-		MonumentaMod.IFRAME_FUNC.set(iframes);
+		MixinState.IFRAME_VALUE.set(iframesModifier);
+		MixinState.IFRAME_FUNC.set(iframes);
 		value += iframesModifier.floatValue();
 		return value;
 	}

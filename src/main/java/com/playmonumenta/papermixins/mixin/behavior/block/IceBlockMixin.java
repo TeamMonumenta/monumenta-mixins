@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.block;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -30,7 +30,7 @@ public class IceBlockMixin {
 		cancellable = true
 	)
 	public void afterDestroy(Level world, BlockPos pos, ItemStack tool, CallbackInfo ci) {
-		if (MonumentaMod.getConfig().behavior.disableIceBreakBehavior) {
+		if (ConfigManager.getConfig().behavior.disableIceBreakBehavior) {
 			world.removeBlock(pos, false);
 			ci.cancel();
 		}
@@ -46,7 +46,7 @@ public class IceBlockMixin {
 		cancellable = true
 	)
 	public void melt(BlockState state, Level world, BlockPos pos, CallbackInfo ci) {
-		if (MonumentaMod.getConfig().behavior.disableIceMelting) {
+		if (ConfigManager.getConfig().behavior.disableIceMelting) {
 			ci.cancel();
 		}
 	}

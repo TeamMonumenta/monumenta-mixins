@@ -1,7 +1,7 @@
-package com.playmonumenta.papermixins.mixin.bugfix;
+package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import java.util.List;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.validation.ForbiddenSymlinkInfo;
@@ -23,7 +23,7 @@ public class LevelStorageSourceMixin {
 		)
 	)
 	private List<ForbiddenSymlinkInfo> removeSymlinkValidation(List<ForbiddenSymlinkInfo> original) {
-		if (MonumentaMod.getConfig().disableSymlinkValidation) {
+		if (ConfigManager.getConfig().disableSymlinkValidation) {
 			return List.of();
 		}
 

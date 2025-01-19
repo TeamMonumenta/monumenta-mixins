@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -34,7 +34,7 @@ public abstract class AnimalMixin extends AgeableMob {
 		cancellable = true
 	)
 	public void getWalkTargetValue(BlockPos pos, LevelReader world, CallbackInfoReturnable<Float> cir) {
-		if(MonumentaMod.getConfig().behavior.disableAnimalPathfindingWeights) {
+		if(ConfigManager.getConfig().behavior.disableAnimalPathfindingWeights) {
 			cir.setReturnValue(super.getWalkTargetValue(pos, world));
 		}
 	}

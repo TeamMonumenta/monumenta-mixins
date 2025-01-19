@@ -1,9 +1,10 @@
-package com.playmonumenta.papermixins.mixin.bugfix.upgrade;
+package com.playmonumenta.papermixins.mixin.behavior.bugfix.upgrade;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.serialization.Codec;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import com.playmonumenta.papermixins.duck.WorldInfoAccess;
+import com.playmonumenta.papermixins.util.Util;
 import io.papermc.paper.world.ThreadedWorldUpgrader;
 import java.io.IOException;
 import java.util.List;
@@ -41,11 +42,12 @@ public class ConvertTaskMixin {
 		)
 	)
 	private void upgradeEntity(CallbackInfo ci, @Local ChunkPos pos) throws IOException {
-		if (!MonumentaMod.getConfig().behavior.forceUpgradeIncludeEntities) {
+		if (!ConfigManager.getConfig().behavior.forceUpgradeIncludeEntities) {
 			return;
 		}
 
-		final var entityRegion = ((WorldInfoAccess) (Object) worldInfo).monumenta$getRegion();
+		@SuppressWarnings("resource") //
+		final var entityRegion = Util.<WorldInfoAccess>c(worldInfo).monumenta$getRegion();
 
 		final var data = entityRegion.read(pos);
 
@@ -74,20 +76,13 @@ public class ConvertTaskMixin {
 		name = "modified"
 	)
 	private boolean upgradeBlockStates(boolean modified, @Local CompoundTag chunkNBT) {
-		if (!MonumentaMod.getConfig().behavior.forceUpgradeEagerBlockStates) {
+		if (!ConfigManager.getConfig().behavior.forceUpgradeEagerBlockStates) {
 			return modified;
 		}
 
 		for (Tag tag : chunkNBT.getList("sections", CompoundTag.TAG_COMPOUND)) {
 			final var states = ((CompoundTag) tag).getCompound("block_states");
-			if (states == null) {
-				continue;
-			}
-
 			final var oldPalette = states.getList("palette", Tag.TAG_COMPOUND);
-			if (oldPalette == null) {
-				continue;
-			}
 
 			final var blockStateList = MONUMENTA$PALETTE_CODEC.decode(NbtOps.INSTANCE, oldPalette)
 				.getOrThrow(false, string -> {

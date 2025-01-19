@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import java.util.function.Function;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.datafix.DataFixTypes;
@@ -29,7 +29,7 @@ public class DimensionDataStorageMixin {
 	private <T> void forceExitOnError(Function<CompoundTag, T> readFunction, DataFixTypes dataFixTypes,
 									String id, CallbackInfoReturnable<T> cir) {
 		// TODO: lol linux error codes are int8_t
-		if(MonumentaMod.getConfig().behavior.crashOnScoreboardLoadFail) {
+		if(ConfigManager.getConfig().behavior.crashOnScoreboardLoadFail) {
 			System.exit(-9001);
 		}
 	}

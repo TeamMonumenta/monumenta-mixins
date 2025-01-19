@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.event;
+package com.playmonumenta.papermixins.mixin.impl.event;
 
 import com.destroystokyo.paper.event.player.PlayerDataLoadEvent;
 import com.destroystokyo.paper.event.player.PlayerDataSaveEvent;

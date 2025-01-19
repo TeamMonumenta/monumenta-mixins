@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -34,7 +34,7 @@ public abstract class AbstractArrowMixin extends Entity {
 		cancellable = true
 	)
 	private void disableBounce(EntityHitResult entityHitResult, CallbackInfo ci) {
-		if(!MonumentaMod.getConfig().behavior.disableArrowBouncing) {
+		if(!ConfigManager.getConfig().behavior.disableArrowBouncing) {
 			return;
 		}
 

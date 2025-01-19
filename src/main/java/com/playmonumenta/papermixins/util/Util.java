@@ -30,4 +30,9 @@ public class Util {
 	public static <T> @NotNull T c(@NotNull Object o) {
 		return (T) o;
 	}
+
+	@SuppressWarnings("unchecked")
+	public static <E extends Throwable, U> U sneakyThrow(Throwable ex) throws E {
+		throw (E) ex;
+	}
 }

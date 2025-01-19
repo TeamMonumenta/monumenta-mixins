@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.bugfix;
+package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.slf4j.Logger;

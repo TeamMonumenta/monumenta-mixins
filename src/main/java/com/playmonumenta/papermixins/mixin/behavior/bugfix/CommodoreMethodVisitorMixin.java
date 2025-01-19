@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.bugfix;
+package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
 import org.objectweb.asm.MethodVisitor;
 import org.spongepowered.asm.mixin.Mixin;

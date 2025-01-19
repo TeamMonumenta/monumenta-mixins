@@ -4,8 +4,8 @@ import com.playmonumenta.papermixins.MonumentaMod;
 import com.playmonumenta.papermixins.mcfunction.execution.instr.ControlInstr;
 import java.util.List;
 import net.minecraft.commands.execution.*;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 /**
  * Rewrite of minecraft's continuation task to support control flow.

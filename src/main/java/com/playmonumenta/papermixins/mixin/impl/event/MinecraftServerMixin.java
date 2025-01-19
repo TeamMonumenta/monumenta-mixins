@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.event;
+package com.playmonumenta.papermixins.mixin.impl.event;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.server.MinecraftServer;

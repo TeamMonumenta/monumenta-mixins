@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.bugfix;
+package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import java.util.function.Predicate;

@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.ElderGuardian;
 import net.minecraft.world.entity.monster.Guardian;
@@ -34,7 +34,7 @@ public class ElderGuardianMixin extends Guardian {
 		cancellable = true
 	)
 	public void customServerAiStep(CallbackInfo ci) {
-		if(MonumentaMod.getConfig().behavior.disableGuardianMiningFatigue) {
+		if(ConfigManager.getConfig().behavior.disableGuardianMiningFatigue) {
 			super.customServerAiStep();
 
 			if (!this.hasRestriction()) {
