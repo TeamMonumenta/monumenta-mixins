@@ -12,7 +12,7 @@ dependencies {
 	include(libs.semver)
 	// no-dist impl
 	implementation(libs.nbtapi.plugin)
-	include(libs.nbtapi)
+	shade(libs.nbtapi)
 }
 
 tasks {

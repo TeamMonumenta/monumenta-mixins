@@ -72,7 +72,7 @@
         "misc.branding.MinecraftServerMixin",
         "misc.lifecycle.DedicatedServerMixin",
         "misc.lifecycle.MinecraftServerMixin",
-        "hook.EntityMixin",
+        "impl.hook.EntityMixin",
         "optimize.AdvancementTreeMixin",
         "optimize.ServerAdvancementManagerMixin"
     ]

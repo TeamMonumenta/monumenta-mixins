@@ -1,8 +1,8 @@
-package com.playmonumenta.papermixins.mixin.hook;
+package com.playmonumenta.papermixins.mixin.impl.hook;
 
 import com.playmonumenta.papermixins.duck.hook.EntityHookAccess;
 import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTContainer;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.NamespacedKey;
@@ -36,24 +35,19 @@ public class EntityMixin implements EntityHookAccess {
 	@Unique
 	private final Map<NamespacedKey, CompoundTag> monumenta$hookPersistentData = new HashMap<>();
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T monumenta$hook$simpleImpl(int id, Supplier<T> supplier) {
-		return (T) monumenta$hooks.computeIfAbsent(id, n -> supplier.get());
+	public Int2ObjectMap<Object> monumenta$getHooks() {
+		return monumenta$hooks;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends HookAPI.Persistent> T monumenta$hook$persistentImpl(int id, NamespacedKey key,
-																		Supplier<T> supplier) {
-		// doesn't exist, need to load
-		return (T) monumenta$hooks.computeIfAbsent(id, ignored -> {
-			final var instance = supplier.get();
-			instance.load(new NBTContainer(monumenta$hookPersistentData.get(key)));
-			monumenta$hookPersistentData.remove(key);
-			monumenta$persistentEntries.add(Pair.of(key, instance));
-			return instance;
-		});
+	public List<Pair<NamespacedKey, HookAPI.Persistent>> monumenta$getPersistentEntries() {
+		return monumenta$persistentEntries;
+	}
+
+	@Override
+	public Map<NamespacedKey, CompoundTag> monumenta$getHookPersistentData() {
+		return monumenta$hookPersistentData;
 	}
 
 	@Inject(

@@ -10,7 +10,9 @@ plugins {
 val libs = the<LibrariesForLibs>()
 
 val include: Configuration by configurations.creating
+val shade: Configuration by configurations.creating
 
+shade.extendsFrom(include)
 configurations.getByName("implementation").extendsFrom(include)
 configurations.getByName("implementation").extendsFrom(configurations.getByName("mojangMappedServerRuntime"))
 
@@ -33,7 +35,7 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("dev")
-        configurations = listOf(include)
+        configurations = listOf(shade)
     }
 
     reobfJar {
