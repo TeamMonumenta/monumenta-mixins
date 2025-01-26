@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -36,7 +36,7 @@ public class GiantMixin extends Monster {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		if (!MonumentaMod.getConfig().behavior.addGolemAi) {
+		if (!ConfigManager.getConfig().behavior.addGolemAi) {
 			return;
 		}
 

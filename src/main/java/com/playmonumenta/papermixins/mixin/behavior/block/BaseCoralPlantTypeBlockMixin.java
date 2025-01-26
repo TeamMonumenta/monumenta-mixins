@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.block;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BaseCoralPlantTypeBlock;
@@ -29,7 +29,7 @@ public class BaseCoralPlantTypeBlockMixin {
 	)
 	private static void scanForWater(BlockState state, BlockGetter world, BlockPos pos,
 									CallbackInfoReturnable<Boolean> cir) {
-		if (MonumentaMod.getConfig().behavior.disableCoralDeath) {
+		if (ConfigManager.getConfig().behavior.disableCoralDeath) {
 			cir.setReturnValue(true);
 		}
 	}

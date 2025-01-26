@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -21,6 +21,6 @@ public class ServerGamePacketListenerImplMixin {
 		constant = @Constant(intValue = 80)
 	)
 	private int changeFlyingTickTime(int constant) {
-		return MonumentaMod.getConfig().flyingTime;
+		return ConfigManager.getConfig().flyingTime;
 	}
 }

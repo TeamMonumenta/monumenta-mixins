@@ -1,11 +1,11 @@
 package com.playmonumenta.papermixins.mcfunction.parse;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 public class Diagnostics {
 	public enum Level {
@@ -40,7 +40,7 @@ public class Diagnostics {
 	}
 
 	public void dumpErrors(Logger logger, String pack, ResourceLocation id, List<String> lines) {
-		int context = MonumentaMod.getConfig().mcFunction.diagnosticContext;
+		int context = ConfigManager.getConfig().mcFunction.diagnosticContext;
 		StringBuilder builder = new StringBuilder();
 
 		if (diagnostics.isEmpty()) {
@@ -85,6 +85,6 @@ public class Diagnostics {
 			}
 		}
 
-		logger.warn(builder);
+		logger.warn(builder.toString());
 	}
 }

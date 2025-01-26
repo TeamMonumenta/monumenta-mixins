@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.animal.IronGolem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,6 +24,6 @@ public abstract class IronGolemMixin {
 		index = 1
 	)
 	private float modifyAttackDamage(float amount, @Local(ordinal = 0) float f) {
-		return MonumentaMod.getConfig().behavior.disableGolemAttackRandomness ? f : amount;
+		return ConfigManager.getConfig().behavior.disableGolemAttackRandomness ? f : amount;
 	}
 }

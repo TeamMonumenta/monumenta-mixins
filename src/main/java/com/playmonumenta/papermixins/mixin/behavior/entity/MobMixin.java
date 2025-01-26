@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -32,7 +32,7 @@ public abstract class MobMixin extends LivingEntity {
 		cancellable = true
 	)
 	public void getControllingPassenger(CallbackInfoReturnable<LivingEntity> cir) {
-		if(MonumentaMod.getConfig().behavior.disableControllingPassenger) {
+		if(ConfigManager.getConfig().behavior.disableControllingPassenger) {
 			cir.setReturnValue(null);
 		}
 	}

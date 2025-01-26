@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.enchant;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
@@ -22,6 +22,6 @@ public class VanishingCurseEnchantmentMixin extends Enchantment {
 	// Mixin @Overrides will be properly mixed into the target class, which is convenient.
 	@Override
 	public int getMaxLevel() {
-		return MonumentaMod.getConfig().behavior.curseOfVanishingMaxLevel;
+		return ConfigManager.getConfig().behavior.curseOfVanishingMaxLevel;
 	}
 }

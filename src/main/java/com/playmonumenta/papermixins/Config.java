@@ -1,5 +1,7 @@
 package com.playmonumenta.papermixins;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
@@ -35,6 +37,8 @@ public class Config {
 
 		// NOTE: this will be removed when we update to a version with data-driven enchants
 		public int curseOfVanishingMaxLevel = 1;
+
+		public int packetLengthVarIntSize = 3;
 	}
 
 	@ConfigSerializable
@@ -42,10 +46,23 @@ public class Config {
 		public int diagnosticContext = 2;
 	}
 
+	@ConfigSerializable
+	public static class ForceLoadEntry {
+		public List<String> filters;
+		public String pluginName;
+	}
+
+	@ConfigSerializable
+	public static class ClassLoading {
+		public boolean forceLoadSelfClasses = false;
+		public List<ForceLoadEntry> plugins = new ArrayList<>();
+	}
+
 	public int flyingTime = 80;
 	public int serverShutdownTime = 1000;
 	public Behavior behavior = new Behavior();
 	public MCFunction mcFunction = new MCFunction();
+	public ClassLoading classLoading = new ClassLoading();
 	public boolean disableSymlinkValidation = false;
 	public boolean noPlugins = false;
 }

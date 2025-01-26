@@ -5,6 +5,7 @@ plugins {
 
 version = rootProject.version
 group = "com.playmonumenta.papermixins"
+
 dependencies {
 	compileOnly(libs.paper.api)
 	compileOnly(libs.nbtapi.plugin)

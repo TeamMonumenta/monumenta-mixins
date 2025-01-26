@@ -2,7 +2,7 @@ package com.playmonumenta.papermixins.mixin.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.playmonumenta.papermixins.mcfunction.parse.parser.Parser;
-import com.playmonumenta.papermixins.registry.CommandRegister;
+import com.playmonumenta.papermixins.registry.CommandRegistry;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -27,7 +27,7 @@ public abstract class CommandsMixin {
 	private void registerCommands(Commands.CommandSelection environment,
 								CommandBuildContext commandRegistryAccess,
 								CallbackInfo ci) {
-		CommandRegister.register(this.dispatcher);
+		CommandRegistry.register(this.dispatcher);
 		Parser.init(commandRegistryAccess);
 	}
 }

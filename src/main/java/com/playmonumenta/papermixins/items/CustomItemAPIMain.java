@@ -10,10 +10,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.apache.logging.log4j.Logger;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_20_R3.util.CraftMagicNumbers;
 import org.bukkit.craftbukkit.v1_20_R3.util.CraftNamespacedKey;
+import org.slf4j.Logger;
 
 public class CustomItemAPIMain {
 	public static final Logger LOGGER = MonumentaMod.getLogger("CustomItemAPI");

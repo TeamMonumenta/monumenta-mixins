@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.monster.Creeper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +25,7 @@ public class CreeperMixin {
 		cancellable = true
 	)
 	public void canDropMobsSkull(CallbackInfoReturnable<Boolean> cir) {
-		if(MonumentaMod.getConfig().behavior.disableChargedCreeperHeads) {
+		if(ConfigManager.getConfig().behavior.disableChargedCreeperHeads) {
 			cir.setReturnValue(false);
 		}
 	}

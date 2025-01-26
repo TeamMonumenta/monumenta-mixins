@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
-import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -65,7 +65,7 @@ public abstract class EnderManMixin extends Monster {
 		cancellable = true
 	)
 	public void requiresCustomPersistence(CallbackInfoReturnable<Boolean> cir) {
-		if(MonumentaMod.getConfig().behavior.disableEndermanPersistence) {
+		if(ConfigManager.getConfig().behavior.disableEndermanPersistence) {
 			cir.setReturnValue(super.requiresCustomPersistence());
 		}
 	}
@@ -80,7 +80,7 @@ public abstract class EnderManMixin extends Monster {
 		cancellable = true
 	)
 	public void teleport(CallbackInfoReturnable<Boolean> cir) {
-		if(MonumentaMod.getConfig().behavior.disableEndermanTeleport) {
+		if(ConfigManager.getConfig().behavior.disableEndermanTeleport) {
 			cir.setReturnValue(false);
 		}
 	}

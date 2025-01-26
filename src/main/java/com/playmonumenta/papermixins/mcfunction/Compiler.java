@@ -26,9 +26,9 @@ import net.minecraft.commands.functions.PlainTextFunction;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 public class Compiler {
 	private static final Logger LOGGER = MonumentaMod.getLogger("FunctionCompiler");
