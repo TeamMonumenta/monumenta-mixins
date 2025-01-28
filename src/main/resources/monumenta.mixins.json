@@ -20,6 +20,7 @@
         "behavior.bugfix.CraftLootTableMixin",
         "behavior.bugfix.InventoryMixin",
         "behavior.bugfix.LevelStorageSourceMixin",
+        "behavior.bugfix.MapItemSavedDataMixin",
         "behavior.bugfix.ServerGamePacketListenerImplMixin",
         "behavior.bugfix.upgrade.ConvertTaskMixin",
         "behavior.bugfix.upgrade.ThreadedWorldUpgraderMixin",
