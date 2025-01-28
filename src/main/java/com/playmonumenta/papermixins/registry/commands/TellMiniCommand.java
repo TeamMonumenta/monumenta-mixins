@@ -7,6 +7,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
 import io.papermc.paper.adventure.PaperAdventure;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -54,7 +55,8 @@ public class TellMiniCommand {
 	}
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(lit("tellmini",
+		dispatcher.register(mcLitPred("tellmini",
+			stack -> stack.hasPermission(2),
 			lit("msg", generateTellmini(ServerPlayer::sendSystemMessage)),
 			lit("title", generateTellmini(showTitle(ClientboundSetTitleTextPacket::new))),
 			lit("subtitle", generateTellmini(showTitle(ClientboundSetSubtitleTextPacket::new))),

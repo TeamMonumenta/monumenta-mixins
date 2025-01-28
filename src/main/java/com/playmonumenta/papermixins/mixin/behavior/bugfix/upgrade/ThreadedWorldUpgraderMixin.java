@@ -62,7 +62,7 @@ public class ThreadedWorldUpgraderMixin {
 
 			ThreadedWorldUpgrader.LOGGER.info("[monumenta] entity region is {}", path);
 
-			Util.<WorldInfoAccess>c(this).monumenta$setRegion(new ServerLevel.EntityRegionFileStorage(
+`			Util.<WorldInfoAccess>c(original).monumenta$setRegion(new ServerLevel.EntityRegionFileStorage(
 				worldFolder.toPath().resolve("entities"),
 				true
 			));
