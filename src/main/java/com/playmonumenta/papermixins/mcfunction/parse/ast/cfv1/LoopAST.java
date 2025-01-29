@@ -117,7 +117,7 @@ public class LoopAST extends ASTNode {
 		gen.emitControlNamed("cfv1::loop::function_exit", (state, context, frame) -> {
 			final LoopFrame loopFrame = state.peek();
 
-            // clean up state
+			// clean up state
 			final var entry = loopFrame.entries.pop();
 			state.source = entry.original();
 			state.instr = loopFrame.retStack.pop();

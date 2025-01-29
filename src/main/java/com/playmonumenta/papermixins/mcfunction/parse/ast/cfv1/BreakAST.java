@@ -9,33 +9,33 @@ import java.util.function.Consumer;
 import net.minecraft.commands.CommandSourceStack;
 
 public class BreakAST extends ASTNode {
-    private final int lineNo;
-    private final int levels;
+	private final int lineNo;
+	private final int levels;
 
-    public BreakAST(int lineNo, int levels) {
-        this.lineNo = lineNo;
-        this.levels = levels;
-    }
+	public BreakAST(int lineNo, int levels) {
+		this.lineNo = lineNo;
+		this.levels = levels;
+	}
 
-    @Override
-    public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
-        final var breakables = cgCtx.getBreakables();
+	@Override
+	public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
+		final var breakables = cgCtx.getBreakables();
 
-        if (breakables.isEmpty()) {
-            diagnostics.reportErr(lineNo, "'break' may only be used inside iterative control flow");
-            return;
-        }
+		if (breakables.isEmpty()) {
+			diagnostics.reportErr(lineNo, "'break' may only be used inside iterative control flow");
+			return;
+		}
 
-        if (breakables.size() < levels) {
-            diagnostics.reportErr(lineNo, "not enough levels of control flow!");
-            return;
-        }
+		if (breakables.size() < levels) {
+			diagnostics.reportErr(lineNo, "not enough levels of control flow!");
+			return;
+		}
 
-        final var branchTarget = breakables.get(breakables.size() - levels);
-        gen.emitLinkable(Linkable.branch(branchTarget));
-    }
+		final var branchTarget = breakables.get(breakables.size() - levels);
+		gen.emitLinkable(Linkable.branch(branchTarget));
+	}
 
-    @Override
-    public void visit(Consumer<ASTNode> visitor) {
-    }
+	@Override
+	public void visit(Consumer<ASTNode> visitor) {
+	}
 }

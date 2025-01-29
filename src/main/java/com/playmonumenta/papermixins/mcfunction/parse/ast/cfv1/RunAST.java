@@ -4,7 +4,6 @@ import com.playmonumenta.papermixins.mcfunction.codegen.CodeGenerator;
 import com.playmonumenta.papermixins.mcfunction.codegen.Linkable;
 import com.playmonumenta.papermixins.mcfunction.execution.ControlInstr;
 import com.playmonumenta.papermixins.mcfunction.execution.CustomExecSource;
-import com.playmonumenta.papermixins.mcfunction.execution.FuncExecState;
 import com.playmonumenta.papermixins.mcfunction.parse.Diagnostics;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.ASTNode;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.BlockAST;

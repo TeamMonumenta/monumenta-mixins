@@ -94,7 +94,7 @@ public class ExtensionsControlFlowV1Parser {
 			"break",
 			true,
 			(parser, text, lineNo, isTopLevel, isInSubroutine) -> {
-                parser.next();
+				parser.next();
 				final var parts = text.split(" ");
 				return FeatureParseResult.ast(new BreakAST(lineNo, parts.length == 1 ? 1 : Integer.parseInt(parts[1])));
 			},
