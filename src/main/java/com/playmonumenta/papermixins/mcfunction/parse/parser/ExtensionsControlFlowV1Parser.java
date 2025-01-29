@@ -2,10 +2,13 @@ package com.playmonumenta.papermixins.mcfunction.parse.parser;
 
 import static com.playmonumenta.papermixins.util.CommandUtil.arg;
 import static com.playmonumenta.papermixins.util.CommandUtil.lit;
+import static net.minecraft.commands.Commands.literal;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.playmonumenta.papermixins.MixinState;
 import com.playmonumenta.papermixins.mcfunction.execution.CustomExecSource;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.ASTNode;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.BlockAST;
@@ -13,10 +16,9 @@ import com.playmonumenta.papermixins.mcfunction.parse.ast.cfv1.BreakAST;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.cfv1.LoopAST;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.cfv1.RunAST;
 import com.playmonumenta.papermixins.util.CommandUtil;
-import com.playmonumenta.papermixins.util.ExecuteCommandUtils;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.execution.UnboundEntryAction;
 
@@ -49,15 +51,24 @@ public class ExtensionsControlFlowV1Parser {
 		);
 	}
 
+	public static void registerV1ControlFlow(
+		CommandDispatcher<CommandSourceStack> dispatcher, String name,
+		Command<CommandSourceStack> command
+	) {
+		final var builder = literal(name).then(literal("{").executes(command));
+		Objects.requireNonNull(MixinState.EXECUTE_CHILDREN_COMMANDS).forEach(builder::then);
+		dispatcher.register(builder);
+	}
+
 	@SuppressWarnings("unchecked")
-	public static void init(CommandBuildContext access) {
-		ExecuteCommandUtils.registerV1ControlFlow(DISPATCH, access, "run", context -> {
+	public static void init() {
+		registerV1ControlFlow(DISPATCH, "run", context -> {
 			final var source = (CustomExecSource<Consumer<CommandSourceStack>>) context.getSource();
 			source.getState().accept(source);
 			return 0;
 		});
 
-		ExecuteCommandUtils.registerV1ControlFlow(DISPATCH, access, "loop", context -> {
+		registerV1ControlFlow(DISPATCH, "loop", context -> {
 			final var source = (CustomExecSource<Consumer<CommandSourceStack>>) context.getSource();
 			source.getState().accept(source);
 			return 0;

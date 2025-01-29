@@ -1,8 +1,7 @@
 package com.playmonumenta.papermixins.registry.commands;
 
-import static com.playmonumenta.papermixins.util.CommandUtil.arg;
-import static com.playmonumenta.papermixins.util.CommandUtil.lit;
-import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
+import static com.playmonumenta.papermixins.util.CommandUtil.*;
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;

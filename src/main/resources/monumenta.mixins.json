@@ -58,6 +58,7 @@
         "commands.CommandsMixin",
         "commands.EntitySelectorOptionsMixin",
         "commands.EntitySelectorParserMixin",
+        "commands.ExecuteCommandMixin",
         "commands.ReloadableServerResourcesMixin",
         "commands.ReturnCommandMixin",
         "commands.ServerFunctionLibraryMixin",
@@ -66,6 +67,7 @@
         "impl.event.MinecraftServerMixin",
         "impl.event.PlayerAdvancementsMixin",
         "impl.event.PlayerDataStorageMixin",
+        "impl.hook.EntityMixin",
         "impl.itemapi.DedicatedServerMixin",
         "impl.itemapi.ItemStackMixin",
         "impl.itemapi.ReloadableServerResourcesMixin",
@@ -73,7 +75,6 @@
         "misc.branding.MinecraftServerMixin",
         "misc.lifecycle.DedicatedServerMixin",
         "misc.lifecycle.MinecraftServerMixin",
-        "impl.hook.EntityMixin",
         "optimize.AdvancementTreeMixin",
         "optimize.ServerAdvancementManagerMixin"
     ]
