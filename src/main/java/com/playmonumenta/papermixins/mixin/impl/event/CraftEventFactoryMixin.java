@@ -10,8 +10,7 @@ import net.minecraft.world.entity.Entity;
 import org.bukkit.craftbukkit.v1_20_R3.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
@@ -43,5 +42,35 @@ public class CraftEventFactoryMixin {
 		final var api = MonumentaPaperAPIImpl.getInstance();
 		modifiers.put(api.getIframes(), MixinState.IFRAME_VALUE.get());
 		modifierFunctions.put(api.getIframes(), (Function<? super Double, Double>) MixinState.IFRAME_FUNC.get());
+	}
+
+	/**
+	 * @author Flowey, usb
+	 * Handle 'monumenta:custom' damage source from main plugin
+	 * TODO: redo this in 1.20.5+ with Paper's damage source API
+	 */
+	@ModifyArg(
+		method = "handleEntityDamageEvent(Lnet/minecraft/world/entity/Entity;" +
+				"Lnet/minecraft/world/damagesource/DamageSource;Ljava/util/Map;Ljava/util/Map;Z)" +
+				"Lorg/bukkit/event/entity/EntityDamageEvent;",
+		at = @At(
+				value = "INVOKE",
+				target = "Lorg/bukkit/craftbukkit/v1_20_R3/event/CraftEventFactory;callEntityDamageEvent" +
+						"(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/Entity;" +
+						"Lorg/bukkit/event/entity/EntityDamageEvent$DamageCause;Lorg/bukkit/damage/DamageSource;" +
+						"Ljava/util/Map;Ljava/util/Map;ZZ)Lorg/bukkit/event/entity/EntityDamageEvent;",
+				ordinal = 0
+		),
+		slice = @Slice(
+				from = @At(
+						value = "INVOKE",
+						target = "Lnet/minecraft/world/damagesource/DamageSource;getDirectEntity()Lnet/minecraft/world/entity/Entity;"
+				)
+		),
+		index = 2
+)
+	private static EntityDamageEvent.DamageCause handleCustomCause(EntityDamageEvent.DamageCause cause, @Local(argsOnly = true) DamageSource type) {
+		// type.getMsgId() doesn't print namespace, so use 'custom' as a match
+		return type.getMsgId().contains("custom") ? EntityDamageEvent.DamageCause.CUSTOM : cause;
 	}
 }
