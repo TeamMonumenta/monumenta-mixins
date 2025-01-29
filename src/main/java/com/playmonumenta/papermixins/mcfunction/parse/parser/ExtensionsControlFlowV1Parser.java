@@ -1,15 +1,21 @@
 package com.playmonumenta.papermixins.mcfunction.parse.parser;
 
+import static com.playmonumenta.papermixins.util.CommandUtil.arg;
+import static com.playmonumenta.papermixins.util.CommandUtil.lit;
+
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.StringReader;
-import com.playmonumenta.papermixins.mcfunction.execution.FunctionExecSource;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.playmonumenta.papermixins.mcfunction.execution.CustomExecSource;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.ASTNode;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.BlockAST;
+import com.playmonumenta.papermixins.mcfunction.parse.ast.cfv1.BreakAST;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.cfv1.LoopAST;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.cfv1.RunAST;
 import com.playmonumenta.papermixins.util.CommandUtil;
 import com.playmonumenta.papermixins.util.ExecuteCommandUtils;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.execution.UnboundEntryAction;
@@ -43,18 +49,28 @@ public class ExtensionsControlFlowV1Parser {
 		);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void init(CommandBuildContext access) {
 		ExecuteCommandUtils.registerV1ControlFlow(DISPATCH, access, "run", context -> {
-			final var source = (FunctionExecSource) context.getSource();
-			source.getExecState().stack.peekSourceList().add(source);
+			final var source = (CustomExecSource<Consumer<CommandSourceStack>>) context.getSource();
+			source.getState().accept(source);
 			return 0;
 		});
 
 		ExecuteCommandUtils.registerV1ControlFlow(DISPATCH, access, "loop", context -> {
-			final var source = (FunctionExecSource) context.getSource();
-			source.getExecState().stack.peekSourceList().add(source);
+			final var source = (CustomExecSource<Consumer<CommandSourceStack>>) context.getSource();
+			source.getState().accept(source);
 			return 0;
 		});
+
+		DISPATCH.register(lit("break",
+			context -> {
+				throw new IllegalStateException();
+			},
+			arg("amount", IntegerArgumentType.integer(1), context -> {
+				throw new IllegalStateException();
+			})
+		));
 
 		Parser.register(
 			"run",
@@ -74,8 +90,18 @@ public class ExtensionsControlFlowV1Parser {
 			"'loop' is disabled when control-flow-v2' is enabled (consider adding 'pragma disable cfv2')"
 		);
 
-		// NOTE: it is *very* important that this is here, since we need to register *all* control-flow related actions
-		// so that RawFunctionSource understands that it is a control flow statement rather than a regular command.
+		Parser.register(
+			"break",
+			true,
+			(parser, text, lineNo, isTopLevel, isInSubroutine) -> {
+                parser.next();
+				final var parts = text.split(" ");
+				return FeatureParseResult.ast(new BreakAST(lineNo, parts.length == 1 ? 1 : Integer.parseInt(parts[1])));
+			},
+			features -> !features.isV2ControlFlow(),
+			"'break' is disabled when control-flow-v2' is enabled (consider adding 'pragma disable cfv2')"
+		);
+
 		// better error handling
 		Parser.register(CLOSING_TOKEN, false, (p, text, lineNo, isTopLevel, isSubroutine) -> {
 			p.diagnostics().reportErr(lineNo, "extraneous '" + CLOSING_TOKEN + "' (consider removing it)");

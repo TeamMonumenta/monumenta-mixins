@@ -1,6 +1,5 @@
-package com.playmonumenta.papermixins.mcfunction.execution.instr;
+package com.playmonumenta.papermixins.mcfunction.execution;
 
-import com.playmonumenta.papermixins.mcfunction.execution.FuncExecState;
 import net.minecraft.commands.execution.ExecutionContext;
 import net.minecraft.commands.execution.Frame;
 import net.minecraft.commands.execution.UnboundEntryAction;

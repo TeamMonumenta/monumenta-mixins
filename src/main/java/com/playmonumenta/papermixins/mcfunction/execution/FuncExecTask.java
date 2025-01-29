@@ -1,7 +1,6 @@
 package com.playmonumenta.papermixins.mcfunction.execution;
 
 import com.playmonumenta.papermixins.MonumentaMod;
-import com.playmonumenta.papermixins.mcfunction.execution.instr.ControlInstr;
 import java.util.List;
 import net.minecraft.commands.execution.*;
 import org.jetbrains.annotations.NotNull;

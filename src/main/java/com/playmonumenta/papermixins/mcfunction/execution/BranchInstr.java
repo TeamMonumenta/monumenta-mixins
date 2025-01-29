@@ -1,20 +1,8 @@
-package com.playmonumenta.papermixins.mcfunction.execution.instr;
+package com.playmonumenta.papermixins.mcfunction.execution;
 
-import com.playmonumenta.papermixins.mcfunction.execution.FuncExecState;
 import net.minecraft.commands.execution.ExecutionContext;
 import net.minecraft.commands.execution.Frame;
 
-/**
- * Static jump instruction.
- * <h3>Pseudocode (assembly)</h3>
- * <pre>
- * {@code
- * %ip = target
- * }
- * </pre>
- *
- * @param target The instruction to jump to.
- */
 public record BranchInstr<T>(int target) implements ControlInstr<T> {
 	private static final BranchInstr<?> EXIT = new BranchInstr<>(Integer.MAX_VALUE);
 
