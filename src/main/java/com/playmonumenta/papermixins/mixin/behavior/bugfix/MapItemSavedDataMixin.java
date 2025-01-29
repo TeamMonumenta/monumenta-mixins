@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
-import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import org.spongepowered.asm.mixin.Mixin;
 
 /**
  * @author usb
@@ -16,7 +16,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 public class MapItemSavedDataMixin {
 	// fix CraftBukkit stupidity
 	@WrapMethod(method = "lambda$load$1")
-	private ResourceKey<Level> fixResourceKey(CompoundTag nbt, Operation<ResourceKey<Level>> original) {
+	private static ResourceKey<Level> fixResourceKey(CompoundTag nbt, Operation<ResourceKey<Level>> original) {
 		try {
 			ResourceKey<Level> level = original.call(nbt);
 			return level == null ? Level.OVERWORLD : level;

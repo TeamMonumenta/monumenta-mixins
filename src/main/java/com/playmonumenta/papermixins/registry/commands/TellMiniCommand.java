@@ -2,12 +2,11 @@ package com.playmonumenta.papermixins.registry.commands;
 
 import static com.playmonumenta.papermixins.util.CommandUtil.arg;
 import static com.playmonumenta.papermixins.util.CommandUtil.lit;
-
+import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
 import io.papermc.paper.adventure.PaperAdventure;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
