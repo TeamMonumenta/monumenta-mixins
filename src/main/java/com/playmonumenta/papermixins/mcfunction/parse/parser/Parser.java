@@ -14,7 +14,6 @@ import com.playmonumenta.papermixins.mcfunction.parse.reader.MCFunctionLine;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,8 +52,8 @@ public class Parser {
 		register(name, recvMacro, handler, f -> true, null);
 	}
 
-	public static void init(CommandBuildContext access) {
-		ExtensionsControlFlowV1Parser.init(access);
+	public static void init() {
+		ExtensionsControlFlowV1Parser.init();
 		ExtensionSubroutineParser.init();
 	}
 

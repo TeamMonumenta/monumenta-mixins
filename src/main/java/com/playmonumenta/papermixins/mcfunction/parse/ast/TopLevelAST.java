@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.mcfunction.parse.ast;
 
 import com.playmonumenta.papermixins.mcfunction.codegen.CodeGenerator;
-import com.playmonumenta.papermixins.mcfunction.execution.instr.BranchInstr;
+import com.playmonumenta.papermixins.mcfunction.execution.BranchInstr;
 import com.playmonumenta.papermixins.mcfunction.parse.Diagnostics;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.subroutine.SubroutineDefinitionAST;
 import java.util.HashMap;

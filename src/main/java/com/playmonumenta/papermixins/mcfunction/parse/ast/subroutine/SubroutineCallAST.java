@@ -1,11 +1,9 @@
 package com.playmonumenta.papermixins.mcfunction.parse.ast.subroutine;
 
 import com.playmonumenta.papermixins.mcfunction.codegen.CodeGenerator;
-import com.playmonumenta.papermixins.mcfunction.execution.instr.SubroutineCallInstr;
 import com.playmonumenta.papermixins.mcfunction.parse.Diagnostics;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.ASTNode;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.CodegenContext;
-import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.commands.CommandSourceStack;
 
@@ -28,7 +26,7 @@ public class SubroutineCallAST extends ASTNode {
 		}
 
 		final var targetLabel = cgCtx.subroutines().get(name);
-		gen.emitControlLinkable(List.of(targetLabel), () -> new SubroutineCallInstr<>(targetLabel.offset()));
+		//gen.emitControlLinkable(List.of(targetLabel), () -> new SubroutineCallInstr<>(targetLabel.offset()));
 	}
 
 	@Override

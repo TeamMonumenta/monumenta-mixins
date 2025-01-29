@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mcfunction.codegen;
 
-import com.playmonumenta.papermixins.mcfunction.execution.instr.ControlInstr;
+import com.playmonumenta.papermixins.mcfunction.execution.ControlInstr;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import java.util.ArrayList;

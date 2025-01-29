@@ -1,7 +1,6 @@
 package com.playmonumenta.papermixins.mcfunction.parse.ast.subroutine;
 
 import com.playmonumenta.papermixins.mcfunction.codegen.CodeGenerator;
-import com.playmonumenta.papermixins.mcfunction.execution.instr.SubroutineRetInstr;
 import com.playmonumenta.papermixins.mcfunction.parse.Diagnostics;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.ASTNode;
 import com.playmonumenta.papermixins.mcfunction.parse.ast.BlockAST;
@@ -32,7 +31,7 @@ public class SubroutineDefinitionAST extends ASTNode {
 	public void emit(Diagnostics diagnostics, CodegenContext cgCtx, CodeGenerator<CommandSourceStack> gen) {
 		gen.emitLabel(cgCtx.subroutines().get(name));
 		body.emit(diagnostics, cgCtx, gen);
-		gen.emitControl(SubroutineRetInstr.get());
+		//gen.emitControl(SubroutineRetInstr.get());
 	}
 
 	@Override

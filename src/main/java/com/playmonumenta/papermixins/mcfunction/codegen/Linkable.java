@@ -1,28 +1,14 @@
 package com.playmonumenta.papermixins.mcfunction.codegen;
 
-import com.playmonumenta.papermixins.mcfunction.execution.instr.BranchInstr;
-import com.playmonumenta.papermixins.mcfunction.execution.instr.CallInstr;
-import com.playmonumenta.papermixins.mcfunction.execution.instr.ControlInstr;
-import com.playmonumenta.papermixins.mcfunction.execution.instr.PushInstrAddrInstr;
+import com.playmonumenta.papermixins.mcfunction.execution.BranchInstr;
+import com.playmonumenta.papermixins.mcfunction.execution.ControlInstr;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.commands.execution.UnboundEntryAction;
 
 public interface Linkable<T> {
-	static <T> Linkable<T> call(Label target) {
-		return wrap(List.of(target), () -> new CallInstr<>(target.offset()));
-	}
-
 	static <T> Linkable<T> branch(Label target) {
-		return wrap(List.of(target), () -> new BranchInstr<T>(target.offset()));
-	}
-
-	static <T> Linkable<T> pushInstrAddr(Label target) {
-		return wrap(List.of(target), () -> new PushInstrAddrInstr<T>(target.offset()));
-	}
-
-	static <T> Linkable<T> exit() {
-		return wrap(() -> new BranchInstr<T>(Integer.MAX_VALUE));
+		return wrap(List.of(target), () -> new BranchInstr<>(target.offset()));
 	}
 
 	static <T> Linkable<T> wrap(Supplier<ControlInstr<T>> gen) {
