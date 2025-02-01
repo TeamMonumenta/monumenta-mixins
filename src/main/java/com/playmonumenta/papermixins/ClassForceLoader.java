@@ -26,6 +26,7 @@ public class ClassForceLoader {
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(runnable -> {
 		final var thread = new Thread(runnable);
 		thread.setName("ClassForceLoadWorker");
+		thread.setPriority(Thread.MIN_PRIORITY);
 		return thread;
 	});
 	private final AtomicBoolean flag = new AtomicBoolean();

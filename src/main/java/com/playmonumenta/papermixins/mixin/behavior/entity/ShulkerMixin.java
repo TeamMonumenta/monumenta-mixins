@@ -27,17 +27,6 @@ public abstract class ShulkerMixin extends AbstractGolem {
 		super(type, world);
 	}
 
-	@Inject(
-		method = "setRawPeekAmount",
-		at = @At("HEAD"),
-		cancellable = true
-	)
-	private void cancelSetPeekAmountIfNoAI(int peekAmount, CallbackInfo ci) {
-		if (ConfigManager.getConfig().behavior.fixShulkerNoAi && isNoAi()) {
-			ci.cancel();
-		}
-	}
-
 	@ModifyExpressionValue(
 		method = "hurt",
 		at = @At(
@@ -46,6 +35,6 @@ public abstract class ShulkerMixin extends AbstractGolem {
 		)
 	)
 	private boolean allowArrowsOnClosed(boolean original) {
-		return ConfigManager.getConfig().behavior.closedShulkerHurtByArrows ? false : isClosed();
+		return !ConfigManager.getConfig().behavior.closedShulkerHurtByArrows && isClosed();
 	}
 }
