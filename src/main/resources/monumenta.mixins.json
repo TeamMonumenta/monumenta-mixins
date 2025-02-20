@@ -47,7 +47,6 @@
         "behavior.entity.WanderingTraderMixin",
         "behavior.entity.WitherBossMixin",
         "behavior.entity.ZombieMixin",
-        "behavior.net.Varint21LengthFieldPrependerMixin",
         "behavior.player.ServerPlayerMixin",
         "behavior.spawner.BaseSpawnerMixin",
         "behavior.spawner.EntityMixin",
