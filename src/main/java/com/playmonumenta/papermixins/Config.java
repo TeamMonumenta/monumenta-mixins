@@ -31,6 +31,7 @@ public class Config {
 		public boolean crashOnScoreboardLoadFail = false;
 		public boolean forceUpgradeIncludeEntities = false;
 		public boolean forceUpgradeEagerBlockStates = false;
+		public boolean fixInactiveTickNoAI = false;
 
 		public int giantTrackingRange = 96;
 
