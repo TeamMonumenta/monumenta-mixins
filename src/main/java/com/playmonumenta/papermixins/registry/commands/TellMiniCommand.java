@@ -30,29 +30,32 @@ import org.jetbrains.annotations.NotNull;
 
 public class TellMiniCommand {
 	private static final MiniMessage MM = MiniMessage.builder()
-		.tags(TagResolver.standard())
-		.tags(new TagResolver() {
-			@Override
-			public @NotNull Tag resolve(@NotNull String name, @NotNull ArgumentQueue arguments,
-										@NotNull Context ctx) throws ParsingException {
-				String value = arguments.popOr("Missing unicode value").value();
-				String msg;
+		.editTags(tags -> {
+			tags.resolvers(TagResolver.standard(),
+			// unicode tag resolver - Flowey
+				new TagResolver() {
+					@Override
+					public @NotNull Tag resolve(@NotNull String name, @NotNull ArgumentQueue arguments,
+												@NotNull Context ctx) throws ParsingException {
+						String value = arguments.popOr("Missing unicode value").value();
+						String msg;
 
-				try {
-					msg = Character.toString(Integer.parseInt(value, 16));
-				} catch (NumberFormatException e) {
-					throw ctx.newException("Not a hex string", e, arguments);
-				} catch (IllegalArgumentException e) {
-					throw ctx.newException("Not a valid unicode codepoint", e, arguments);
-				}
+						try {
+							msg = Character.toString(Integer.parseInt(value, 16));
+						} catch (NumberFormatException e) {
+							throw ctx.newException("Not a hex string", e, arguments);
+						} catch (IllegalArgumentException e) {
+							throw ctx.newException("Not a valid unicode codepoint", e, arguments);
+						}
 
-				return Tag.inserting(net.kyori.adventure.text.Component.text(msg));
-			}
+						return Tag.inserting(net.kyori.adventure.text.Component.text(msg));
+					}
 
-			@Override
-			public boolean has(@NotNull String name) {
-				return name.equals("uni") || name.equals("unicode");
-			}
+					@Override
+					public boolean has(@NotNull String name) {
+						return name.equals("uni") || name.equals("unicode");
+					}
+			});
 		})
 		.build();
 
