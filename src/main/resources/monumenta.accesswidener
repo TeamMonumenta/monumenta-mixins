@@ -1,4 +1,22 @@
 accessWidener v2 named
+# from monumenta plugin
+accessible field net/minecraft/world/entity/LivingEntity attackStrengthTicker I
+accessible method net/minecraft/world/entity/LivingEntity updatingUsingItem ()V
+accessible field net/minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal targetType Ljava/lang/Class;
+accessible field net/minecraft/world/entity/boss/wither/WitherBoss TARGETING_CONDITIONS Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;
+accessible class net/minecraft/world/entity/monster/Evoker$EvokerSummonSpellGoal
+accessible class net/minecraft/world/entity/monster/Evoker$EvokerAttackSpellGoal
+accessible class net/minecraft/world/entity/animal/Bee$BeeEnterHiveGoal
+accessible class net/minecraft/world/entity/animal/Bee$BeePollinateGoal
+accessible class net/minecraft/world/entity/animal/Bee$BeeGrowCropGoal
+accessible class net/minecraft/world/entity/animal/Bee$BeeLocateHiveGoal
+accessible field net/minecraft/world/scores/Scoreboard playerScores Ljava/util/Map;
+accessible class net/minecraft/world/scores/PlayerScores
+accessible method net/minecraft/world/scores/PlayerScores listRawScores ()Ljava/util/Map;
+accessible method net/minecraft/world/entity/LivingEntity getJumpPower ()F
+accessible field net/minecraft/server/level/ServerEntity broadcast Ljava/util/function/Consumer;
+
+# our stuff
 accessible class io/papermc/paper/plugin/manager/PaperPluginInstanceManager
 accessible class net/minecraft/commands/functions/MacroFunction$Entry
 accessible class net/minecraft/commands/functions/MacroFunction$PlainTextEntry
@@ -15,20 +33,13 @@ accessible method net/minecraft/commands/functions/CommandFunction shouldConcate
 accessible method net/minecraft/server/commands/ExecuteCommand addConditionals (Lcom/mojang/brigadier/tree/CommandNode;Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;ZLnet/minecraft/commands/CommandBuildContext;)Lcom/mojang/brigadier/builder/ArgumentBuilder;
 accessible method net/minecraft/server/commands/ExecuteCommand spawnEntityAndRedirect (Lnet/minecraft/commands/CommandSourceStack;Lnet/minecraft/core/Holder$Reference;)Lnet/minecraft/commands/CommandSourceStack;
 accessible method net/minecraft/server/commands/ExecuteCommand createRelationOperations (Lcom/mojang/brigadier/tree/CommandNode;Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;)Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;
-accessible field net/minecraft/world/entity/LivingEntity attackStrengthTicker I
-accessible method net/minecraft/world/entity/LivingEntity updatingUsingItem ()V
-accessible field net/minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal targetType Ljava/lang/Class;
-accessible field net/minecraft/world/entity/boss/wither/WitherBoss TARGETING_CONDITIONS Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;
 accessible class net/minecraft/world/entity/monster/Evoker$EvokerSummonSpellGoal
 accessible class net/minecraft/world/entity/monster/Evoker$EvokerAttackSpellGoal
 accessible class net/minecraft/world/entity/animal/Bee$BeeEnterHiveGoal
 accessible class net/minecraft/world/entity/animal/Bee$BeePollinateGoal
 accessible class net/minecraft/world/entity/animal/Bee$BeeGrowCropGoal
 accessible class net/minecraft/world/entity/animal/Bee$BeeLocateHiveGoal
-accessible field net/minecraft/world/scores/Scoreboard playerScores Ljava/util/Map;
 accessible class net/minecraft/world/scores/PlayerScores
-accessible method net/minecraft/world/scores/PlayerScores listRawScores ()Ljava/util/Map;
-accessible method net/minecraft/world/entity/LivingEntity getJumpPower ()F
 accessible method net/minecraft/server/players/PlayerList save (Lnet/minecraft/server/level/ServerPlayer;)V
 accessible field net/minecraft/server/PlayerAdvancements GSON Lcom/google/gson/Gson;
 accessible class net/minecraft/server/level/ServerLevel$EntityRegionFileStorage
