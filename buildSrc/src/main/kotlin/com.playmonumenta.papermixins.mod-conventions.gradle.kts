@@ -14,7 +14,8 @@ val shade: Configuration by configurations.creating
 
 shade.extendsFrom(include)
 configurations.getByName("implementation").extendsFrom(include)
-configurations.getByName("implementation").extendsFrom(configurations.getByName("mojangMappedServerRuntime"))
+configurations.getByName("runtimeClasspath").extendsFrom(configurations.getByName("mojangMappedServerRuntime"))
+configurations.getByName("runtimeClasspath").extendsFrom(configurations.getByName("mojangMappedServer"))
 
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper.api.get())

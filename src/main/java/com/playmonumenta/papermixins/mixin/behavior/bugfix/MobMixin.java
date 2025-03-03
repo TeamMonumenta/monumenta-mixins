@@ -15,7 +15,7 @@ public abstract class MobMixin {
 
 	@Inject(method = "inactiveTick", at = @At("HEAD"), cancellable = true)
 	private void skipInactiveTick(CallbackInfo ci) {
-		if (isNoAi() && ConfigManager.getConfig().behavior.fixInactiveTickNoAI) {
+		if (isNoAi() && ConfigManager.getConfig().behavior.fixInactiveTickNoAi) {
 			ci.cancel();
 		}
 	}
