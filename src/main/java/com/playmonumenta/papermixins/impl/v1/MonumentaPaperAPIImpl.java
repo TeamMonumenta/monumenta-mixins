@@ -9,8 +9,8 @@ import com.playmonumenta.mixinapi.v1.resource.DataLoaderRegistry;
 import com.playmonumenta.papermixins.VersionInfo;
 import com.playmonumenta.papermixins.impl.paperapi.v1.HookAPIImpl;
 import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
+import net.fabricmc.loader.api.SemanticVersion;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.semver4j.Semver;
 
 @SuppressWarnings("deprecation")
 public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
@@ -31,7 +31,7 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 	}
 
 	@Override
-	public Semver getVersion() {
+	public SemanticVersion getVersion() {
 		return VersionInfo.VERSION;
 	}
 

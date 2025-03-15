@@ -3,13 +3,12 @@ plugins {
 }
 
 group = "com.playmonumenta.papermixins"
-version = "2.0.3"
+version = "2.0.4"
 
 paperweight.awPath.set(file("src/main/resources/monumenta.accesswidener"))
 
 dependencies {
 	include(project("plugin-api"))
-	include(libs.semver)
 	// no-dist impl
 	implementation(libs.nbtapi.plugin)
 	shade(libs.nbtapi)

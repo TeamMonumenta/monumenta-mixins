@@ -15,7 +15,6 @@ public class MonumentaMod {
 		return LoggerFactory.getLogger(VersionInfo.IDENTIFIER + "/" + subsystem);
 	}
 
-
 	public static void onStart() {
 		MonumentaMod.LOGGER.info("Running {}", MonumentaMod.getIdentifier());
 	}
