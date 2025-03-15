@@ -8,7 +8,6 @@ group = "com.playmonumenta.papermixins"
 
 dependencies {
 	compileOnly(libs.paper.api)
-	compileOnly(libs.fabric.loader)
+	api(libs.fabric.loader)
 	compileOnly(libs.nbtapi.plugin)
-	compileOnly("net.kyori:adventure-nbt:4.19.0")
 }

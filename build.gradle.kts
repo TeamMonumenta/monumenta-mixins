@@ -8,7 +8,9 @@ version = "2.0.4"
 paperweight.awPath.set(file("src/main/resources/monumenta.accesswidener"))
 
 dependencies {
-	include(project("plugin-api"))
+	include(project("plugin-api")) {
+		isTransitive = false
+	}
 	// no-dist impl
 	implementation(libs.nbtapi.plugin)
 	shade(libs.nbtapi)

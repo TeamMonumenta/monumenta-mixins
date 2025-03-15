@@ -34,6 +34,18 @@ java {
     withSourcesJar()
 }
 
+val include: Configuration by configurations.creating
+val shade: Configuration by configurations.creating
+
+shade.extendsFrom(include)
+configurations.getByName("implementation").extendsFrom(include)
+
+tasks {
+    shadowJar {
+        configurations = listOf(shade)
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
