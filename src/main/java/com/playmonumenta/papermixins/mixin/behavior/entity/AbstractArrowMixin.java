@@ -38,7 +38,7 @@ public abstract class AbstractArrowMixin extends Entity {
 			return;
 		}
 
-		if (getPierceLevel() <= 10) {
+		if (getPierceLevel() <= 0) {
 			discard();
 		}
 
