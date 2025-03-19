@@ -67,6 +67,7 @@
         "impl.event.MinecraftServerMixin",
         "impl.event.PlayerAdvancementsMixin",
         "impl.event.PlayerDataStorageMixin",
+        "impl.hook.BlockEntityMixin",
         "impl.hook.EntityMixin",
         "impl.itemapi.CraftEventFactoryMixin",
         "impl.itemapi.DedicatedServerMixin",
