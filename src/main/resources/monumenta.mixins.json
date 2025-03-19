@@ -68,6 +68,7 @@
         "impl.event.PlayerAdvancementsMixin",
         "impl.event.PlayerDataStorageMixin",
         "impl.hook.BlockEntityMixin",
+        "impl.hook.BoostrapMixin",
         "impl.hook.EntityMixin",
         "impl.itemapi.CraftEventFactoryMixin",
         "impl.itemapi.DedicatedServerMixin",
