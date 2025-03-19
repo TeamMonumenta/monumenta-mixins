@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import org.bukkit.event.entity.EntityRemoveEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,8 +39,9 @@ public abstract class AbstractArrowMixin extends Entity {
 			return;
 		}
 
-		if (getPierceLevel() <= 10) {
-			discard();
+		if (getPierceLevel() <= 0) {
+			// !: discard reason may change in the future
+			discard(EntityRemoveEvent.Cause.HIT);
 		}
 
 		ci.cancel();
