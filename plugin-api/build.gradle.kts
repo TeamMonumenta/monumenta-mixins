@@ -10,4 +10,5 @@ dependencies {
 	compileOnly(libs.paper.api)
 	api(libs.fabric.loader)
 	compileOnly(libs.nbtapi.plugin)
+	api("net.kyori:adventure-nbt:4.19.0")
 }
