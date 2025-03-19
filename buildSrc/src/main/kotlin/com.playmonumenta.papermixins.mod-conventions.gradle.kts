@@ -1,3 +1,4 @@
+import gradle.kotlin.dsl.accessors._38fa8ead452481b64a55a9c452402ffd.shadowJar
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.kotlin.dsl.invoke
 
@@ -9,11 +10,6 @@ plugins {
 // https://github.com/gradle/gradle/issues/15383
 val libs = the<LibrariesForLibs>()
 
-val include: Configuration by configurations.creating
-val shade: Configuration by configurations.creating
-
-shade.extendsFrom(include)
-configurations.getByName("implementation").extendsFrom(include)
 configurations.getByName("runtimeClasspath").extendsFrom(configurations.getByName("mojangMappedServerRuntime"))
 configurations.getByName("runtimeClasspath").extendsFrom(configurations.getByName("mojangMappedServer"))
 
@@ -36,7 +32,6 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("dev")
-        configurations = listOf(shade)
     }
 
     reobfJar {
