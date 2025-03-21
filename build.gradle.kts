@@ -11,7 +11,8 @@ dependencies {
 	include(project("plugin-api")) {
 		isTransitive = false
 	}
-	// no-dist impl
+
+    // don't distribute this for Reasons (TM)
 	implementation(libs.nbtapi.plugin)
 	shade(libs.nbtapi)
 }
