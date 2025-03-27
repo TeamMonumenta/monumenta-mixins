@@ -1,36 +1,31 @@
+import com.diffplug.gradle.spotless.SpotlessExtension
+
 plugins {
-	id("com.playmonumenta.papermixins.mod-conventions")
+	id("com.diffplug.spotless") version "7.0.2" apply false
 }
 
-group = "com.playmonumenta.papermixins"
-version = "2.0.4"
+allprojects {
+	apply(plugin = "com.diffplug.spotless")
+	extensions.getByType(SpotlessExtension::class.java).apply {
+		format("misc") {
+			target("*.kts")
 
-paperweight.awPath.set(file("src/main/resources/monumenta.accesswidener"))
-
-dependencies {
-	include(project("plugin-api")) {
-		isTransitive = false
-	}
-
-    // don't distribute this for Reasons (TM)
-	implementation(libs.nbtapi.plugin)
-	shade(libs.nbtapi)
-}
-
-tasks {
-	processResources {
-		inputs.properties("version" to version.toString())
-
-		filesMatching("fabric.mod.json") {
-			expand(
-				mapOf(
-					"version" to version.toString()
-				)
-			)
+			leadingSpacesToTabs()
+			endWithNewline()
+			trimTrailingWhitespace()
 		}
 	}
+}
 
-	shadowJar {
-		relocate("de.tr7zw.changeme.nbtapi", "de.tr7zw.nbtapi")
+subprojects {
+	extensions.getByType(SpotlessExtension::class.java).apply {
+		java {
+			importOrder("")
+			removeUnusedImports()
+
+			leadingSpacesToTabs()
+			endWithNewline()
+			trimTrailingWhitespace()
+		}
 	}
 }

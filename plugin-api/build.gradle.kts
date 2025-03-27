@@ -1,13 +1,31 @@
 plugins {
 	`java-library`
-	id("com.playmonumenta.papermixins.java-conventions")
+	`maven-publish`
 }
 
-version = rootProject.version
-group = "com.playmonumenta.papermixins"
+group = properties["group"]!!
+version = properties["version"]!!
+
+repositories {
+	mavenCentral()
+	maven("https://repo.papermc.io/repository/maven-public/")
+	maven("https://repo.codemc.io/repository/maven-public/")
+}
 
 dependencies {
-	compileOnly(libs.paper.api)
+	api(libs.paper.api)
 	api(libs.fabric.loader)
-	compileOnly(libs.nbtapi.plugin)
+	api(libs.nbtapi.plugin)
+}
+
+publishing {
+	repositories {
+		val url = System.getenv("MAVEN_URL") ?: return@repositories
+		maven(url) {
+			credentials {
+				username = System.getenv("MAVEN_USERNAME")
+				password = System.getenv("MAVEN_TOKEN")
+			}
+		}
+	}
 }

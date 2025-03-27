@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"name": "Monumenta Mixins/Paper Patches",
+	"description": "A set of mixins & extra stuff to fix paper bugs & introduce new API",
+	"contact": {
+		"homepage": "https://playmonumenta.com/",
+		"issues": "https://github.com/TeamMonumenta/monumenta-mixins/issues",
+		"sources": "https://github.com/TeamMonumenta/monumenta-mixins"
+	},
+	"authors": [
+		"Team Monumenta"
+	],
+	"license": "AGPL-3.0-only",
+	"id": "monumenta",
+	"version": "${version}",
+	"mixins": [
+		"monumenta.mixins.json"
+	],
+	"accessWidener": "monumenta.accesswidener"
+}
