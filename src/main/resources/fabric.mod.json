@@ -1,9 +1,0 @@
-{
-    "schemaVersion": 1,
-    "id": "monumenta",
-    "version": "${version}",
-    "mixins": [
-        "monumenta.mixins.json"
-    ],
-    "accessWidener": "monumenta.accesswidener"
-}
