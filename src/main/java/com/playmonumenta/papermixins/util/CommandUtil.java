@@ -1,6 +1,11 @@
 package com.playmonumenta.papermixins.util;
 
-import com.mojang.brigadier.*;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.Message;
+import com.mojang.brigadier.RedirectModifier;
+import com.mojang.brigadier.SingleRedirectModifier;
+import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

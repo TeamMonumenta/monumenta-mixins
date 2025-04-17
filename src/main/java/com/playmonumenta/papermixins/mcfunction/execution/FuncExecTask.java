@@ -3,7 +3,11 @@ package com.playmonumenta.papermixins.mcfunction.execution;
 import com.playmonumenta.papermixins.MonumentaMod;
 import com.playmonumenta.papermixins.mcfunction.execution.instr.ControlInstr;
 import java.util.List;
-import net.minecraft.commands.execution.*;
+import net.minecraft.commands.execution.CommandQueueEntry;
+import net.minecraft.commands.execution.EntryAction;
+import net.minecraft.commands.execution.ExecutionContext;
+import net.minecraft.commands.execution.Frame;
+import net.minecraft.commands.execution.UnboundEntryAction;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
