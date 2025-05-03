@@ -3,6 +3,7 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.playmonumenta.papermixins.ConfigManager;
 import com.playmonumenta.papermixins.paperapi.v1.event.IronGolemHealEvent;
+import com.playmonumenta.papermixins.util.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -40,7 +41,7 @@ public abstract class IronGolemMixin {
 			cancellable = true
 	)
 	private void onHeal(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-		IronGolemHealEvent event = new IronGolemHealEvent((CraftPlayer) (player.getBukkitEntity()), (org.bukkit.entity.IronGolem) ((IronGolem) ((Object) this)).getBukkitEntity());
+		IronGolemHealEvent event = new IronGolemHealEvent((CraftPlayer) (player.getBukkitEntity()),  Util.c(Util.<IronGolem>c(this).getBukkitEntity()));
 		event.callEvent();
 		if (event.isCancelled()) {
 			cir.setReturnValue(InteractionResult.FAIL);
