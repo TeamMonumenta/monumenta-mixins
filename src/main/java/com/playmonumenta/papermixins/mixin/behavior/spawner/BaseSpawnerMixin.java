@@ -3,17 +3,24 @@ package com.playmonumenta.papermixins.mixin.behavior.spawner;
 import com.destroystokyo.paper.event.entity.PreSpawnerSpawnEvent;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.playmonumenta.papermixins.duck.EntityAccess;
 import com.playmonumenta.papermixins.duck.SpawnerAccess;
+import com.playmonumenta.papermixins.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.level.BaseSpawner;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author Flowey
@@ -62,11 +69,7 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 			)
 		)
 	)
-	private int setFlagIfCancelled(
-		int constant,
-		@Local PreSpawnerSpawnEvent ev,
-		@Local boolean flag
-	) {
+	private int setFlagIfCancelled(int constant, @Local PreSpawnerSpawnEvent ev, @Local boolean flag) {
 		if(ev.shouldAbortSpawn()) {
 			return 1; // true
 		}
@@ -109,5 +112,18 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 	@Override
 	public void monumenta$setBlockPos(BlockPos pos) {
 		monumenta$blockPos = pos;
+	}
+
+	@Inject(
+		method = "serverTick",
+		at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/world/entity/Entity;spawnedViaMobSpawner:Z"
+		)
+	)
+	private void setEntitySpawnedBySpawner(ServerLevel world, BlockPos pos, CallbackInfo ci, @Local Entity entity) {
+		if (!(entity instanceof FlyingMob || entity instanceof Vex)) {
+			((EntityAccess) entity).monumenta$setSpawner(Util.c(this));
+		}
 	}
 }

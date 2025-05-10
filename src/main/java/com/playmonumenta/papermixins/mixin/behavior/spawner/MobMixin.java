@@ -6,11 +6,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
-import org.bukkit.event.entity.EntityRemoveEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author Flowey
@@ -34,8 +34,14 @@ public abstract class MobMixin extends LivingEntity {
 			((SpawnerAccess) spawner).monumenta$getBlockPos() != null;
 	}
 
-	@Unique
-	public void monumenta$despawn() {
+	@Inject(
+		method = "checkDespawn",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/Mob;discard(Lorg/bukkit/event/entity/EntityRemoveEvent$Cause;)V"
+		)
+	)
+	private void replaceDiscardDespawn(CallbackInfo ci) {
 		if (monumenta$isDespawnCandidate()) {
 			// Get the closest player to spawner
 			var spawner = ((EntityAccess) this).monumenta$getSpawner();
@@ -66,18 +72,5 @@ public abstract class MobMixin extends LivingEntity {
 				}
 			}
 		}
-
-		discard();
-	}
-
-	@Redirect(
-		method = "checkDespawn",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/Mob;discard(Lorg/bukkit/event/entity/EntityRemoveEvent$Cause;)V"
-		)
-	)
-	private void replaceDiscardDespawn(Mob instance, EntityRemoveEvent.Cause cause) {
-		monumenta$despawn();
 	}
 }
