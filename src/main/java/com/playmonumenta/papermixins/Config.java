@@ -32,7 +32,7 @@ public class Config {
 		public boolean forceUpgradeIncludeEntities = false;
 		public boolean forceUpgradeEagerBlockStates = false;
 		public boolean fixInactiveTickNoAi = false;
-        public boolean freezeEndGateway = false;
+		public boolean freezeEndGateway = false;
 
 		public int giantTrackingRange = 96;
 
