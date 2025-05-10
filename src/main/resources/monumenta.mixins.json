@@ -16,6 +16,7 @@
         "behavior.block.ConcretePowderBlockMixin",
         "behavior.block.CoralBlockMixin",
         "behavior.block.IceBlockMixin",
+        "behavior.block.TheEndGatewayBlockEntityMixin",
         "behavior.bugfix.CommodoreMethodVisitorMixin",
         "behavior.bugfix.CraftLootTableMixin",
         "behavior.bugfix.CraftWorldMixin",
