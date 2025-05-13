@@ -47,3 +47,5 @@ accessible class io/papermc/paper/world/ThreadedWorldUpgrader$ConvertTask
 accessible class io/papermc/paper/world/ThreadedWorldUpgrader$WorldInfo
 accessible field io/papermc/paper/world/ThreadedWorldUpgrader LOGGER Lorg/apache/logging/log4j/Logger;
 accessible method net/minecraft/server/level/ServerLevel$EntityRegionFileStorage write (Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/nbt/CompoundTag;)V
+accessible field org/bukkit/craftbukkit/v1_20_R3/block/CraftBlockStates FACTORIES_BY_BLOCK_ENTITY_TYPE Ljava/util/Map;
+accessible class org/bukkit/craftbukkit/v1_20_R3/block/CraftBlockStates$BlockStateFactory
