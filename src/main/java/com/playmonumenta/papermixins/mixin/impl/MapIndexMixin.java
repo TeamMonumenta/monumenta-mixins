@@ -6,7 +6,6 @@ import net.minecraft.world.level.saveddata.maps.MapIndex;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(MapIndex.class)
 public class MapIndexMixin implements MapIndexAccess {
@@ -17,6 +16,6 @@ public class MapIndexMixin implements MapIndexAccess {
 
 	@Override
 	public int getLastAuxValueForMap() {
-		return getUsedAuxIds().getInt("map");
+		return usedAuxIds.getInt("map");
 	}
 }
