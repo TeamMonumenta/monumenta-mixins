@@ -65,6 +65,8 @@
         "commands.ServerFunctionLibraryMixin",
         "impl.event.CraftEventFactoryMixin",
         "impl.event.LivingEntityMixin",
+        "impl.event.MapItemDataInitMixin",
+        "impl.event.MapItemDataSaveMixin",
         "impl.event.MinecraftServerMixin",
         "impl.event.PlayerAdvancementsMixin",
         "impl.event.PlayerDataStorageMixin",
