@@ -10,6 +10,10 @@ import com.playmonumenta.papermixins.VersionInfo;
 import com.playmonumenta.papermixins.impl.paperapi.v1.HookAPIImpl;
 import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
 import net.fabricmc.loader.api.SemanticVersion;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.level.saveddata.maps.MapIndex;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 @SuppressWarnings("deprecation")
@@ -23,6 +27,16 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 		}
 
 		return INSTANCE;
+	}
+
+	public int getLastMapId() {
+		MinecraftServer.getServer().overworld().getDataStorage().computeIfAbsent(MapIndex.factory(), "idcounts")).usedAuxIds.getInt("map");
+
+	}
+
+	@Override
+	public int getFreeMapId() {
+		return MinecraftServer.getServer().overworld().getFreeMapId();
 	}
 
 	@Override
@@ -60,6 +74,7 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 		return DataFixImpl.getInstance();
 	}
 
+	@Override
 	public HookAPI getHookAPI() {
 		return HookAPIImpl.getInstance();
 	}

@@ -63,6 +63,7 @@
         "commands.ReloadableServerResourcesMixin",
         "commands.ReturnCommandMixin",
         "commands.ServerFunctionLibraryMixin",
+        "impl.MapIndexMixin",
         "impl.event.CraftEventFactoryMixin",
         "impl.event.LivingEntityMixin",
         "impl.event.MapItemDataInitMixin",
