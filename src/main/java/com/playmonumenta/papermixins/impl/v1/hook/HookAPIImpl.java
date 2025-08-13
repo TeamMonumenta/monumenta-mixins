@@ -35,8 +35,8 @@ public class HookAPIImpl implements HookAPI {
 		return blockEntityRegistry;
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T, A> Hook<T, A> doDefine(NamespacedKey key, Class<T> clazz) {
+    @SuppressWarnings("unchecked")
+    public <T, A> Hook<T, A> doDefine(NamespacedKey key, Class<T> clazz) {
 		try {
 			return new HookImpl<T, A>(
 				key,
