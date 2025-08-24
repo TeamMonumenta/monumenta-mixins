@@ -79,7 +79,7 @@ public class ClassForceLoader {
 					}
 				}
 			} catch (IOException e) {
-				Util.sneakyThrow(e);
+				throw Util.sneakyThrow(e);
 			} catch (StopException ignored) {
 			}
 		});
