@@ -29,3 +29,5 @@ accessible class io/papermc/paper/world/ThreadedWorldUpgrader$ConvertTask
 accessible class io/papermc/paper/world/ThreadedWorldUpgrader$WorldInfo
 accessible field io/papermc/paper/world/ThreadedWorldUpgrader LOGGER Lorg/apache/logging/log4j/Logger;
 accessible method net/minecraft/server/level/ServerLevel$EntityRegionFileStorage write (Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/nbt/CompoundTag;)V
+accessible field net/minecraft/world/scores/Scoreboard playerScores Ljava/util/Map;
+accessible method net/minecraft/world/scores/PlayerScores listRawScores ()Ljava/util/Map;

@@ -14,54 +14,54 @@ import net.fabricmc.loader.impl.util.log.LogCategory;
 import org.jetbrains.annotations.Nullable;
 
 record PluginMetadata(@Nullable Map<String, List<String>> wideners) {
-    private static final LogCategory CATEGORY = LogCategory.createCustom("Monumenta", "Plugin", "ConfigParser");
+	private static final LogCategory CATEGORY = LogCategory.createCustom("Monumenta", "Plugin", "ConfigParser");
 
-    private static Map<String, List<String>> readWideners(JsonReader reader) throws IOException {
-        reader.beginObject();
+	private static Map<String, List<String>> readWideners(JsonReader reader) throws IOException {
+		reader.beginObject();
 
-        final var widenersByVersion = new HashMap<String, List<String>>();
+		final var widenersByVersion = new HashMap<String, List<String>>();
 
-        while (reader.hasNext()) {
-            final var name = reader.nextName();
-            final var wideners = new ArrayList<String>();
+		while (reader.hasNext()) {
+			final var name = reader.nextName();
+			final var wideners = new ArrayList<String>();
 
-            reader.beginArray();
+			reader.beginArray();
 
-            while (reader.hasNext()) {
-                wideners.add(reader.nextString());
-            }
+			while (reader.hasNext()) {
+				wideners.add(reader.nextString());
+			}
 
-            reader.endArray();
+			reader.endArray();
 
-            widenersByVersion.put(name, wideners);
-        }
+			widenersByVersion.put(name, wideners);
+		}
 
-        reader.endObject();
+		reader.endObject();
 
-        return widenersByVersion;
-    }
+		return widenersByVersion;
+	}
 
-    public static Optional<PluginMetadata> readPluginMetadata(Path pluginPath, Path cfgPath) {
-        try (final var reader = new JsonReader(Files.newBufferedReader(cfgPath))) {
-            reader.beginObject();
+	public static Optional<PluginMetadata> readPluginMetadata(Path pluginPath, Path cfgPath) {
+		try (final var reader = new JsonReader(Files.newBufferedReader(cfgPath))) {
+			reader.beginObject();
 
-            Map<String, List<String>> wideners = null;
+			Map<String, List<String>> wideners = null;
 
-            while (reader.hasNext()) {
-                final var name = reader.nextName();
+			while (reader.hasNext()) {
+				final var name = reader.nextName();
 
-                if (name.equals("wideners")) {
-                    wideners = readWideners(reader);
-                }
-            }
+				if (name.equals("wideners")) {
+					wideners = readWideners(reader);
+				}
+			}
 
-            reader.endObject();
+			reader.endObject();
 
-            return Optional.of(new PluginMetadata(wideners));
-        } catch (Exception e) {
-            Log.error(CATEGORY, "failed to monumenta.plugin.json from plugin " + pluginPath, e);
-        }
+			return Optional.of(new PluginMetadata(wideners));
+		} catch (Exception e) {
+			Log.error(CATEGORY, "failed to monumenta.plugin.json from plugin " + pluginPath, e);
+		}
 
-        return Optional.empty();
-    }
+		return Optional.empty();
+	}
 }
