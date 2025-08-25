@@ -192,7 +192,7 @@ public abstract class ApiMirrorRootNode extends RootCommandNode<CommandSourceSta
 		restrictive access.
 		 */
 		CommandNode<CommandSourceStack> shadow = new ShadowBrigNode(unwrapped);
-		((CommandNodeAccess) unwrapped).monuemnta$setWrappedCached(shadow);
+		((CommandNodeAccess) unwrapped).monumenta$setWrappedCached(shadow);
 		return shadow;
 	}
 
