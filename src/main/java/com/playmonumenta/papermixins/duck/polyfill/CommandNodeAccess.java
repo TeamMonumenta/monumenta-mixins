@@ -18,10 +18,6 @@ public interface CommandNodeAccess {
 		throw new AbstractMethodError();
 	}
 
-	default void monuemnta$setWrappedCached(CommandNode<CommandSourceStack> shadow) {
-		throw new AbstractMethodError();
-	}
-
 	default @Nullable CommandNode<CommandSourceStack> monumenta$getWrappedCached() {
 		throw new AbstractMethodError();
 	}

@@ -11,7 +11,9 @@ dependencies {
 	include(project("plugin-api")) {
 		isTransitive = false
 	}
-	implementation(libs.brigadier)
+    // for polyfill
+    implementation(libs.brigadier)
+    shade(libs.brigadier)
 	// no-dist impl
 	implementation(libs.nbtapi.plugin)
 	shade(libs.nbtapi)
