@@ -2,18 +2,16 @@ metadata.format.version = "1.1"
 
 [versions]
 fabric-loader = "1.0.3"
-tiny-remapper = "0.10.3"
 
 paper-api = "1.20.4-R0.1-SNAPSHOT"
 nbtapi = "2.12.4"
 
 gradle-spotless = "6.25.0"
-gradle-paperweight = "1.1.2"
+gradle-paperweight = "2.0.0-build.5+2.0.0-beta.18"
 gradle-shadow = "8.1.1"
 
 [libraries]
 fabric-loader = { module = "com.floweytf.fabricpaperloader:fabric-paper-loader", version.ref = "fabric-loader" }
-tiny-remapper = { module = "net.fabricmc:tiny-remapper", version.ref = "tiny-remapper" }
 
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
 nbtapi = { module = "de.tr7zw:item-nbt-api", version.ref = "nbtapi" }
