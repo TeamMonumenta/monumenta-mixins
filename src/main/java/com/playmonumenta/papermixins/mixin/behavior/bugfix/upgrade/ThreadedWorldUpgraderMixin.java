@@ -8,7 +8,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.playmonumenta.papermixins.ConfigManager;
-import com.playmonumenta.papermixins.duck.WorldInfoAccess;
 import com.playmonumenta.papermixins.util.Util;
 import io.papermc.paper.world.ThreadedWorldUpgrader;
 import java.io.File;

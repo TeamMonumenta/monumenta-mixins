@@ -2,7 +2,7 @@ package com.playmonumenta.papermixins.mixin.misc.branding;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.playmonumenta.papermixins.VersionInfo;
-import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;

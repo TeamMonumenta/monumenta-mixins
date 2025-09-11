@@ -7,7 +7,7 @@ import de.tr7zw.nbtapi.NBTContainer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_20_R3.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemStackStateManager {

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Force plugins to shut up about fabric. No, this isn't hybrid server software! At least try to detect the presence of
  * Fabric API!
  */
-@Mixin(targets = "org.bukkit.craftbukkit.v1_20_R3.util.Commodore$1$1")
+@Mixin(targets = "org.bukkit.craftbukkit.util.Commodore$1$1")
 public class CommodoreMethodVisitorMixin extends MethodVisitor {
 	protected CommodoreMethodVisitorMixin(int api) {
 		super(api);

@@ -1,6 +1,5 @@
 package com.playmonumenta.papermixins.mixin.behavior.bugfix.upgrade;
 
-import com.playmonumenta.papermixins.duck.WorldInfoAccess;
 import io.papermc.paper.world.ThreadedWorldUpgrader;
 import net.minecraft.server.level.ServerLevel;
 import org.spongepowered.asm.mixin.Mixin;

@@ -14,9 +14,9 @@ import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.util.datafix.DataFixTypes;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_20_R3.scoreboard.CraftScoreboard;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -61,12 +61,12 @@ public class RedisSyncIOImpl implements RedisSyncIO {
 
 		DataFixer dataFixer = ((CraftServer) Bukkit.getServer()).getHandle().getServer().getFixerUpper();
 		dynamic = DataFixTypes.ADVANCEMENTS.update(dataFixer, dynamic, dynamic.get("DataVersion").asInt(0),
-			SharedConstants.getCurrentVersion().getDataVersion().getVersion());
+			SharedConstants.getCurrentVersion().dataVersion().getVersion());
 		dynamic = dynamic.remove("DataVersion");
 
 		JsonElement element = dynamic.getValue();
 		element.getAsJsonObject().addProperty("DataVersion",
-			SharedConstants.getCurrentVersion().getDataVersion().getVersion());
+			SharedConstants.getCurrentVersion().dataVersion().getVersion());
 		return PlayerAdvancements.GSON.toJson(element);
 	}
 }

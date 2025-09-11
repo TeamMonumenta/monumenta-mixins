@@ -3,7 +3,6 @@ package com.playmonumenta.papermixins.mixin.behavior.bugfix.upgrade;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.serialization.Codec;
 import com.playmonumenta.papermixins.ConfigManager;
-import com.playmonumenta.papermixins.duck.WorldInfoAccess;
 import com.playmonumenta.papermixins.util.Util;
 import io.papermc.paper.world.ThreadedWorldUpgrader;
 import java.io.IOException;
