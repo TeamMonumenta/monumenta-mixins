@@ -29,6 +29,10 @@ tasks {
 		}
 	}
 
+	reobfJar {
+		accessWideners.add("monumenta.accesswidener")
+	}
+
 	shadowJar {
 		relocate("de.tr7zw.changeme.nbtapi", "de.tr7zw.nbtapi")
 	}
