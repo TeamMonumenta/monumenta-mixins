@@ -10,4 +10,5 @@ dependencies {
 	compileOnly(libs.paper.api)
 	api(libs.fabric.loader)
 	compileOnly(libs.nbtapi.plugin)
+	api(libs.brigadier)
 }
