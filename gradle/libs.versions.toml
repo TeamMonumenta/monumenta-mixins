@@ -1,7 +1,7 @@
 metadata.format.version = "1.1"
 
 [versions]
-fabric-loader = "1.0.3"
+fabric-loader = "2.0.0+fabric.0.17.2-SNAPSHOT"
 
 paper-api = "1.20.4-R0.1-SNAPSHOT"
 nbtapi = "2.12.4"
