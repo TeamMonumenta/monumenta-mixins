@@ -23,7 +23,7 @@ public abstract class PlayerMixin implements LivingEntity {
 		CraftPlayer craftPlayer = (CraftPlayer) getBukkitEntity();
 		Event event = new SweepingEdgeParticleEvent(craftPlayer);
 
-		if (event.callEvent()) {
+		if (!event.callEvent()) {
 			ci.cancel();
 		}
 	}
