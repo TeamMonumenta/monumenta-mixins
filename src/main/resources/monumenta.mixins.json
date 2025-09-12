@@ -4,6 +4,7 @@
     "package": "com.playmonumenta.papermixins.mixin",
     "target": "@env(DEFAULT)",
     "compatibilityLevel": "JAVA_16",
+    "plugin": "com.playmonumenta.papermixins.earlyloader.EarlyLoaderPlugin",
     "mixins": [
         "accessor.JavaPluginAccessor",
         "api.DamageModifierMixin",
