@@ -9,14 +9,19 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -48,6 +53,12 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Shadow
 	public int hurtTime;
+
+	@Shadow @Final private AttributeMap attributes;
+
+	@Shadow public abstract double getAttributeValue(Attribute attribute);
+
+	@Shadow public abstract float getSpeed();
 
 	public LivingEntityMixin(EntityType<?> type, Level world) {
 		super(type, world);
@@ -200,4 +211,28 @@ public abstract class LivingEntityMixin extends Entity {
 	)
 	private void noop3(LivingEntity instance, int value, Operation<Void> original) {
 	}
+
+	@ModifyArg(
+			method = "knockback(DDDLnet/minecraft/world/entity/Entity;Lorg/bukkit/event/entity/EntityKnockbackEvent$KnockbackCause;)V",
+			at = @At(
+					value = "INVOKE",
+					target = "Lorg/bukkit/craftbukkit/v1_20_R3/event/CraftEventFactory;callEntityKnockbackEvent(Lorg/bukkit/craftbukkit/v1_20_R3/entity/CraftLivingEntity;Lnet/minecraft/world/entity/Entity;Lorg/bukkit/event/entity/EntityKnockbackEvent$KnockbackCause;DLnet/minecraft/world/phys/Vec3;DDD)Lorg/bukkit/event/entity/EntityKnockbackEvent;"),
+			index = 6
+	)
+	private double verticalKnockback(
+			double force, @Local(argsOnly = true, ordinal = 0) double d0,
+			@Local(ordinal = 0) Vec3 vec3d) {
+		System.out.println("initial speed: " + this.getSpeed());
+		System.out.println("vec3dy: " + vec3d.y);
+//		double knockbackAmount = vec3d.y / (double) 2.0F - 0.4;
+		double knockbackAmount = 0;
+		System.out.println("knockback: " + knockbackAmount);
+		System.out.println("final speed: " + this.getSpeed());
+		return knockbackAmount;
+//		(this.onGround()
+//				? Math.min(0.4D * Math.max(1 - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0), vec3d.y / 2.0D + d0)
+//				: vec3d.y)
+	}
+
+
 }
