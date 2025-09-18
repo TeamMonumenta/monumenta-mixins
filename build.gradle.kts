@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.playmonumenta.papermixins"
-version = "2.1.0"
+version = "2.1.2"
 
 paperweight.awPath.set(file("src/main/resources/monumenta.accesswidener"))
 
@@ -27,6 +27,10 @@ tasks {
 				)
 			)
 		}
+	}
+
+	reobfJar {
+		accessWideners.add("monumenta.accesswidener")
 	}
 
 	shadowJar {

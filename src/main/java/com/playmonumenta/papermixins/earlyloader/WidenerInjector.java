@@ -26,7 +26,7 @@ public class WidenerInjector {
 		}
 
 		try (BufferedReader reader = Files.newBufferedReader(awPath)) {
-			awReader.read(reader, FabricLauncherBase.getLauncher().getTargetNamespace());
+			awReader.read(reader, FabricLauncherBase.getLauncher().getDefaultRuntimeNamespace());
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to read widener '%s' from %s".formatted(path, pluginPath), e);
 		}
