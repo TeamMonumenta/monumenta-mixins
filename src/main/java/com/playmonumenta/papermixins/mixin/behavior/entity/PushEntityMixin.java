@@ -12,27 +12,27 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(Entity.class)
 public abstract class PushEntityMixin {
-    @Unique
-    LivingEntity entity = (LivingEntity) (Object) this;
-    /**
-     * @author ashphyx
-     * @reason Prevent mobs pushing each other from bypassing Knockback Resistance.
-     */
-    @Shadow
-    @Overwrite
-    public void push(double deltaX, double deltaY, double deltaZ, @Nullable Entity pushingEntity) {
-        org.bukkit.util.Vector delta = new org.bukkit.util.Vector(deltaX, deltaY, deltaZ);
-        if (pushingEntity != null) {
-            io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent event = new io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent(entity.getBukkitEntity(), pushingEntity.getBukkitEntity(), delta);
-            if (!event.callEvent()) {
-                return;
-            }
-            delta = event.getAcceleration();
-        }
-        entity.setDeltaMovement(entity.getDeltaMovement()
-                .add(new Vec3(delta.getX(), delta.getY(), delta.getZ())
-                        .scale(Math.max(1 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0))));
-        entity.hasImpulse = true;
-        // Paper end - Add EntityKnockbackByEntityEvent and EntityPushedByEntityAttackEvent
-    }
+	@Unique
+	LivingEntity entity = (LivingEntity) (Object) this;
+	/**
+	 * @author ashphyx
+	 * @reason Prevent mobs pushing each other from bypassing Knockback Resistance.
+	 */
+	@Shadow
+	@Overwrite
+	public void push(double deltaX, double deltaY, double deltaZ, @Nullable Entity pushingEntity) {
+		org.bukkit.util.Vector delta = new org.bukkit.util.Vector(deltaX, deltaY, deltaZ);
+		if (pushingEntity != null) {
+			io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent event = new io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent(entity.getBukkitEntity(), pushingEntity.getBukkitEntity(), delta);
+			if (!event.callEvent()) {
+				return;
+			}
+			delta = event.getAcceleration();
+		}
+		entity.setDeltaMovement(entity.getDeltaMovement()
+				.add(new Vec3(delta.getX(), delta.getY(), delta.getZ())
+						.scale(Math.max(1 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0))));
+		entity.hasImpulse = true;
+		// Paper end - Add EntityKnockbackByEntityEvent and EntityPushedByEntityAttackEvent
+	}
 }
