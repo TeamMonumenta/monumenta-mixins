@@ -52,6 +52,7 @@
         "behavior.entity.WanderingTraderMixin",
         "behavior.entity.WitherBossMixin",
         "behavior.entity.ZombieMixin",
+        "behavior.player.PlayerMixin",
         "behavior.player.ServerPlayerMixin",
         "behavior.spawner.BaseSpawnerMixin",
         "behavior.spawner.EntityMixin",
