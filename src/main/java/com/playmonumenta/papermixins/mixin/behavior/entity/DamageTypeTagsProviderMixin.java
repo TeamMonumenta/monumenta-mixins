@@ -30,6 +30,51 @@ public abstract class DamageTypeTagsProviderMixin extends TagsProvider<DamageTyp
 			at = @At(value = "TAIL")
 	)
 	private void addNoImpact(HolderLookup.Provider lookup, CallbackInfo ci) {
-		this.tag(DamageTypeTags.NO_IMPACT).add(DamageTypes.DROWN);
+		this.tag(DamageTypeTags.NO_IMPACT).add(
+				DamageTypes.IN_FIRE,
+				DamageTypes.LIGHTNING_BOLT,
+				DamageTypes.ON_FIRE,
+				DamageTypes.LAVA,
+				DamageTypes.HOT_FLOOR,
+				DamageTypes.IN_WALL,
+				DamageTypes.CRAMMING,
+//                DamageTypes.DROWN,
+				DamageTypes.STARVE,
+				DamageTypes.CACTUS,
+				DamageTypes.FALL,
+				DamageTypes.FLY_INTO_WALL,
+				DamageTypes.FELL_OUT_OF_WORLD,
+				DamageTypes.GENERIC,
+				DamageTypes.MAGIC,
+				DamageTypes.WITHER,
+				DamageTypes.DRAGON_BREATH,
+				DamageTypes.DRY_OUT,
+				DamageTypes.SWEET_BERRY_BUSH,
+				DamageTypes.FREEZE,
+				DamageTypes.STALAGMITE,
+				DamageTypes.FALLING_BLOCK,
+				DamageTypes.FALLING_ANVIL,
+				DamageTypes.FALLING_STALACTITE,
+				DamageTypes.STING,
+				DamageTypes.MOB_ATTACK,
+				DamageTypes.MOB_ATTACK_NO_AGGRO,
+				DamageTypes.PLAYER_ATTACK,
+				DamageTypes.ARROW,
+				DamageTypes.TRIDENT,
+				DamageTypes.MOB_PROJECTILE,
+				DamageTypes.FIREWORKS,
+				DamageTypes.UNATTRIBUTED_FIREBALL,
+				DamageTypes.FIREBALL,
+				DamageTypes.WITHER_SKULL,
+				DamageTypes.THROWN,
+				DamageTypes.INDIRECT_MAGIC,
+				DamageTypes.THORNS,
+				DamageTypes.EXPLOSION,
+				DamageTypes.PLAYER_EXPLOSION,
+				DamageTypes.SONIC_BOOM,
+				DamageTypes.BAD_RESPAWN_POINT,
+				DamageTypes.OUTSIDE_BORDER,
+				DamageTypes.GENERIC_KILL
+		);
 	}
 }

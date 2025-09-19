@@ -223,7 +223,9 @@ public abstract class LivingEntityMixin extends Entity {
 			double force, @Local(argsOnly = true, ordinal = 0) double d0,
 			@Local(ordinal = 0) Vec3 vec3d) {
 		System.out.println("initial speed: " + this.getSpeed());
+		System.out.println("vec3dy: " + vec3d.x);
 		System.out.println("vec3dy: " + vec3d.y);
+		System.out.println("vec3dy: " + vec3d.z);
 //		double knockbackAmount = vec3d.y / (double) 2.0F - 0.4;
 		double knockbackAmount = 0;
 		System.out.println("knockback: " + knockbackAmount);
