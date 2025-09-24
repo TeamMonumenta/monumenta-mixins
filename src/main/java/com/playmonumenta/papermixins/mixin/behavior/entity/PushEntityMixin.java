@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(Entity.class)
 public abstract class PushEntityMixin {
 	@Unique
-	LivingEntity entity = (Object) this instanceof LivingEntity ? (LivingEntity) (Object) this : null;
+	Entity entity = (Entity) (Object) this;
 	/**
 	 * @author ashphyx
 	 * @reason Prevent mobs pushing each other from bypassing Knockback Resistance.
@@ -22,9 +22,6 @@ public abstract class PushEntityMixin {
 	@Shadow
 	@Overwrite
 	public void push(double deltaX, double deltaY, double deltaZ, @Nullable Entity pushingEntity) {
-		if (entity == null) {
-			return;
-		}
 		org.bukkit.util.Vector delta = new org.bukkit.util.Vector(deltaX, deltaY, deltaZ);
 		if (pushingEntity != null) {
 			io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent event = new io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent(entity.getBukkitEntity(), pushingEntity.getBukkitEntity(), delta);
@@ -33,11 +30,12 @@ public abstract class PushEntityMixin {
 			}
 			delta = event.getAcceleration();
 		}
+		double knockbackResist = entity instanceof LivingEntity livingEntity ? livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) : 0.0;
 		entity.setDeltaMovement(entity.getDeltaMovement()
 				.add(new Vec3(delta.getX(), delta.getY(), delta.getZ())
-						.scale(Math.max(1 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0))));
+						.scale(Math.max(1 - knockbackResist, 0))));
 		if (entity instanceof Player player) {
-			System.out.println("Push on " + player.getName() + " has been scaled by " + Math.max(1 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0));
+			System.out.println("Push on " + player.getName() + " has been scaled by " + Math.max(1 - knockbackResist, 0));
 		}
 		entity.hasImpulse = true;
 		// Paper end - Add EntityKnockbackByEntityEvent and EntityPushedByEntityAttackEvent
