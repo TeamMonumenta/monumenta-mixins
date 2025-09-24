@@ -37,7 +37,6 @@
     "behavior.entity.AnimalMixin",
     "behavior.entity.BeeMixin",
     "behavior.entity.CreeperMixin",
-    "behavior.entity.DamageTypeTagsProviderMixin",
     "behavior.entity.ElderGuardianMixin",
     "behavior.entity.EnderManMixin",
     "behavior.entity.GiantMixin",
