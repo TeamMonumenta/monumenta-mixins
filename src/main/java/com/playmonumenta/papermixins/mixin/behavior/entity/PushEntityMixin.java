@@ -3,12 +3,10 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(Entity.class)
@@ -18,8 +16,9 @@ public abstract class PushEntityMixin {
 	/**
 	 * @author ashphyx
 	 * @reason Prevent mobs pushing each other from bypassing Knockback Resistance.
+	 * Note that this might not actually work. The method is actively being called, but I still get pushed.
+	 * Potentially there is another, mysterious, method being called that still performs the pushing.
 	 */
-	@Shadow
 	@Overwrite
 	public void push(double deltaX, double deltaY, double deltaZ, @Nullable Entity pushingEntity) {
 		org.bukkit.util.Vector delta = new org.bukkit.util.Vector(deltaX, deltaY, deltaZ);
@@ -31,13 +30,12 @@ public abstract class PushEntityMixin {
 			delta = event.getAcceleration();
 		}
 		double knockbackResist = entity instanceof LivingEntity livingEntity ? livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) : 0.0;
-		entity.setDeltaMovement(entity.getDeltaMovement()
-				.add(new Vec3(delta.getX(), delta.getY(), delta.getZ())
-						.scale(Math.max(1 - knockbackResist, 0))));
-		if (entity instanceof Player player) {
-			System.out.println("Push on " + player.getName() + " has been scaled by " + Math.max(1 - knockbackResist, 0));
+		if (knockbackResist < 1) {
+			entity.setDeltaMovement(entity.getDeltaMovement()
+					.add(new Vec3(delta.getX(), delta.getY(), delta.getZ())
+							.scale(Math.max(1 - knockbackResist, 0))));
+			entity.hasImpulse = true;
 		}
-		entity.hasImpulse = true;
 		// Paper end - Add EntityKnockbackByEntityEvent and EntityPushedByEntityAttackEvent
 	}
 }

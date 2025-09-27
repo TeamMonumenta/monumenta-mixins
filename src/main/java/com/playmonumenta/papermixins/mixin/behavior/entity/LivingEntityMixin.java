@@ -237,12 +237,9 @@ public abstract class LivingEntityMixin extends Entity {
 	private double verticalKnockback(
 			double force, @Local(argsOnly = true, ordinal = 0) double d0,
 			@Local(ordinal = 0) Vec3 vec3d) {
-//		double knockbackAmount = vec3d.y / (double) 2.0F - 0.4;
-		double knockbackAmount = 0;
-		return knockbackAmount;
-//		(this.onGround()
-//				? Math.min(0.4D * Math.max(1 - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0), vec3d.y / 2.0D + d0)
-//				: vec3d.y)
+		return (this.onGround()
+				? Math.min(0.4D * Math.max(1 - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0), vec3d.y / 2.0D + d0)
+				: vec3d.y);
 	}
 
 
