@@ -225,16 +225,16 @@ public abstract class LivingEntityMixin extends Entity {
 		)
 	)
 	private boolean knockbackResistanceCheck(boolean original) {
-        if (ConfigManager.getConfig().behavior.verticalKb) {
-            return original;
-        }
+		if (ConfigManager.getConfig().behavior.verticalKb) {
+			return original;
+		}
 
-        if (getAttributeValue(KNOCKBACK_RESISTANCE) >= 1) {
-            return true;
-        }
+		if (getAttributeValue(KNOCKBACK_RESISTANCE) >= 1) {
+			return true;
+		}
 
-        return original;
-    }
+		return original;
+	}
 
 	@ModifyArg(
 		method = "knockback(DDDLnet/minecraft/world/entity/Entity;" +
