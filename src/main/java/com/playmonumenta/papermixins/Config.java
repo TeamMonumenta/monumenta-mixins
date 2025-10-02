@@ -38,6 +38,10 @@ public class Config {
 
 		// NOTE: this will be removed when we update to a version with data-driven enchants
 		public int curseOfVanishingMaxLevel = 1;
+
+		public boolean explosionKbr = false;
+		public boolean verticalKb = false;
+		public boolean disableMobPushingWithKbr = false;
 	}
 
 	@ConfigSerializable
