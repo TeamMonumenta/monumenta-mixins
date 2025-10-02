@@ -1,5 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
+import static net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE;
+
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -11,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -209,19 +210,31 @@ public abstract class LivingEntityMixin extends Entity {
 	private void noop3(LivingEntity instance, int value, Operation<Void> original) {
 	}
 
-	@Inject(
+	@ModifyExpressionValue(
 		method = "hurt",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z",
-			ordinal = 4
+			ordinal = 0
 		),
-		cancellable = true)
-	private void knockbackResistanceCheck(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-		if (getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) >= 1) {
-			cir.setReturnValue(true);
-		}
-	}
+		slice = @Slice(
+			from = @At(
+				value = "INVOKE",
+				target = "Lnet/minecraft/world/level/Level;broadcastEntityEvent(Lnet/minecraft/world/entity/Entity;B)V"
+			)
+		)
+	)
+	private boolean knockbackResistanceCheck(boolean original) {
+        if (ConfigManager.getConfig().behavior.skipMarkHurtIfKbr) {
+            return original;
+        }
+
+        if (getAttributeValue(KNOCKBACK_RESISTANCE) >= 1) {
+            return false;
+        }
+
+        return original;
+    }
 
 	@ModifyArg(
 		method = "knockback(DDDLnet/minecraft/world/entity/Entity;" +
@@ -236,12 +249,18 @@ public abstract class LivingEntityMixin extends Entity {
 		index = 6
 	)
 	private double doVerticalKnockback(
-		double y,
+		double originalY,
 		@Local(argsOnly = true, ordinal = 0) double strength,
 		@Local(ordinal = 0) Vec3 vec3d
 	) {
-		return ConfigManager.getConfig().behavior.verticalKb && this.onGround() ?
-			Math.min(0.4D * Math.max(1 - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0), vec3d.y / 2.0D + strength) :
-			vec3d.y;
+		if (!ConfigManager.getConfig().behavior.verticalKb) {
+			return originalY;
+		}
+
+		if (this.onGround()) {
+			final var resistance = getAttributeValue(KNOCKBACK_RESISTANCE);
+			return Math.min(0.4D * Math.max(1 - resistance, 0), vec3d.y / 2.0D + strength);
+		}
+		return vec3d.y;
 	}
 }
