@@ -34,3 +34,59 @@ tasks {
         remapperArgs = TinyRemapper.createArgsList() + "--mixin"
     }
 }
+
+afterEvaluate {
+    val mixinJar = configurations.runtimeClasspath.get()
+        .resolvedConfiguration
+        .resolvedArtifacts
+        .filter { artifact -> artifact.moduleVersion.id.module.toString().equals("net.fabricmc:sponge-mixin") }
+        .also { assert(it.size == 1) }
+        .first()
+        .file
+        .absolutePath
+
+    val toolchains = mapOf(
+        "Jbr17" to javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(17)
+            vendor = JvmVendorSpec.JETBRAINS
+        },
+        "Jbr21" to javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(21)
+            vendor = JvmVendorSpec.JETBRAINS
+        },
+        "Jdk17" to javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(17)
+        },
+        "Jdk21" to javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    )
+
+    fun configureService(postfix: String, toolchain: Provider<JavaLauncher>?) {
+        tasks.register<JavaExec>("runServer$postfix") {
+            workingDir = project.projectDir.resolve("run")
+            classpath = sourceSets.main.get().runtimeClasspath
+            mainClass = "com.floweytf.fabricpaperloader.Main"
+            group = "runs"
+            systemProperties = mapOf(
+                "fabric.development" to true,
+                "mixin.debug.export" to true,
+                "fabric.classPathGroups" to sourceSets.main.get().output.files.joinToString(File.pathSeparator)
+            )
+            standardInput = System.`in`
+            standardOutput = System.out
+            errorOutput = System.err
+            toolchain?.let { javaLauncher = it }
+            jvmArgs(
+                "-XX:+AllowEnhancedClassRedefinition",
+                "-XX:+IgnoreUnrecognizedVMOptions",
+                "-javaagent:$mixinJar",
+            )
+            args("-nogui")
+
+        }
+    }
+
+    toolchains.forEach(::configureService)
+    configureService("", null)
+}
