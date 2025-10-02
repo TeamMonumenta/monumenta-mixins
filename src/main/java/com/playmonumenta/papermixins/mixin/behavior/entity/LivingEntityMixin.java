@@ -225,7 +225,7 @@ public abstract class LivingEntityMixin extends Entity {
 		)
 	)
 	private boolean knockbackResistanceCheck(boolean original) {
-        if (ConfigManager.getConfig().behavior.skipMarkHurtIfKbr) {
+        if (ConfigManager.getConfig().behavior.verticalKb) {
             return original;
         }
 
