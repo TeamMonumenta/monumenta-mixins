@@ -4,19 +4,24 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.playmonumenta.papermixins.ConfigManager;
 import javax.annotation.Nullable;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -48,6 +53,9 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Shadow
 	public int hurtTime;
+
+	@Shadow
+	public abstract double getAttributeValue(Attribute attribute);
 
 	public LivingEntityMixin(EntityType<?> type, Level world) {
 		super(type, world);
@@ -199,5 +207,41 @@ public abstract class LivingEntityMixin extends Entity {
 		)
 	)
 	private void noop3(LivingEntity instance, int value, Operation<Void> original) {
+	}
+
+	@Inject(
+		method = "hurt",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z",
+			ordinal = 4
+		),
+		cancellable = true)
+	private void knockbackResistanceCheck(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+		if (getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) >= 1) {
+			cir.setReturnValue(true);
+		}
+	}
+
+	@ModifyArg(
+		method = "knockback(DDDLnet/minecraft/world/entity/Entity;" +
+			"Lorg/bukkit/event/entity/EntityKnockbackEvent$KnockbackCause;)V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lorg/bukkit/craftbukkit/v1_20_R3/event/CraftEventFactory;callEntityKnockbackEvent" +
+				"(Lorg/bukkit/craftbukkit/v1_20_R3/entity/CraftLivingEntity;Lnet/minecraft/world/entity/Entity;" +
+				"Lorg/bukkit/event/entity/EntityKnockbackEvent$KnockbackCause;DLnet/minecraft/world/phys/Vec3;DDD)" +
+				"Lorg/bukkit/event/entity/EntityKnockbackEvent;"
+		),
+		index = 6
+	)
+	private double doVerticalKnockback(
+		double y,
+		@Local(argsOnly = true, ordinal = 0) double strength,
+		@Local(ordinal = 0) Vec3 vec3d
+	) {
+		return ConfigManager.getConfig().behavior.verticalKb && this.onGround() ?
+			Math.min(0.4D * Math.max(1 - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0), vec3d.y / 2.0D + strength) :
+			vec3d.y;
 	}
 }
