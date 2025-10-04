@@ -8,6 +8,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.playmonumenta.papermixins.ConfigManager;
 import javax.annotation.Nullable;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -90,7 +91,7 @@ public abstract class LivingEntityMixin extends Entity {
 		)
 	)
 	private int setFlag(int constant) {
-		return ((float) this.invulnerableTime > (float) this.invulnerableDuration / 2.0F) ? 0 : 1;
+		return ((float) this.invulnerableTime > (float) this.invulnerableDuration / 2.0F) ? 0 : 1; // TOOD: check damagesource here @Floweynt
 	}
 
 	// forgive me
@@ -128,7 +129,7 @@ public abstract class LivingEntityMixin extends Entity {
 		@Local EntityDamageEvent event
 	) {
 		// Monumenta: use post-event damage for iframes instead of pre-event damage
-		if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F) {
+		if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F && !damagesource.is(DamageTypeTags.BYPASSES_COOLDOWN)) {
 			float damage = (float) event.getDamage();
 			if (damage <= lastHurt) {
 				cir.setReturnValue(false);
@@ -225,7 +226,7 @@ public abstract class LivingEntityMixin extends Entity {
 		)
 	)
 	private boolean knockbackResistanceCheck(boolean original) {
-		if (ConfigManager.getConfig().behavior.verticalKb) {
+		if (!ConfigManager.getConfig().behavior.verticalKb) {
 			return original;
 		}
 
