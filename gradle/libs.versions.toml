@@ -4,7 +4,7 @@ metadata.format.version = "1.1"
 fabric-loader = "2.0.0+fabric.0.17.2"
 
 paper-api = "1.20.4-R0.1-SNAPSHOT"
-nbtapi = "2.12.4"
+nbtapi = "2.15.2"
 
 gradle-spotless = "6.25.0"
 gradle-paperweight = "2.0.0-build.5+2.0.0-beta.18"
