@@ -2,7 +2,6 @@ package com.playmonumenta.papermixins.mixin.behavior.player;
 
 import com.playmonumenta.papermixins.paperapi.v1.event.SweepingEdgeParticleEvent;
 import net.minecraft.world.entity.player.Player;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
