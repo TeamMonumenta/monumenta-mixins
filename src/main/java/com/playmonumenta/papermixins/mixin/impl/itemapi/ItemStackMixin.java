@@ -38,32 +38,6 @@ public class ItemStackMixin implements ItemStackAccess {
 
 	@Shadow @Final private static Logger LOGGER;
 
-	// Item state loading logic
-	// TODO: this might be expensive
-	@Inject(
-		method = "<init>(Lnet/minecraft/world/level/ItemLike;I)V",
-		at = @At("TAIL")
-	)
-	private void computeItemOnInit(ItemLike item, int count, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState(Util.c(this));
-	}
-
-	@Inject(
-		method = "load",
-		at = @At("RETURN")
-	)
-	private void loadCustomItemData$load(CompoundTag tag, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState(Util.c(this));
-	}
-
-	@Inject(
-		method = "setTag",
-		at = @At("RETURN")
-	)
-	private void loadCustomItemData$setTag(CompoundTag tag, CallbackInfo ci) {
-		monumenta$stateManager.loadCustomState(Util.c(this));
-	}
-
 	// TODO: this may cause crashes in some cases
 	@Inject(
 		method = "setItem",
@@ -75,15 +49,6 @@ public class ItemStackMixin implements ItemStackAccess {
 		LOGGER.error("setItem() has been deprecated and should not be used, try cloning the stack instead.");
 		LOGGER.error("This call has been ignored, since setting items directly interferes with Custom Item API logic");
 		LOGGER.error("Please fix or nag the plugin developer to fix: ", new UnsupportedOperationException());
-	}
-
-	// Handling saving logic
-	@Inject(
-		method = "save",
-		at = @At("HEAD")
-	)
-	private void recomputeOnSave(CompoundTag nbt, CallbackInfoReturnable<CompoundTag> cir) {
-		monumenta$stateManager.storeCustomState((ItemStack) (Object) this);
 	}
 
 	@Override
