@@ -11,7 +11,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
-import com.playmonumenta.papermixins.items.CustomItemAPIMain;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import net.minecraft.commands.CommandSourceStack;
