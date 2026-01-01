@@ -1,7 +1,6 @@
 package com.playmonumenta.papermixins.mixin.impl.itemapi;
 
 import com.mojang.datafixers.DataFixer;
-import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
 import com.playmonumenta.papermixins.impl.v1.resource.PluginDataListener;
 import java.net.Proxy;
 import joptsimple.OptionSet;
@@ -39,6 +38,5 @@ public abstract class DedicatedServerMixin extends MinecraftServer {
 	)
 	private void reloadDatapackHandlers(CallbackInfoReturnable<Boolean> cir) {
 		PluginDataListener.INSTANCE.reload(true);
-		CustomItemRegistryImpl.getInstance().freeze();
 	}
 }
