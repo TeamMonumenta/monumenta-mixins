@@ -90,8 +90,8 @@ public abstract class LivingEntityMixin extends Entity {
 			)
 		)
 	)
-	private int setFlag(int constant) {
-		return ((float) this.invulnerableTime > (float) this.invulnerableDuration / 2.0F) ? 0 : 1; // TOOD: check damagesource here @Floweynt
+	private int setFlag(int constant, @Local DamageSource damagesource) {
+		return ((float) this.invulnerableTime > (float) this.invulnerableDuration / 2.0F && !damagesource.is(DamageTypeTags.BYPASSES_COOLDOWN)) ? 0 : 1;
 	}
 
 	// forgive me
