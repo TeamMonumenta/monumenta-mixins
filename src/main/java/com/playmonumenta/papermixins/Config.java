@@ -33,6 +33,7 @@ public class Config {
 		public boolean forceUpgradeEagerBlockStates = false;
 		public boolean fixInactiveTickNoAi = false;
 		public boolean freezeEndGateway = false;
+		public boolean disableDolphinPlayWithItems = false;
 
 		public int giantTrackingRange = 96;
 
