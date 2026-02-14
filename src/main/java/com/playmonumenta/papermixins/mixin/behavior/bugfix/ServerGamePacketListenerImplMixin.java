@@ -1,9 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
-import com.playmonumenta.papermixins.Config;
 import com.playmonumenta.papermixins.ConfigManager;
-import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
-import net.minecraft.network.protocol.game.ServerboundPickItemPacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.network.protocol.game.ServerboundSetCarriedItemPacket;
 import net.minecraft.server.level.ServerPlayer;
