@@ -1,5 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
+import com.playmonumenta.papermixins.Config;
+import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
 import net.minecraft.network.protocol.game.ServerboundPickItemPacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
@@ -62,8 +64,10 @@ public class ServerGamePacketListenerImplMixin {
 
 	@Unique
 	private void forceEquipmentUpdate() {
-		Player playerEntity = player;
-		playerEntity.resetAttackStrengthTicker();
-		playerEntity.detectEquipmentUpdatesPublic();
+		if (ConfigManager.getConfig().behavior.fixAttributeSwapping) {
+			Player playerEntity = player;
+			playerEntity.resetAttackStrengthTicker();
+			playerEntity.detectEquipmentUpdatesPublic();
+		}
 	}
 }
