@@ -5,7 +5,6 @@ import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.network.protocol.game.ServerboundSetCarriedItemPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.entity.player.Player;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -61,10 +60,10 @@ public class ServerGamePacketListenerImplMixin {
 
 	@Unique
 	private void forceEquipmentUpdate() {
-		if (ConfigManager.getConfig().behavior.fixAttributeSwapping) {
-			Player playerEntity = player;
-			playerEntity.resetAttackStrengthTicker();
-			playerEntity.detectEquipmentUpdatesPublic();
+		if (!ConfigManager.getConfig().behavior.fixAttributeSwapping) {
+			return;
 		}
+		player.resetAttackStrengthTicker();
+		player.detectEquipmentUpdatesPublic();
 	}
 }
