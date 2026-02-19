@@ -7,9 +7,12 @@ import com.playmonumenta.mixinapi.v1.item.CustomItemRegistry;
 import com.playmonumenta.mixinapi.v1.item.CustomItems;
 import com.playmonumenta.mixinapi.v1.resource.DataLoaderRegistry;
 import com.playmonumenta.papermixins.VersionInfo;
+import com.playmonumenta.papermixins.duck.MapIndexAccess;
 import com.playmonumenta.papermixins.impl.paperapi.v1.HookAPIImpl;
 import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
 import net.fabricmc.loader.api.SemanticVersion;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.level.saveddata.maps.MapIndex;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 @SuppressWarnings("deprecation")
@@ -23,6 +26,19 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 		}
 
 		return INSTANCE;
+	}
+
+	@Override
+	public int getLastMapId() {
+		if (MinecraftServer.getServer().overworld().getDataStorage().computeIfAbsent(MapIndex.factory(), "idcounts") instanceof MapIndexAccess mapIndexAccess) {
+			return mapIndexAccess.getLastAuxValueForMap();
+		}
+		return -1;
+	}
+
+	@Override
+	public int getFreeMapId() {
+		return MinecraftServer.getServer().overworld().getFreeMapId();
 	}
 
 	@Override
@@ -60,6 +76,7 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 		return DataFixImpl.getInstance();
 	}
 
+	@Override
 	public HookAPI getHookAPI() {
 		return HookAPIImpl.getInstance();
 	}
