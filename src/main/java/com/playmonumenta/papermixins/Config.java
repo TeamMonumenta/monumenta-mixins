@@ -42,6 +42,8 @@ public class Config {
 		public boolean explosionKbr = false;
 		public boolean verticalKb = false;
 		public boolean disableMobPushingWithKbr = false;
+
+		public boolean fixAttributeSwapping = false;
 	}
 
 	@ConfigSerializable
