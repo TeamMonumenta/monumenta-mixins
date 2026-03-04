@@ -1,9 +1,13 @@
 package com.playmonumenta.papermixins.mixin.behavior.advancement;
 
+import com.playmonumenta.papermixins.duck.AdvancementAccess;
+import com.playmonumenta.papermixins.util.Util;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementNode;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,7 +33,10 @@ public class AdvancementNodeMixin {
     @Inject(method = "children()Ljava/lang/Iterable;", at=@At("HEAD"), cancellable = true)
     private void getChildrenInject(CallbackInfoReturnable<Iterable<AdvancementNode>> cir) {
         if (monumenta$cachedChildren == null) {
-            monumenta$cachedChildren = children.stream().sorted(Comparator.comparing(o -> o.holder().id())).toList();
+            monumenta$cachedChildren = children.stream().sorted(
+                    Comparator.<AdvancementNode, Integer>comparing(o -> Util.<AdvancementAccess>c(o.holder().value()).monumenta$getPriority())
+                            .thenComparing(o -> o.holder().id())
+            ).toList();
         }
         cir.setReturnValue(monumenta$cachedChildren);
     }
