@@ -34,8 +34,13 @@ public class AdvancementNodeMixin {
     private void getChildrenInject(CallbackInfoReturnable<Iterable<AdvancementNode>> cir) {
         if (monumenta$cachedChildren == null) {
             monumenta$cachedChildren = children.stream().sorted(
-                    Comparator.<AdvancementNode, Integer>comparing(o -> Util.<AdvancementAccess>c(o.holder().value()).monumenta$getPriority())
-                            .thenComparing(o -> o.holder().id())
+                    // There used to be a one-line "Comparator.compares.thenComparing" here. You don't want to know what it looked like.
+                    (o1, o2) -> {
+                        AdvancementAccess access1 = Util.c(o1.holder().value());
+                        AdvancementAccess access2 = Util.c(o2.holder().value());
+                        int priorityDifference = access1.monumenta$getPriority() - access2.monumenta$getPriority();
+                        return priorityDifference != 0 ? priorityDifference : o1.holder().id().compareTo(o2.holder().id());
+                    }
             ).toList();
         }
         cir.setReturnValue(monumenta$cachedChildren);
