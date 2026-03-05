@@ -31,3 +31,7 @@ build/
 buildSrc/.kotlin
 
 !gradle/wrapper/gradle-wrapper.jar
+.classpath
+.project
+**/bin/
+.settings/
