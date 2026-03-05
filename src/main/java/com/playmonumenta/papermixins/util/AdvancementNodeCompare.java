@@ -1,7 +1,6 @@
-package com.playmonumenta.papermixins.mixin.behavior.advancement;
+package com.playmonumenta.papermixins.util;
 
 import com.playmonumenta.papermixins.duck.AdvancementAccess;
-import com.playmonumenta.papermixins.util.Util;
 import net.minecraft.advancements.AdvancementNode;
 
 public final class AdvancementNodeCompare {

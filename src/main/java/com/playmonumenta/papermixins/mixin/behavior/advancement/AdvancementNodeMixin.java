@@ -1,13 +1,9 @@
 package com.playmonumenta.papermixins.mixin.behavior.advancement;
 
-import com.playmonumenta.papermixins.duck.AdvancementAccess;
-import com.playmonumenta.papermixins.util.Util;
-import java.util.Comparator;
+import com.playmonumenta.papermixins.util.AdvancementNodeCompare;
 import java.util.List;
 import java.util.Set;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementNode;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

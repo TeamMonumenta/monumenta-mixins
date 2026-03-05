@@ -1,10 +1,7 @@
 package com.playmonumenta.papermixins.mixin.optimize;
 
-import com.playmonumenta.papermixins.duck.AdvancementAccess;
 import com.playmonumenta.papermixins.duck.AdvancementTreeAccess;
-import com.playmonumenta.papermixins.mixin.behavior.advancement.AdvancementNodeCompare;
-import com.playmonumenta.papermixins.util.Util;
-import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
+import com.playmonumenta.papermixins.util.AdvancementNodeCompare;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
