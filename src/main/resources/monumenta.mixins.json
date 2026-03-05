@@ -37,6 +37,7 @@
         "behavior.entity.AnimalMixin",
         "behavior.entity.BeeMixin",
         "behavior.entity.CreeperMixin",
+        "behavior.entity.DolphinMixin",
         "behavior.entity.ElderGuardianMixin",
         "behavior.entity.EnderManMixin",
         "behavior.entity.ExplosionMixin",
