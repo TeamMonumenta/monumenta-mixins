@@ -1,6 +1,10 @@
 package com.playmonumenta.papermixins.mixin.optimize;
 
+import com.playmonumenta.papermixins.duck.AdvancementAccess;
 import com.playmonumenta.papermixins.duck.AdvancementTreeAccess;
+import com.playmonumenta.papermixins.mixin.behavior.advancement.AdvancementNodeCompare;
+import com.playmonumenta.papermixins.util.Util;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementNode;
@@ -21,6 +26,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * Improve diagnostics for Advancement parsing
@@ -37,6 +43,8 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 	@Shadow
 	@Final
 	private Map<ResourceLocation, AdvancementNode> nodes;
+
+	@Shadow @Final private Set<AdvancementNode> roots;
 
 	// TODO: we can technically optimize this faster by e bitsets and converting ResourceLocation to index
 	@Unique
@@ -154,5 +162,11 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 	@Override
 	public void monumenta$addAllFast(Map<ResourceLocation, AdvancementHolder> advancements) {
 		monumenta$addAllFastImpl(new ArrayList<>(advancements.values()), advancements);
+	}
+
+	@Inject(method = "roots()Ljava/lang/Iterable;", at = @At("HEAD"), cancellable = true)
+	public void rootsInject(CallbackInfoReturnable<Iterable<AdvancementNode>> cir) {
+		List<AdvancementNode> sorted = roots.stream().sorted(AdvancementNodeCompare::compareAdvancementNodes).toList();
+		cir.setReturnValue(sorted);
 	}
 }
