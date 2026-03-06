@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,22 +35,13 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 	private static Logger LOGGER;
 
 	@Shadow
-	private AdvancementTree.Listener listener;
-
-	@Shadow
-	@Final
-	private Set<AdvancementNode> tasks;
-
-	@Shadow
 	protected abstract boolean tryInsert(AdvancementHolder advancement);
 
 	@Shadow
 	@Final
 	private Map<ResourceLocation, AdvancementNode> nodes;
 
-	@Shadow
-	@Final
-	private Set<AdvancementNode> roots;
+	@Shadow @Final private Set<AdvancementNode> roots;
 
 	// TODO: we can technically optimize this faster by e bitsets and converting ResourceLocation to index
 	@Unique
@@ -94,7 +84,7 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 		final var loopSet = new HashSet<>(advancements);
 
 		// process all regular roots
-		for (final var root : roots.stream().sorted(AdvancementNodeCompare::compareAdvancementHolders).toList()) {
+		for (final var root : roots) {
 			queue.push(root);
 
 			while (!queue.isEmpty()) {
@@ -175,30 +165,5 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 	public void rootsInject(CallbackInfoReturnable<Iterable<AdvancementNode>> cir) {
 		List<AdvancementNode> sorted = roots.stream().sorted(AdvancementNodeCompare::compareAdvancementNodes).toList();
 		cir.setReturnValue(sorted);
-	}
-
-	@Inject(method = "setListener(Lnet/minecraft/advancements/AdvancementTree$Listener;)V", at = @At("HEAD"), cancellable = true)
-	public void setListenerInject(AdvancementTree.Listener listener, CallbackInfo ci) {
-		this.listener = listener;
-		if (listener != null) {
-			Iterator<AdvancementNode> iterator = this.roots
-					.stream().sorted(AdvancementNodeCompare::compareAdvancementNodes) // a whole inject for this... sigh
-					.iterator();
-
-			AdvancementNode advancementnode;
-
-			while (iterator.hasNext()) {
-				advancementnode = iterator.next();
-				listener.onAddAdvancementRoot(advancementnode);
-			}
-
-			iterator = this.tasks.iterator();
-
-			while (iterator.hasNext()) {
-				advancementnode = iterator.next();
-				listener.onAddAdvancementTask(advancementnode);
-			}
-		}
-		ci.cancel();
 	}
 }
