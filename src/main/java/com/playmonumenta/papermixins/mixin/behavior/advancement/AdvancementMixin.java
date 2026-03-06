@@ -1,7 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.advancement;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.playmonumenta.papermixins.duck.AdvancementAccess;
 import com.playmonumenta.papermixins.util.Util;
@@ -68,19 +67,6 @@ public class AdvancementMixin implements AdvancementAccess {
         );
     }
 
-    // this probably isnt necessary as we're not reading registry info sent over the wire
-
-//    @Inject(method = "read(Lnet/minecraft/network/FriendlyByteBuf;)Lnet/minecraft/advancements/Advancement;", at = @At("HEAD"))
-//    private static void modifyRead(FriendlyByteBuf buf, CallbackInfoReturnable<Advancement> cir) {
-//        Advancement a = new Advancement(
-//                buf.readOptional(FriendlyByteBuf::readResourceLocation),
-//                buf.readOptional(DisplayInfo::fromNetwork),
-//                AdvancementRewards.EMPTY,
-//                Map.of(),
-//                new AdvancementRequirements(buf),
-//                buf.readBoolean()
-//        );
-//        Util.<AdvancementAccess>c(a).monumenta$setPriority(buf.readInt());
-//        cir.setReturnValue(a);
-//    }
+    // Advancement.read(FriendlyByteBuf) also creates advancements, but we don't need to modify it
+    // because it's intended for clients parsing advancements from registry packets
 }
