@@ -45,7 +45,6 @@ public class AdvancementMixin implements AdvancementAccess {
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void modifyCodec(CallbackInfo ci) {
-        System.out.println("beginning modifyCodec");
         CODEC = ExtraCodecs.validate(
                 RecordCodecBuilder.create(
                         instance -> instance.group(
@@ -59,17 +58,14 @@ public class AdvancementMixin implements AdvancementAccess {
                                         ExtraCodecs.strictOptionalField(Codec.INT, "priority", 0).forGetter(a -> Util.<AdvancementAccess>c(a).monumenta$getPriority())
                                 )
                                 .apply(instance, (parent, display, rewards, criteria, requirements, sendsTelemetryEvent, priority) -> { // priority
-                                    System.out.println("attempting apply");
                                     AdvancementRequirements advancementRequirements = requirements.orElseGet(() -> AdvancementRequirements.allOf(criteria.keySet()));
                                     Advancement adv = new Advancement(parent, display, rewards, criteria, advancementRequirements, sendsTelemetryEvent);
                                     Util.<AdvancementAccess>c(adv).monumenta$setPriority(priority);
-                                    System.out.println("attempting apply: set priority");
                                     return adv;
                                 })
                 ),
                 Advancement::validate
         );
-        System.out.println("ending modifyCodec");
     }
 
     // this probably isnt necessary as we're not reading registry info sent over the wire
