@@ -1,7 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.advancement;
 
 import com.playmonumenta.papermixins.duck.AdvancementAccess;
-import com.playmonumenta.papermixins.util.AdvancementNodeCompare;
 import com.playmonumenta.papermixins.util.Util;
 import java.util.List;
 import java.util.Set;
