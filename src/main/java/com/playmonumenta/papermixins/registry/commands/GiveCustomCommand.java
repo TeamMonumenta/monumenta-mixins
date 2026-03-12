@@ -26,8 +26,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class GiveCustomCommand {
-
-
 	private static final Pattern ID_PARSE = Pattern.compile("([a-z0-9_.-]+:)?[a-z0-9_./-]+(\\[.*])?");
 	private static final SimpleCommandExceptionType GIVECUSTOM_PARSE_FAIL = new SimpleCommandExceptionType(
 		Component.literal("Failed to parse item identifier, expected <resource-location> or " +
