@@ -13,6 +13,8 @@
         "behavior.DimensionDataStorageMixin",
         "behavior.ServerGamePacketListenerImplMixin",
         "behavior.ServerShutdownThreadMixin",
+        "behavior.advancement.AdvancementMixin",
+        "behavior.advancement.AdvancementNodeMixin",
         "behavior.block.BaseContainerBlockEntityMixin",
         "behavior.block.BaseCoralPlantTypeBlockMixin",
         "behavior.block.ConcretePowderBlockMixin",
