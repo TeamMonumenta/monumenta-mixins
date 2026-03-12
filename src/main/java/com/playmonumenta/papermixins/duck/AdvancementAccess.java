@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.duck;
 
 public interface AdvancementAccess {
-    int monumenta$getPriority();
+	int monumenta$getPriority();
 
-    void monumenta$setPriority(int priority);
+	void monumenta$setPriority(int priority);
 }

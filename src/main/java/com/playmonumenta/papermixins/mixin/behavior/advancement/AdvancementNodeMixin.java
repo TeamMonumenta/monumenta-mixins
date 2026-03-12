@@ -17,29 +17,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AdvancementNode.class)
 public class AdvancementNodeMixin {
-    @Shadow @Final private Set<AdvancementNode> children;
+	@Shadow @Final private Set<AdvancementNode> children;
 
-    @Unique @Nullable
-    List<AdvancementNode> monumenta$cachedChildren;
+	@Unique @Nullable
+	List<AdvancementNode> monumenta$cachedChildren;
 
-    @Inject(method = "addChild(Lnet/minecraft/advancements/AdvancementNode;)V", at = @At("HEAD"))
-    private void addChildInject(AdvancementNode ignored, CallbackInfo ci) {
-        monumenta$cachedChildren = null; // invalidate cached sort
-    }
+	@Inject(method = "addChild(Lnet/minecraft/advancements/AdvancementNode;)V", at = @At("HEAD"))
+	private void addChildInject(AdvancementNode ignored, CallbackInfo ci) {
+		monumenta$cachedChildren = null; // invalidate cached sort
+	}
 
-    @Inject(method = "children()Ljava/lang/Iterable;", at=@At("HEAD"), cancellable = true)
-    private void getChildrenInject(CallbackInfoReturnable<Iterable<AdvancementNode>> cir) {
-        if (monumenta$cachedChildren == null) {
-            monumenta$cachedChildren = children.stream().sorted(
-                    (o1, o2) -> {
-                        // This used to be a one-line "Comparator.compares.thenComparing". You don't want to know what it looked like.
-                        AdvancementAccess access1 = Util.c(o1.holder().value());
-                        AdvancementAccess access2 = Util.c(o2.holder().value());
-                        int priorityDifference = access1.monumenta$getPriority() - access2.monumenta$getPriority();
-                        return priorityDifference != 0 ? priorityDifference : o1.holder().id().compareTo(o2.holder().id());
-                    }
-            ).toList();
-        }
-        cir.setReturnValue(monumenta$cachedChildren);
-    }
+	@Inject(method = "children()Ljava/lang/Iterable;", at=@At("HEAD"), cancellable = true)
+	private void getChildrenInject(CallbackInfoReturnable<Iterable<AdvancementNode>> cir) {
+		if (monumenta$cachedChildren == null) {
+			monumenta$cachedChildren = children.stream().sorted(
+					(o1, o2) -> {
+						// This used to be a one-line "Comparator.compares.thenComparing". You don't want to know what it looked like.
+						AdvancementAccess access1 = Util.c(o1.holder().value());
+						AdvancementAccess access2 = Util.c(o2.holder().value());
+						int priorityDifference = access1.monumenta$getPriority() - access2.monumenta$getPriority();
+						return priorityDifference != 0 ? priorityDifference : o1.holder().id().compareTo(o2.holder().id());
+					}
+			).toList();
+		}
+		cir.setReturnValue(monumenta$cachedChildren);
+	}
 }
