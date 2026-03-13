@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.player;
 
+import com.playmonumenta.papermixins.duck.CraftPlayerAccess;
 import de.tr7zw.nbtapi.NBT;
 import java.util.List;
 import net.kyori.adventure.text.Component;
@@ -14,12 +15,11 @@ import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(CraftPlayer.class)
-public abstract class CraftPlayerMixin {
+public abstract class CraftPlayerMixin implements CraftPlayerAccess {
     @Shadow
     public abstract ServerPlayer getHandle();
 
@@ -28,8 +28,8 @@ public abstract class CraftPlayerMixin {
 
     }
 
-    @Unique
-    public void hideInventory() {
+    @Override
+    public void monumenta_mixins$hideInventory() {
         NonNullList<ItemStack> list = NonNullList.createWithCapacity(46);
         for (int i=0; i < 46; i++) {
             if (i == 22) {
@@ -50,8 +50,8 @@ public abstract class CraftPlayerMixin {
         this.getHandle().connection.send(packet);
     }
 
-    @Unique
-    public void resyncInventory() {
+    @Override
+    public void monumenta_mixins$resyncInventory() {
         this.getHandle().inventoryMenu.sendAllDataToRemote();
     }
 }
