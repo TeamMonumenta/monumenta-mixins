@@ -1,6 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.player;
 
-import com.playmonumenta.papermixins.duck.CraftPlayerAccess;
+import com.playmonumenta.papermixins.paperapi.v1.CraftPlayerAccess;
 import de.tr7zw.nbtapi.NBT;
 import java.util.List;
 import net.kyori.adventure.text.Component;
@@ -29,7 +29,7 @@ public abstract class CraftPlayerMixin implements CraftPlayerAccess {
 	}
 
 	@Override
-	public void monumenta_mixins$hideInventory() {
+	public void monumenta$hideInventory() {
 		NonNullList<ItemStack> list = NonNullList.createWithCapacity(46);
 		for (int i=0; i < 46; i++) {
 			if (i == 22) {
@@ -51,7 +51,7 @@ public abstract class CraftPlayerMixin implements CraftPlayerAccess {
 	}
 
 	@Override
-	public void monumenta_mixins$resyncInventory() {
+	public void monumenta$resyncInventory() {
 		this.getHandle().inventoryMenu.sendAllDataToRemote();
 	}
 }
