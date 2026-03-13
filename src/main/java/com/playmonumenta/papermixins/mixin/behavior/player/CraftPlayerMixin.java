@@ -7,7 +7,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundContainerSetContentPacket;
+import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Material;
@@ -22,6 +25,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class CraftPlayerMixin implements CraftPlayerAccess {
 	@Shadow
 	public abstract ServerPlayer getHandle();
+
+	@Shadow
+	public abstract void sendExperienceChange(float progress, int level);
+
+	@Shadow
+	public abstract float getExp();
+
+	@Shadow
+	public abstract int getLevel();
 
 	@Redirect(method = "setSpectatorTarget", at = @At(value = "INVOKE", target = "Lcom/google/common/base/Preconditions;checkArgument(ZLjava/lang/Object;)V"))
 	private static void removeSpectatorCheck(boolean expression, Object errorMessage) {
@@ -46,12 +58,14 @@ public abstract class CraftPlayerMixin implements CraftPlayerAccess {
 				list.add(ItemStack.EMPTY);
 			}
 		}
-		var packet = new ClientboundContainerSetContentPacket(0, this.getHandle().inventoryMenu.incrementStateId(), list, ItemStack.EMPTY);
+		Packet<ClientGamePacketListener> packet = new ClientboundContainerSetContentPacket(0, this.getHandle().inventoryMenu.incrementStateId(), list, ItemStack.EMPTY);
 		this.getHandle().connection.send(packet);
+		this.sendExperienceChange(0, 0);
 	}
 
 	@Override
 	public void monumenta$resyncInventory() {
 		this.getHandle().inventoryMenu.sendAllDataToRemote();
+		this.sendExperienceChange(this.getExp(), this.getLevel());
 	}
 }
