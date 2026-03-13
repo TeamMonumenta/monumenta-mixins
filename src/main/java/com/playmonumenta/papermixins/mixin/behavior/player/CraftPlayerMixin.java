@@ -20,38 +20,38 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(CraftPlayer.class)
 public abstract class CraftPlayerMixin implements CraftPlayerAccess {
-    @Shadow
-    public abstract ServerPlayer getHandle();
+	@Shadow
+	public abstract ServerPlayer getHandle();
 
-    @Redirect(method = "setSpectatorTarget", at = @At(value = "INVOKE", target = "Lcom/google/common/base/Preconditions;checkArgument(ZLjava/lang/Object;)V"))
-    private static void removeSpectatorCheck(boolean expression, Object errorMessage) {
+	@Redirect(method = "setSpectatorTarget", at = @At(value = "INVOKE", target = "Lcom/google/common/base/Preconditions;checkArgument(ZLjava/lang/Object;)V"))
+	private static void removeSpectatorCheck(boolean expression, Object errorMessage) {
 
-    }
+	}
 
-    @Override
-    public void monumenta_mixins$hideInventory() {
-        NonNullList<ItemStack> list = NonNullList.createWithCapacity(46);
-        for (int i=0; i < 46; i++) {
-            if (i == 22) {
-                org.bukkit.inventory.ItemStack note = new org.bukkit.inventory.ItemStack(Material.PAPER);
-                ItemMeta meta = note.getItemMeta();
-                meta.displayName(Component.text("Note", NamedTextColor.WHITE, TextDecoration.BOLD));
-                meta.lore(List.of(Component.text("You are in Cutscene Mode, your inventory"),
-                        Component.text("is hidden, not deleted")));
-                NBT.modify(note, nbt -> {
-                    nbt.getOrCreateCompound("plain").getOrCreateCompound("display").setString("Name", "Note");
-                });
-                 list.add(ItemStack.fromBukkitCopy(note));
-            } else {
-                list.add(ItemStack.EMPTY);
-            }
-        }
-        var packet = new ClientboundContainerSetContentPacket(0, this.getHandle().inventoryMenu.incrementStateId(), list, ItemStack.EMPTY);
-        this.getHandle().connection.send(packet);
-    }
+	@Override
+	public void monumenta_mixins$hideInventory() {
+		NonNullList<ItemStack> list = NonNullList.createWithCapacity(46);
+		for (int i=0; i < 46; i++) {
+			if (i == 22) {
+				org.bukkit.inventory.ItemStack note = new org.bukkit.inventory.ItemStack(Material.PAPER);
+				ItemMeta meta = note.getItemMeta();
+				meta.displayName(Component.text("Note", NamedTextColor.WHITE, TextDecoration.BOLD));
+				meta.lore(List.of(Component.text("You are in Cutscene Mode, your inventory"),
+						Component.text("is hidden, not deleted")));
+				NBT.modify(note, nbt -> {
+					nbt.getOrCreateCompound("plain").getOrCreateCompound("display").setString("Name", "Note");
+				});
+				list.add(ItemStack.fromBukkitCopy(note));
+			} else {
+				list.add(ItemStack.EMPTY);
+			}
+		}
+		var packet = new ClientboundContainerSetContentPacket(0, this.getHandle().inventoryMenu.incrementStateId(), list, ItemStack.EMPTY);
+		this.getHandle().connection.send(packet);
+	}
 
-    @Override
-    public void monumenta_mixins$resyncInventory() {
-        this.getHandle().inventoryMenu.sendAllDataToRemote();
-    }
+	@Override
+	public void monumenta_mixins$resyncInventory() {
+		this.getHandle().inventoryMenu.sendAllDataToRemote();
+	}
 }
