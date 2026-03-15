@@ -34,6 +34,7 @@ public class Config {
 		public boolean fixInactiveTickNoAi = false;
 		public boolean freezeEndGateway = false;
 		public boolean disableDolphinPlayWithItems = false;
+		public boolean reduceDamageParticles = false;
 
 		public int giantTrackingRange = 96;
 
