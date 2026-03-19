@@ -36,7 +36,7 @@ public abstract class CraftPlayerMixin implements CraftPlayerAccess {
 	public abstract int getLevel();
 
 	@Redirect(method = "setSpectatorTarget", at = @At(value = "INVOKE", target = "Lcom/google/common/base/Preconditions;checkArgument(ZLjava/lang/Object;)V"))
-	private static void removeSpectatorCheck(boolean expression, Object errorMessage) {
+	private void removeSpectatorCheck(boolean expression, Object errorMessage) {
 
 	}
 
