@@ -6,6 +6,8 @@ plugins {
 }
 
 spotless {
+    lineEndings = com.diffplug.spotless.LineEnding.UNIX
+
     format("misc") {
         target("*.kts")
         trimTrailingWhitespace()
