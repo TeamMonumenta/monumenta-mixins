@@ -27,8 +27,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class AdvancementMixin implements AdvancementAccess {
 	@Unique private int monumenta$priority = 0;
 	@Unique private String monumenta$treePositionType = "relative";
-	@Unique private int monumenta$treePositionX = 0;
-	@Unique private int monumenta$treePositionY = 0;
+	@Unique private float monumenta$treePositionX = 0;
+	@Unique private float monumenta$treePositionY = 0;
 
 	@Mutable
 	@Shadow @Final public static Codec<Advancement> CODEC;
@@ -54,8 +54,8 @@ public class AdvancementMixin implements AdvancementAccess {
 										ExtraCodecs.strictOptionalField(Codec.BOOL, "sends_telemetry_event", false).forGetter(Advancement::sendsTelemetryEvent),
 										ExtraCodecs.strictOptionalField(Codec.INT, "priority", 0).forGetter(a -> Util.<AdvancementAccess>c(a).monumenta$getPriority()),
 										ExtraCodecs.strictOptionalField(Codec.STRING, "positionType", "relative").forGetter(a -> Util.<AdvancementAccess>c(a).monumenta$getTreePositionType()),
-										ExtraCodecs.strictOptionalField(Codec.INT, "positionX", 0).forGetter(a -> Util.<AdvancementAccess>c(a).monumenta$getTreePositionX()),
-										ExtraCodecs.strictOptionalField(Codec.INT, "positionY", 0).forGetter(a -> Util.<AdvancementAccess>c(a).monumenta$getTreePositionY())
+										ExtraCodecs.strictOptionalField(Codec.FLOAT, "positionX", 0f).forGetter(a -> Util.<AdvancementAccess>c(a).monumenta$getTreePositionX()),
+										ExtraCodecs.strictOptionalField(Codec.FLOAT, "positionY", 0f).forGetter(a -> Util.<AdvancementAccess>c(a).monumenta$getTreePositionY())
 								)
 								.apply(instance, (parent, display, rewards, criteria, requirements, sendsTelemetryEvent, priority, positionType, positionX, positionY) -> {
 									AdvancementRequirements advancementRequirements = requirements.orElseGet(() -> AdvancementRequirements.allOf(criteria.keySet()));
@@ -101,22 +101,22 @@ public class AdvancementMixin implements AdvancementAccess {
 	}
 
 	@Unique
-	public int monumenta$getTreePositionX() {
+	public float monumenta$getTreePositionX() {
 		return monumenta$treePositionX;
 	}
 
 	@Unique
-	public void monumenta$setTreePositionX(int monumenta$treePositionX) {
+	public void monumenta$setTreePositionX(float monumenta$treePositionX) {
 		this.monumenta$treePositionX = monumenta$treePositionX;
 	}
 
 	@Unique
-	public int monumenta$getTreePositionY() {
+	public float monumenta$getTreePositionY() {
 		return monumenta$treePositionY;
 	}
 
 	@Unique
-	public void monumenta$setTreePositionY(int monumenta$treePositionY) {
+	public void monumenta$setTreePositionY(float monumenta$treePositionY) {
 		this.monumenta$treePositionY = monumenta$treePositionY;
 	}
 }

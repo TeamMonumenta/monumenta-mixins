@@ -8,12 +8,12 @@ public interface AdvancementAccess {
 	String monumenta$getTreePositionType();
 	
 	void monumenta$setTreePositionType(String monumenta$treePositionType);
+
+	float monumenta$getTreePositionX();
 	
-	int monumenta$getTreePositionX();
+	void monumenta$setTreePositionX(float monumenta$treePositionX);
 	
-	void monumenta$setTreePositionX(int monumenta$treePositionX);
+	float monumenta$getTreePositionY();
 	
-	int monumenta$getTreePositionY();
-	
-	void monumenta$setTreePositionY(int monumenta$treePositionY);
+	void monumenta$setTreePositionY(float monumenta$treePositionY);
 }
