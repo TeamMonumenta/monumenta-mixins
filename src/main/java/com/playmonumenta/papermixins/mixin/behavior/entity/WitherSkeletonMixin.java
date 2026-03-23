@@ -15,18 +15,18 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(WitherSkeleton.class)
 public class WitherSkeletonMixin {
-    @Redirect(method = "getArrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;setSecondsOnFire(I)V"))
-    public void disableFlamingArrows(AbstractArrow instance, int i) {
-        if (!Util.<AbstractSkeleton>c(this).getTags().contains("boss_no_flame_arrows")) {
-            instance.setSecondsOnFire(i);
-        }
-    }
+	@Redirect(method = "getArrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;setSecondsOnFire(I)V"))
+	public void disableFlamingArrows(AbstractArrow instance, int i) {
+		if (!Util.<AbstractSkeleton>c(this).getTags().contains("boss_no_flame_arrows")) {
+			instance.setSecondsOnFire(i);
+		}
+	}
 
-    @Redirect(method = "doHurtTarget", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;Lorg/bukkit/event/entity/EntityPotionEffectEvent$Cause;)Z"))
-    public boolean disableWitherOnHit(LivingEntity instance, MobEffectInstance mobeffect, Entity entity, EntityPotionEffectEvent.Cause cause) {
-        if (!Util.<AbstractSkeleton>c(this).getTags().contains("boss_no_withering")) {
-            return instance.addEffect(mobeffect, entity, cause);
-        }
-        return false;
-    }
+	@Redirect(method = "doHurtTarget", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;Lorg/bukkit/event/entity/EntityPotionEffectEvent$Cause;)Z"))
+	public boolean disableWitherOnHit(LivingEntity instance, MobEffectInstance mobeffect, Entity entity, EntityPotionEffectEvent.Cause cause) {
+		if (!Util.<AbstractSkeleton>c(this).getTags().contains("boss_no_withering")) {
+			return instance.addEffect(mobeffect, entity, cause);
+		}
+		return false;
+	}
 }
