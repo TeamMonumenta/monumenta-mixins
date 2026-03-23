@@ -51,6 +51,7 @@
         "behavior.entity.MobMixin",
         "behavior.entity.ProjectileUtilMixin",
         "behavior.entity.ShulkerMixin",
+        "behavior.entity.StrayMixin",
         "behavior.entity.TrackingRangeMixin",
         "behavior.entity.VillagerGoalPackagesMixin",
         "behavior.entity.VillagerMixin",
