@@ -1,9 +1,9 @@
 plugins {
 	id("com.playmonumenta.papermixins.mod-conventions")
+	id("com.playmonumenta.gradle-config") version "3+"
 }
 
 group = "com.playmonumenta.papermixins"
-version = "2.2.7"
 
 paperweight.awPath.set(file("src/main/resources/monumenta.accesswidener"))
 
@@ -36,4 +36,12 @@ tasks {
 	shadowJar {
 		relocate("de.tr7zw.changeme.nbtapi", "de.tr7zw.nbtapi")
 	}
+}
+
+monumenta {
+	name("monumenta")
+	serverConfigSubdir("mods")
+	deployArtifactTask("reobfJar")
+	disableMaven()
+	disableJavadoc()
 }
