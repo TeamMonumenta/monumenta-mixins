@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("com.github.johnrengelman.shadow")
+    id("com.gradleup.shadow")
     id("com.diffplug.spotless")
 }
 
@@ -30,7 +30,7 @@ repositories {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
     withSourcesJar()
 }
 
