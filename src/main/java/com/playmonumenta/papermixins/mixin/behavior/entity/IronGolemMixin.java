@@ -54,7 +54,7 @@ public abstract class IronGolemMixin extends LivingEntity {
 	)
 	private void onHeal(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
 
-		CraftPlayer craftPlayer = (CraftPlayer) (player.getBukkitEntity());
+		CraftPlayer craftPlayer = (CraftPlayer) player.getBukkitEntity();
 		IronGolemHealEvent event = new IronGolemHealEvent(craftPlayer, Util.c(Util.<IronGolem>c(this).getBukkitEntity()));
 
 		event.callEvent();

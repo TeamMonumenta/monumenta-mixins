@@ -81,6 +81,7 @@ public class ClassForceLoader {
 			} catch (IOException e) {
 				throw Util.sneakyThrow(e);
 			} catch (StopException ignored) {
+				// StopException is used as a control-flow signal to abort traversal early; not an error.
 			}
 		});
 

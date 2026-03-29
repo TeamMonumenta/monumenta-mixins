@@ -34,7 +34,7 @@ public class FuncExecTask<T> implements EntryAction<T> {
 		if (actions.isEmpty())
 			return;
 
-		c.queueNext((new FuncExecTask<>(actions, f, source)).selfEntry);
+		c.queueNext(new FuncExecTask<>(actions, f, source).selfEntry);
 	}
 
 	@Override
