@@ -44,7 +44,7 @@ public class PluginEarlyLoader {
 			return;
 		}
 
-		try (final var zfs = FileSystems.newFileSystem(pluginPath)) {
+		try (var zfs = FileSystems.newFileSystem(pluginPath)) {
 			final var cfgPath = zfs.getPath("monumenta.plugin.json");
 
 			if (!Files.isRegularFile(cfgPath)) {

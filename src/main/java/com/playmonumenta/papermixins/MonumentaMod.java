@@ -16,7 +16,7 @@ public class MonumentaMod {
 	}
 
 	public static void onStart() {
-		MonumentaMod.LOGGER.info("Running {}", MonumentaMod.getIdentifier());
+		LOGGER.info("Running {}", getIdentifier());
 	}
 
 	public static void onStop() {

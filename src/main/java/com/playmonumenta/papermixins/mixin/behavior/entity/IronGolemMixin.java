@@ -61,7 +61,7 @@ public abstract class IronGolemMixin extends LivingEntity {
 
 		if (event.isCancelled()) {
 			cir.setReturnValue(InteractionResult.FAIL);
-			ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(getId(), List.of(SynchedEntityData.DataValue.create(LivingEntity.DATA_HEALTH_ID, getHealth())));
+			ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(getId(), List.of(SynchedEntityData.DataValue.create(DATA_HEALTH_ID, getHealth())));
 			craftPlayer.getHandle().connection.send(packet);
 			int itemSlot = craftPlayer.getInventory().getHeldItemSlot();
 			ClientboundContainerSetSlotPacket packet1 = new ClientboundContainerSetSlotPacket(0, 0, itemSlot + 36, CraftItemStack.asNMSCopy(craftPlayer.getInventory().getItem(itemSlot)));
