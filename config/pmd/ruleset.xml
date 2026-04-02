@@ -5,10 +5,6 @@
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
     <description>
         Monumenta default ruleset with mixin false-positive rules removed.
-        Excluded: UnusedFormalParameter and UnusedPrivateMethod (mixin handler params/methods are
-        required by the Sponge Mixin spec and invoked at runtime via bytecode; static analysis
-        cannot see the usages). Also excluded: UseJetbrainsAnnotations, UnnecessaryModifier,
-        UnnecessaryFullyQualifiedName, and UseDiamondOperator (low-value warnings in this project).
     </description>
 
     <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP"/>
