@@ -1,7 +1,5 @@
 package com.playmonumenta.papermixins.mcfunction;
 
-import static com.playmonumenta.papermixins.util.Util.coalesce;
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.playmonumenta.papermixins.MonumentaMod;
 import com.playmonumenta.papermixins.mcfunction.codegen.CodeGenerator;
@@ -35,6 +33,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import static com.playmonumenta.papermixins.util.Util.coalesce;
 
 public class Compiler {
 	private static final Logger LOGGER = MonumentaMod.getLogger("FunctionCompiler");

@@ -34,14 +34,16 @@ public class AdvancementMixin implements AdvancementAccess {
 	@Shadow @Final private static Codec<Map<String, Criterion<?>>> CRITERIA_CODEC;
 
 	@Shadow
-    public static DataResult<Advancement> validate(Advancement advancement) { return null; }
+	public static DataResult<Advancement> validate(Advancement advancement) { return null; }
 
 	@Unique
+	@Override
 	public int monumenta$getPriority() {
 		return monumenta$priority;
 	}
 
 	@Unique
+	@Override
 	public void monumenta$setPriority(int priority) {
 		monumenta$priority = priority;
 	}

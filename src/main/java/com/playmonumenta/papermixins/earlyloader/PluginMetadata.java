@@ -42,7 +42,7 @@ record PluginMetadata(@Nullable Map<String, List<String>> wideners) {
 	}
 
 	public static Optional<PluginMetadata> readPluginMetadata(Path pluginPath, Path cfgPath) {
-		try (final var reader = new JsonReader(Files.newBufferedReader(cfgPath))) {
+		try (var reader = new JsonReader(Files.newBufferedReader(cfgPath))) {
 			reader.beginObject();
 
 			Map<String, List<String>> wideners = null;

@@ -36,7 +36,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private float setupIframeHandlers(float value) {
 		Function<Double, Double> iframes = f -> {
 			if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F) {
-				return -(Math.max(f - Math.max(f - lastHurt, 0.0F), 0.0F));
+				return -Math.max(f - Math.max(f - lastHurt, 0.0F), 0.0F);
 			}
 			return 0.0;
 		};
