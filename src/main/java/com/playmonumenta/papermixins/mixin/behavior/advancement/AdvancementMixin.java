@@ -1,6 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.advancement;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.playmonumenta.papermixins.duck.AdvancementAccess;
 import com.playmonumenta.papermixins.util.Util;
@@ -32,12 +33,17 @@ public class AdvancementMixin implements AdvancementAccess {
 
 	@Shadow @Final private static Codec<Map<String, Criterion<?>>> CRITERIA_CODEC;
 
+	@Shadow
+	public static DataResult<Advancement> validate(Advancement advancement) { return null; }
+
 	@Unique
+	@Override
 	public int monumenta$getPriority() {
 		return monumenta$priority;
 	}
 
 	@Unique
+	@Override
 	public void monumenta$setPriority(int priority) {
 		monumenta$priority = priority;
 	}
@@ -63,7 +69,7 @@ public class AdvancementMixin implements AdvancementAccess {
 									return adv;
 								})
 				),
-				Advancement::validate
+				AdvancementMixin::validate
 		);
 	}
 

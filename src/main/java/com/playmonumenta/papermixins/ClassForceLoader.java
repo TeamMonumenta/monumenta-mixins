@@ -33,7 +33,7 @@ public class ClassForceLoader {
 	private int classesLoaded;
 
 	private void forceLoadSingle(ClassLoader classLoader, Path path, Predicate<String> validate) throws IOException {
-		try (final var entry = Files.walk(path)) {
+		try (var entry = Files.walk(path)) {
 			entry.forEach(l -> {
 				if (flag.get()) {
 					throw new StopException();
@@ -71,7 +71,7 @@ public class ClassForceLoader {
 					}
 
 					if (path.toString().endsWith(".jar")) {
-						try (final var fs = FileSystems.newFileSystem(path)) {
+						try (var fs = FileSystems.newFileSystem(path)) {
 							forceLoadSingle(classLoader, fs.getPath("/"), validate);
 						}
 					} else {
@@ -81,6 +81,7 @@ public class ClassForceLoader {
 			} catch (IOException e) {
 				throw Util.sneakyThrow(e);
 			} catch (StopException ignored) {
+				// StopException is used as a control-flow signal to abort traversal early; not an error.
 			}
 		});
 

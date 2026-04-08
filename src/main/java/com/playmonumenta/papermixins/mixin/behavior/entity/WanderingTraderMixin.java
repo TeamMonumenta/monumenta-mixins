@@ -28,6 +28,7 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
 	 * @author Flowey
 	 * @reason Remove AI.
 	 */
+	@Override
 	@Overwrite
 	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));

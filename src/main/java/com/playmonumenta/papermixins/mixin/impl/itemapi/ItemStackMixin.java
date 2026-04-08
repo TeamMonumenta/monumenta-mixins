@@ -33,7 +33,7 @@ public class ItemStackMixin implements ItemStackAccess {
 	private final ItemStackStateManager monumenta$stateManager = new ItemStackStateManager();
 
 	@Shadow
-	@javax.annotation.Nullable
+	@Nullable
 	private Item item;
 
 	@Shadow @Final private static Logger LOGGER;

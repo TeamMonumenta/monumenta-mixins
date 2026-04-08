@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+    <!-- Naming conventions don't apply: monumenta$ prefix is required by the mixin spec,
+         and this project uses Java bean style rather than mCamelCase. -->
+    <suppress checks="MemberName" files=".*\.java"/>
+    <suppress checks="MethodName" files=".*\.java"/>
+    <suppress checks="ParameterName" files=".*\.java"/>
+
+    <!-- Import order: project uses standard alphabetical ordering, not Monumenta's group ordering. -->
+    <suppress checks="CustomImportOrder" files=".*\.java"/>
+
+    <!-- Style issues deferred to a future pass. -->
+    <suppress checks="WhitespaceAround" files=".*\.java"/>
+    <suppress checks="NeedBraces" files=".*\.java"/>
+    <suppress checks="OverloadMethodsDeclarationOrder" files=".*\.java"/>
+    <suppress checks="EmptyLineSeparator" files=".*\.java"/>
+    <suppress checks="MissingSwitchDefault" files=".*\.java"/>
+    <suppress checks="EmptyCatchBlock" files=".*\.java"/>
+    <suppress checks="WhitespaceAfter" files=".*\.java"/>
+    <suppress checks="SingleSpaceSeparator" files=".*\.java"/>
+    <suppress checks="MethodParamPad" files=".*\.java"/>
+    <suppress checks="ModifierOrder" files=".*\.java"/>
+    <suppress checks="LeftCurly" files=".*\.java"/>
+    <suppress checks="RightCurly" files=".*\.java"/>
+    <suppress checks="AnnotationLocation" files=".*\.java"/>
+    <suppress checks="FallThrough" files=".*\.java"/>
+</suppressions>

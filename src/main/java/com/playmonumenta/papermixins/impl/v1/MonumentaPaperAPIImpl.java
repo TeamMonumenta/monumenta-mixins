@@ -60,6 +60,7 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 		return DataFixImpl.getInstance();
 	}
 
+	@Override
 	public HookAPI getHookAPI() {
 		return HookAPIImpl.getInstance();
 	}

@@ -35,7 +35,7 @@ public abstract class ExplosionMixin {
 	)
 	private Vec3 modifyResultValue(Vec3 original, @Local Entity entity) {
 		if (ConfigManager.getConfig().behavior.explosionKbr && entity instanceof LivingEntity livingEntity) {
-			return original.scale(Math.max(1 - (livingEntity).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0));
+			return original.scale(Math.max(1 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE), 0));
 		} else {
 			return original;
 		}
