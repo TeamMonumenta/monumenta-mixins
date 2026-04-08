@@ -44,7 +44,7 @@ tasks {
 }
 
 monumenta {
-	name("monumenta")
+	name("monumenta-mixins")
 	serverConfigSubdir("mods")
 	deployArtifactTask("reobfJar")
 	disableMaven()
