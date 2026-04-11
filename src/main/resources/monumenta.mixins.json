@@ -36,7 +36,7 @@
         "behavior.enchant.DigDurabilityEnchantMixin",
         "behavior.enchant.ItemStackMixin",
         "behavior.enchant.VanishingCurseEnchantmentMixin",
-        "behavior.entity.AbstractArrowMixin",
+        "behavior.bugfix.AbstractArrowMixin",
         "behavior.entity.AnimalMixin",
         "behavior.entity.BeeMixin",
         "behavior.entity.CreeperMixin",

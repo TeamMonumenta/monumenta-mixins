@@ -13,7 +13,6 @@ public class Config {
 		public boolean disableIceBreakBehavior = false;
 		public boolean disableIceMelting = false;
 		public boolean normalizeArmorUnbreaking = false;
-		public boolean disableArrowBouncing = false;
 		public boolean disableAnimalPathfindingWeights = false;
 		public boolean keepBeeAgroAfterSting = false;
 		public boolean disableChargedCreeperHeads = false;
