@@ -29,6 +29,7 @@
         "behavior.bugfix.LevelStorageSourceMixin",
         "behavior.bugfix.MapItemSavedDataMixin",
         "behavior.bugfix.MobMixin",
+        "behavior.bugfix.ProjectileMixin",
         "behavior.bugfix.ServerGamePacketListenerImplMixin",
         "behavior.bugfix.upgrade.ConvertTaskMixin",
         "behavior.bugfix.upgrade.ThreadedWorldUpgraderMixin",
