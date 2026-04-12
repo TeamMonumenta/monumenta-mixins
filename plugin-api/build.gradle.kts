@@ -9,6 +9,7 @@ repositories {
 monumenta {
 	name("plugin-api")
 	disableJavadoc()
+	disableDeploy()
 }
 
 dependencies {
