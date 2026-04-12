@@ -2,7 +2,6 @@ package com.playmonumenta.papermixins.mixin.behavior;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.playmonumenta.papermixins.Config;
 import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -36,6 +35,6 @@ public abstract class ProjectileMixin extends Entity {
 		boolean playerHittingPlayer = owner == null || owner.getType() != EntityType.PLAYER || entity.getType() != EntityType.PLAYER;
 		return original &&
 			!entity.getTags().contains("projectile_passthrough") &&
-			!(ConfigManager.getConfig().behavior.playerArrowsPassThroughPlayer && playerHittingPlayer);
+			!(ConfigManager.getConfig().behavior.playerArrowsPassThroughPlayers && playerHittingPlayer);
 	}
 }
