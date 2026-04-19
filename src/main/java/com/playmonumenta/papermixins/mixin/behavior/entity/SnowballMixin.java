@@ -46,7 +46,7 @@ public abstract class SnowballMixin extends ThrowableItemProjectile implements S
 		at = @At("TAIL")
 	)
 	private void trackPiercedEntity(EntityHitResult entityHitResult, CallbackInfo ci) {
-		if (ConfigManager.getConfig().behavior.allProjectilesPierce || monumenta$getPiercingLevel() <= 0) {
+		if (!ConfigManager.getConfig().behavior.allProjectilesPierce || monumenta$getPiercingLevel() <= 0) {
 			return;
 		}
 
@@ -66,7 +66,7 @@ public abstract class SnowballMixin extends ThrowableItemProjectile implements S
 	)
 	@SuppressWarnings("removal")
 	private void keepSnowballAlive(Snowball snowball, EntityRemoveEvent.Cause cause, Operation<Void> original, HitResult hitResult) {
-		if (ConfigManager.getConfig().behavior.allProjectilesPierce ||
+		if (!ConfigManager.getConfig().behavior.allProjectilesPierce ||
 			monumenta$getPiercingLevel() <= 0 ||
 			hitResult.getType() != HitResult.Type.ENTITY
 		) {

@@ -37,7 +37,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 
 	@Inject(method = "onHitEntity", at = @At("HEAD"))
 	private void trackPiercedEntity(EntityHitResult entityHitResult, CallbackInfo ci) {
-		if (ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
+		if (!ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
 			return;
 		}
 
@@ -59,7 +59,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 		)
 	)
 	private void delayDealtDamage(ThrownTrident trident, boolean newValue) {
-		if (ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
+		if (!ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
 			dealtDamage = newValue;
 			return;
 		}
@@ -77,7 +77,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 		)
 	)
 	private void keepVelocity(ThrownTrident trident, Vec3 deltaMovement, Operation<Void> original) {
-		if (ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
+		if (!ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
 			original.call(trident, deltaMovement);
 			return;
 		}
