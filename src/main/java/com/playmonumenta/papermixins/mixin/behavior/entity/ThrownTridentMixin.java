@@ -2,6 +2,7 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.playmonumenta.papermixins.ConfigManager;
 import com.playmonumenta.papermixins.mixin.accessor.AbstractArrowAccessor;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.world.entity.EntityType;
@@ -23,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ThrownTrident.class)
 public abstract class ThrownTridentMixin extends AbstractArrow {
 	@Shadow
-	private boolean dealtDamage;
+	public boolean dealtDamage;
 
 	protected ThrownTridentMixin(EntityType<? extends AbstractArrow> type, Level level) {
 		super(type, level, ItemStack.EMPTY);
@@ -36,7 +37,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 
 	@Inject(method = "onHitEntity", at = @At("HEAD"))
 	private void trackPiercedEntity(EntityHitResult entityHitResult, CallbackInfo ci) {
-		if (getPierceLevel() <= 0) {
+		if (ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
 			return;
 		}
 
@@ -58,7 +59,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 		)
 	)
 	private void delayDealtDamage(ThrownTrident trident, boolean newValue) {
-		if (getPierceLevel() <= 0) {
+		if (ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
 			dealtDamage = newValue;
 			return;
 		}
@@ -76,7 +77,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 		)
 	)
 	private void keepVelocity(ThrownTrident trident, Vec3 deltaMovement, Operation<Void> original) {
-		if (getPierceLevel() <= 0) {
+		if (ConfigManager.getConfig().behavior.allProjectilesPierce || getPierceLevel() <= 0) {
 			original.call(trident, deltaMovement);
 			return;
 		}

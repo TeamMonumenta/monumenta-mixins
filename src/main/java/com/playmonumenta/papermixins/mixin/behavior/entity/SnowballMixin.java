@@ -2,6 +2,7 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.playmonumenta.papermixins.ConfigManager;
 import com.playmonumenta.papermixins.duck.SnowballAccess;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.world.entity.EntityType;
@@ -45,7 +46,7 @@ public abstract class SnowballMixin extends ThrowableItemProjectile implements S
 		at = @At("TAIL")
 	)
 	private void trackPiercedEntity(EntityHitResult entityHitResult, CallbackInfo ci) {
-		if (monumenta$getPiercingLevel() <= 0) {
+		if (ConfigManager.getConfig().behavior.allProjectilesPierce || monumenta$getPiercingLevel() <= 0) {
 			return;
 		}
 
@@ -65,7 +66,10 @@ public abstract class SnowballMixin extends ThrowableItemProjectile implements S
 	)
 	@SuppressWarnings("removal")
 	private void keepSnowballAlive(Snowball snowball, EntityRemoveEvent.Cause cause, Operation<Void> original, HitResult hitResult) {
-		if (monumenta$getPiercingLevel() <= 0 || hitResult.getType() != HitResult.Type.ENTITY) {
+		if (ConfigManager.getConfig().behavior.allProjectilesPierce ||
+			monumenta$getPiercingLevel() <= 0 ||
+			hitResult.getType() != HitResult.Type.ENTITY
+		) {
 			original.call(snowball, cause);
 			return;
 		}
