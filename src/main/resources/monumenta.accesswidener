@@ -32,3 +32,4 @@ accessible method net/minecraft/server/level/ServerLevel$EntityRegionFileStorage
 accessible field net/minecraft/world/scores/Scoreboard playerScores Ljava/util/Map;
 accessible method net/minecraft/world/scores/PlayerScores listRawScores ()Ljava/util/Map;
 accessible method net/minecraft/advancements/Advancement validate (Lnet/minecraft/advancements/Advancement;)Lcom/mojang/serialization/DataResult;
+accessible field net/minecraft/world/level/ClipContext collisionContext Lnet/minecraft/world/phys/shapes/CollisionContext;

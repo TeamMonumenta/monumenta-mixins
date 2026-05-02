@@ -11,6 +11,7 @@
         "api.MeleeAttackGoalMixin",
         "behavior.DedicatedServerMixin",
         "behavior.DimensionDataStorageMixin",
+        "behavior.LevelMixin",
         "behavior.ServerGamePacketListenerImplMixin",
         "behavior.ServerShutdownThreadMixin",
         "behavior.advancement.AdvancementMixin",
