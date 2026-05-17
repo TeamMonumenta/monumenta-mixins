@@ -42,7 +42,7 @@ public class DamageModifierMixin {
 			throw new AssertionError();
 
 		ArrayList<DamageModifier> variants = new ArrayList<>(Arrays.asList($VALUES));
-		var nextOrdinal = variants.get(variants.size() - 1).ordinal() + 1;
+		var nextOrdinal = variants.getLast().ordinal() + 1;
 		EntityDamageEvent.DamageModifier instance = invokeInit(internalName, nextOrdinal);
 		variants.add(instance);
 		$VALUES = variants.toArray(new DamageModifier[0]);
