@@ -29,7 +29,6 @@
         "behavior.bugfix.LevelStorageSourceMixin",
         "behavior.bugfix.MapItemSavedDataMixin",
         "behavior.bugfix.MobMixin",
-        "behavior.entity.ProjectileMixin",
         "behavior.bugfix.ServerGamePacketListenerImplMixin",
         "behavior.bugfix.upgrade.ConvertTaskMixin",
         "behavior.bugfix.upgrade.ThreadedWorldUpgraderMixin",
@@ -51,6 +50,7 @@
         "behavior.entity.LivingEntityMixin",
         "behavior.entity.MerchantOfferMixin",
         "behavior.entity.MobMixin",
+        "behavior.entity.ProjectileMixin",
         "behavior.entity.ProjectileUtilMixin",
         "behavior.entity.ShulkerMixin",
         "behavior.entity.StrayMixin",
@@ -92,6 +92,7 @@
         "misc.lifecycle.DedicatedServerMixin",
         "misc.lifecycle.MinecraftServerMixin",
         "optimize.AdvancementTreeMixin",
+        "optimize.CraftAsyncSchedulerMixin",
         "optimize.ServerAdvancementManagerMixin"
     ]
 }
