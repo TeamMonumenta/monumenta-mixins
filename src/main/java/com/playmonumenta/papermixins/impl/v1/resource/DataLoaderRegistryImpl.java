@@ -1,8 +1,8 @@
 package com.playmonumenta.papermixins.impl.v1.resource;
 
 import com.google.common.base.Preconditions;
-import com.playmonumenta.mixinapi.v1.resource.DataLoaderRegistry;
-import com.playmonumenta.mixinapi.v1.resource.DatapackResourceLoader;
+import com.playmonumenta.papermixins.paperapi.v1.resource.DataLoaderRegistry;
+import com.playmonumenta.papermixins.paperapi.v1.resource.DatapackResourceLoader;
 import it.unimi.dsi.fastutil.Pair;
 import java.util.ArrayList;
 import java.util.Collections;

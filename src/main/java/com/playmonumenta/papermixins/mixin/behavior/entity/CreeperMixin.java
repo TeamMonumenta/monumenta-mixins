@@ -1,11 +1,10 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.monster.Creeper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author Flowey
@@ -19,14 +18,15 @@ public class CreeperMixin {
 	 * @author Flowey
 	 * @reason Disable skull drop.
 	 */
-	@Inject(
-		method = "canDropMobsSkull",
-		at = @At("HEAD"),
-		cancellable = true
+	@ModifyExpressionValue(
+		method = "killedEntity",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/monster/Creeper;isPowered()Z")
 	)
-	public void canDropMobsSkull(CallbackInfoReturnable<Boolean> cir) {
+	public boolean canDropMobsSkull(boolean original) {
 		if(ConfigManager.getConfig().behavior.disableChargedCreeperHeads) {
-			cir.setReturnValue(false);
+			return false;
 		}
+
+		return original;
 	}
 }

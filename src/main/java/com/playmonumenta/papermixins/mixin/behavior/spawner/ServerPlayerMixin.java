@@ -2,13 +2,12 @@ package com.playmonumenta.papermixins.mixin.behavior.spawner;
 
 import com.mojang.authlib.GameProfile;
 import com.playmonumenta.papermixins.duck.EntityAccess;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,15 +21,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player {
-	public ServerPlayerMixin(Level world, BlockPos pos, float yaw, GameProfile gameProfile) {
-		super(world, pos, yaw, gameProfile);
+	public ServerPlayerMixin(Level level, GameProfile gameProfile) {
+		super(level, gameProfile);
 	}
 
 	@Inject(
 		method = "die",
 		at = @At("TAIL")
 	)
-	private void onPlayerDeath(DamageSource damageSource, CallbackInfo ci) {
+	private void onPlayerDeath(DamageSource source, CallbackInfo ci) {
 		var center = new Location(level().getWorld(), this.getX(), this.getY(), this.getZ());
 		var nearbyEntities = level().getWorld().getNearbyEntities(center, 24.0d, 24.0d, 24.0d);
 
@@ -38,7 +37,7 @@ public abstract class ServerPlayerMixin extends Player {
 			var accessor = (EntityAccess) ((CraftEntity) nearby).getHandle();
 			accessor.monumenta$setSpawner(null);
 
-			if (this.getTags().contains("DelvesPlayer")) {
+			if (this.entityTags().contains("DelvesPlayer")) {
 				accessor.monumenta$setDelveReprime(true);
 			}
 		}

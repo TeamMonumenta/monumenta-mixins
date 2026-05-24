@@ -6,7 +6,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 
 /**
@@ -50,27 +50,22 @@ public class GiantMixin extends Monster {
 	}
 
 	@Override
-	protected SoundEvent getAmbientSound() {
+	public SoundEvent getAmbientSound() {
 		return SoundEvents.ZOMBIE_AMBIENT;
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+	public @NonNull SoundEvent getHurtSound(@NotNull DamageSource source) {
 		return SoundEvents.ZOMBIE_HURT;
 	}
 
 	@Override
-	public SoundEvent getDeathSound() {
+	public @NonNull SoundEvent getDeathSound() {
 		return SoundEvents.ZOMBIE_DEATH;
 	}
 
 	@Override
 	protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
 		this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 0.3F);
-	}
-
-	@Override
-	public @NotNull MobType getMobType() {
-		return MobType.UNDEAD;
 	}
 }

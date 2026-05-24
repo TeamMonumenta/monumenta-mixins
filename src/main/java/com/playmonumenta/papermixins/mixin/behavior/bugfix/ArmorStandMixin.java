@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,13 +19,16 @@ public abstract class ArmorStandMixin extends LivingEntity {
 		super(type, world);
 	}
 
-	@Inject(method = "kill(Z)V", at = @At("HEAD"))
-	private void onKill(boolean callEvent, CallbackInfo ci) {
+	@Inject(
+		method = "kill(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;Z)V",
+		at = @At("HEAD")
+	)
+	private void onKill(ServerLevel level, DamageSource source, boolean callEvent, CallbackInfo ci) {
 		this.setHealth(0);
 	}
 
 	@Inject(method = "brokenByAnything", at = @At("HEAD"))
-	private void onBroken(DamageSource damageSource, CallbackInfoReturnable<EntityDeathEvent> cir) {
+	private void onBroken(ServerLevel level, DamageSource source, CallbackInfoReturnable<EntityDeathEvent> cir) {
 		this.setHealth(0);
 	}
 }

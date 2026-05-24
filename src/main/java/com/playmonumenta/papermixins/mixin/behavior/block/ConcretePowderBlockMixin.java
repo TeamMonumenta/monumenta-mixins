@@ -27,8 +27,8 @@ public class ConcretePowderBlockMixin {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private static void shouldSolidify(BlockGetter world, BlockPos pos, BlockState state,
-									CallbackInfoReturnable<Boolean> cir) {
+	private static void shouldSolidify(BlockGetter level, BlockPos pos, BlockState replacedBlock,
+									   CallbackInfoReturnable<Boolean> cir) {
 		if (ConfigManager.getConfig().behavior.disableConcreteHardening) {
 			cir.setReturnValue(false);
 		}
@@ -43,7 +43,7 @@ public class ConcretePowderBlockMixin {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private static void touchesLiquid(BlockGetter world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+	private static void touchesLiquid(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
 		if (ConfigManager.getConfig().behavior.disableConcreteHardening) {
 			cir.setReturnValue(false);
 		}

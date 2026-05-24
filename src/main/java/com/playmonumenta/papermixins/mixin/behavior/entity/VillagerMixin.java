@@ -1,27 +1,26 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
-import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.ActivityData;
 import net.minecraft.world.entity.ai.behavior.VillagerGoalPackages;
-import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.entity.npc.VillagerData;
-import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-
 
 /**
  * @author Flowey
  * @mm-patch 0017-Monumenta-Disable-a-bunch-of-villager-AI.patch
  * <p>
- * Delete a lot of vanilla MC behaviour for villagers.
+ * Delete a lot of vanilla MC behavior for villagers.
  */
 @Mixin(Villager.class)
 public abstract class VillagerMixin extends AbstractVillager {
@@ -29,12 +28,8 @@ public abstract class VillagerMixin extends AbstractVillager {
 		super(type, world);
 	}
 
-	@Shadow
-	public abstract VillagerData getVillagerData();
-
 	@ModifyConstant(
-		method = "<init>(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;" +
-			"Lnet/minecraft/world/entity/npc/VillagerType;)V",
+		method = "<init>(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/Holder;)V",
 		constant = @Constant(intValue = 1, ordinal = 0)
 	)
 	private int disableOpeningDoors(int constant) {
@@ -47,14 +42,11 @@ public abstract class VillagerMixin extends AbstractVillager {
 	 * @reason Disable more AI goals.
 	 */
 	@Overwrite
-	private void registerBrainGoals(Brain<Villager> brain) {
-		VillagerProfession profession = this.getVillagerData().getProfession();
-
-		brain.addActivity(Activity.CORE, VillagerGoalPackages.getCorePackage(profession, 0.5F));
-		brain.addActivity(Activity.IDLE, VillagerGoalPackages.getIdlePackage(profession, 0.5F));
-		brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
-		brain.setDefaultActivity(Activity.IDLE);
-		brain.setActiveActivityIfPossible(Activity.IDLE);
-		brain.updateActivityFromSchedule(this.level().getDayTime(), this.level().getGameTime());
+	private static List<ActivityData<Villager>> lambda$static$0(Villager body) {
+		Holder<VillagerProfession> profession = body.getVillagerData().profession();
+		List<ActivityData<Villager>> activities = new ArrayList<>();
+		activities.add(ActivityData.create(Activity.CORE, VillagerGoalPackages.getCorePackage(profession, 0.5F)));
+		activities.add(ActivityData.create(Activity.IDLE, VillagerGoalPackages.getIdlePackage(0.5F)));
+		return activities;
 	}
 }

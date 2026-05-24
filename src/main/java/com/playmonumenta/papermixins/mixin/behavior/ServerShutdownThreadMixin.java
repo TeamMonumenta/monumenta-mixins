@@ -1,7 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior;
 
 import com.playmonumenta.papermixins.ConfigManager;
-import org.bukkit.craftbukkit.v1_20_R3.util.ServerShutdownThread;
+import org.bukkit.craftbukkit.util.ServerShutdownThread;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;

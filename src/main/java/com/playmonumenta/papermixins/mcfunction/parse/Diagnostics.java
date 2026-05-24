@@ -4,7 +4,7 @@ import com.playmonumenta.papermixins.ConfigManager;
 import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 
 public class Diagnostics {
@@ -39,7 +39,7 @@ public class Diagnostics {
 		return hasError;
 	}
 
-	public void dumpErrors(Logger logger, String pack, ResourceLocation id, List<String> lines) {
+	public void dumpErrors(Logger logger, String pack, Identifier id, List<String> lines) {
 		int context = ConfigManager.getConfig().mcFunction.diagnosticContext;
 		StringBuilder builder = new StringBuilder();
 

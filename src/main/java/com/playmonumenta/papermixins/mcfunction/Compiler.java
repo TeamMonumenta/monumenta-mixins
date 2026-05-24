@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-import net.minecraft.Util;
+import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.FunctionInstantiationException;
 import net.minecraft.commands.functions.CommandFunction;
@@ -29,7 +29,8 @@ import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class Compiler {
 		format.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
 	});
 
-	private static PlainTextFunction<CommandSourceStack> compileImpl(ResourceLocation id, String pack,
+	private static PlainTextFunction<CommandSourceStack> compileImpl(Identifier id, String pack,
 																	CompileContext context,
 																	ExpandedFunctionSource source) {
 		final var parser = new Parser(context, source);
@@ -82,20 +83,19 @@ public class Compiler {
 		return res;
 	}
 
-	private static CommandFunction<CommandSourceStack> compileMacro(ResourceLocation id, String pack, RawFunctionSource rawFunctionSource) {
+	private static CommandFunction<CommandSourceStack> compileMacro(Identifier id, String pack, RawFunctionSource rawFunctionSource, CommandSourceStack dummyStack) {
 		return new CommandFunction<>() {
 			@Override
-			public @NotNull ResourceLocation id() {
+			public @NotNull Identifier id() {
 				return id;
 			}
 
 			@Override
 			public @NotNull InstantiatedFunction<CommandSourceStack> instantiate(
 				@Nullable CompoundTag arguments,
-				@NotNull CommandDispatcher<CommandSourceStack> dispatcher,
-				@NotNull CommandSourceStack source
+				@NotNull CommandDispatcher<CommandSourceStack> dispatcher
 			) throws FunctionInstantiationException {
-				final var context = new CompileContext(new Diagnostics(), dispatcher, source);
+				final var context = new CompileContext(new Diagnostics(), dispatcher, dummyStack);
 
 				final var macroArgs = coalesce(arguments, CompoundTag::new).tags.entrySet()
 					.stream()
@@ -104,17 +104,17 @@ public class Compiler {
 						entry -> {
 							final var nbt = entry.getValue();
 							if (nbt instanceof FloatTag floatTag) {
-								return DECIMAL_FORMAT.format(floatTag.getAsFloat());
+								return DECIMAL_FORMAT.format(floatTag.floatValue());
 							} else if (nbt instanceof DoubleTag doubleTag) {
-								return DECIMAL_FORMAT.format(doubleTag.getAsDouble());
+								return DECIMAL_FORMAT.format(doubleTag.doubleValue());
 							} else if (nbt instanceof ByteTag byteTag) {
-								return String.valueOf(byteTag.getAsByte());
+								return String.valueOf(byteTag.byteValue());
 							} else if (nbt instanceof ShortTag shortTag) {
-								return String.valueOf(shortTag.getAsShort());
+								return String.valueOf(shortTag.shortValue());
 							} else if (nbt instanceof LongTag longTag) {
-								return String.valueOf(longTag.getAsLong());
+								return String.valueOf(longTag.longValue());
 							} else {
-								return nbt.getAsString();
+								return nbt.toString();
 							}
 						}
 					));
@@ -146,7 +146,7 @@ public class Compiler {
 	@Nullable
 	public static CommandFunction<CommandSourceStack> compileFunction(
 		CommandDispatcher<CommandSourceStack> dispatcher,
-		CommandSourceStack dummySource, List<String> lines, ResourceLocation id, String pack) {
+		CommandSourceStack dummySource, List<String> lines, Identifier id, String pack) {
 
 		final var context = new CompileContext(new Diagnostics(), dispatcher, dummySource);
 		final var reader = RawFunctionSource.fromLines(context, lines);
@@ -157,7 +157,7 @@ public class Compiler {
 				return null;
 			}
 
-			return compileMacro(id, pack, reader);
+			return compileMacro(id, pack, reader, dummySource);
 		} else {
 			// compile it immediately!
 			return reader.instantiate(context, Map.of())

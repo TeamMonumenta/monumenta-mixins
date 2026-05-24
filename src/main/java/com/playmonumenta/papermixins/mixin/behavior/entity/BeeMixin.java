@@ -3,7 +3,7 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.playmonumenta.papermixins.ConfigManager;
-import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.animal.bee.Bee;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -18,7 +18,7 @@ public class BeeMixin {
 	@WrapOperation(method = "doHurtTarget",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/animal/Bee;setHasStung(Z)V"
+			target = "Lnet/minecraft/world/entity/animal/bee/Bee;setHasStung(Z)V"
 		)
 	)
 	private void cancelSetHasStung(Bee instance, boolean hasStung, Operation<Void> original) {
@@ -30,7 +30,7 @@ public class BeeMixin {
 	@WrapOperation(method = "doHurtTarget",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/animal/Bee;stopBeingAngry()V"
+			target = "Lnet/minecraft/world/entity/animal/bee/Bee;stopBeingAngry()V"
 		)
 	)
 	private void cancelStopBeingAngry(Bee instance, Operation<Void> original) {

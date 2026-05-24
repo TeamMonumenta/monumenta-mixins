@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementTree;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerAdvancementManager;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(ServerAdvancementManager.class)
 public class ServerAdvancementManagerMixin {
 	@Shadow
-	public Map<ResourceLocation, AdvancementHolder> advancements;
+	public Map<Identifier, AdvancementHolder> advancements;
 
 	@Shadow @Final private static Logger LOGGER;
 

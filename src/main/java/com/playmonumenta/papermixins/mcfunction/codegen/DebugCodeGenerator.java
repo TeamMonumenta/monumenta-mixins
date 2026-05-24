@@ -8,7 +8,7 @@ import java.util.List;
 import net.minecraft.commands.ExecutionCommandSource;
 import net.minecraft.commands.execution.UnboundEntryAction;
 import net.minecraft.commands.functions.PlainTextFunction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class DebugCodeGenerator<T extends ExecutionCommandSource<T>> extends CodeGenerator<T> {
 	private final List<String> disassembly = new ArrayList<>();
@@ -42,7 +42,7 @@ public class DebugCodeGenerator<T extends ExecutionCommandSource<T>> extends Cod
 	}
 
 	@Override
-	public PlainTextFunction<T> define(ResourceLocation id) {
+	public PlainTextFunction<T> define(Identifier id) {
 		// linking :3
 		for (int i = 0; i < linkables.size(); i++) {
 			var linkableInfo = linkables.get(i);

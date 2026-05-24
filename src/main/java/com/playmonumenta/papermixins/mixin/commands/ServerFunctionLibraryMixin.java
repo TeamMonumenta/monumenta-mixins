@@ -13,7 +13,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.ExecutionCommandSource;
 import net.minecraft.commands.functions.CommandFunction;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerFunctionLibrary;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -50,7 +50,7 @@ public class ServerFunctionLibraryMixin {
 				"(Lnet/minecraft/server/packs/resources/ResourceManager;)Ljava/util/Map;"
 		)
 	)
-	private static Map<ResourceLocation, Resource> disableFunctionOnFirstLoad(FileToIdConverter instance,
+	private static Map<Identifier, Resource> disableFunctionOnFirstLoad(FileToIdConverter instance,
 																			ResourceManager resourceManager) {
 		if (monumenta$isInitialFunctionLoad) {
 			LOGGER.info("Skipping function loading since this is the initial function load!");
@@ -68,12 +68,12 @@ public class ServerFunctionLibraryMixin {
 				"Lcom/google/common/collect/ImmutableMap$Builder;"
 		)
 	)
-	private static void redirectFunctionParsing(ResourceLocation resourceLocation,
+	private static void redirectFunctionParsing(Identifier Identifier,
 												ImmutableMap.Builder<?, ?> builder,
 												CommandFunction<?> function, Throwable ex,
 												CallbackInfoReturnable<Object> cir) {
 		if (function == null) {
-			LOGGER.error("Failed to parse function '{}'! See logs for details.", resourceLocation);
+			LOGGER.error("Failed to parse function '{}'! See logs for details.", Identifier);
 		}
 	}
 
@@ -112,14 +112,14 @@ public class ServerFunctionLibraryMixin {
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/commands/functions/CommandFunction;fromLines" +
-				"(Lnet/minecraft/resources/ResourceLocation;Lcom/mojang/brigadier/CommandDispatcher;" +
+				"(Lnet/minecraft/resources/Identifier;Lcom/mojang/brigadier/CommandDispatcher;" +
 				"Lnet/minecraft/commands/ExecutionCommandSource;Ljava/util/List;)" +
 				"Lnet/minecraft/commands/functions/CommandFunction;"
 		)
 	)
 	private <T extends ExecutionCommandSource<T>> CommandFunction<T> redirectFunctionParsing(
-		ResourceLocation id, CommandDispatcher<T> dispatcher, T source,
-		List<String> lines, @Local(argsOnly = true) Map.Entry<ResourceLocation, Resource> map
+		Identifier id, CommandDispatcher<T> dispatcher, T source,
+		List<String> lines, @Local(argsOnly = true) Map.Entry<Identifier, Resource> map
 	) {
 		return (CommandFunction<T>) Compiler.compileFunction(
 			(CommandDispatcher<CommandSourceStack>) dispatcher,

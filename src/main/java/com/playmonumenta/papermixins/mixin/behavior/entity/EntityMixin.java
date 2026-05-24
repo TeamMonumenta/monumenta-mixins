@@ -26,7 +26,7 @@ public abstract class EntityMixin {
 		),
 		cancellable = true
 	)
-	public void disablePushing(double deltaX, double deltaY, double deltaZ, Entity pushingEntity, CallbackInfo ci) {
+	public void disablePushing(double xa, double ya, double za, Entity pushingEntity, CallbackInfo ci) {
 		if(ConfigManager.getConfig().behavior.disableMobPushingWithKbr) {
 			return;
 		}

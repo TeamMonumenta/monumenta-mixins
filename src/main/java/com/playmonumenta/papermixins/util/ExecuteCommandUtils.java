@@ -176,7 +176,7 @@ public class ExecuteCommandUtils {
 				literal("summon")
 					.then(
 						argument("entity", ResourceArgument.resource(access, Registries.ENTITY_TYPE))
-							.suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+							.suggests(SuggestionProviders.cast(SuggestionProviders.SUMMONABLE_ENTITIES))
 							.redirect(
 								root,
 								context -> ExecuteCommand.spawnEntityAndRedirect(context.getSource(),

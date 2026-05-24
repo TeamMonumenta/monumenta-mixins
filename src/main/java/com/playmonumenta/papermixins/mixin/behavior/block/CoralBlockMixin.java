@@ -26,7 +26,7 @@ public class CoralBlockMixin {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void scanForWater(BlockGetter world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+	private void scanForWater(BlockGetter level, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
 		if (ConfigManager.getConfig().behavior.disableCoralDeath) {
 			cir.setReturnValue(true);
 		}

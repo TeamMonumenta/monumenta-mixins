@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.playmonumenta.papermixins.ConfigManager;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -27,7 +28,7 @@ public abstract class EnderManMixin extends Monster {
 	}
 
 	@ModifyExpressionValue(
-		method = "hurt",
+		method = "hurtServer",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/world/entity/monster/EnderMan;tryEscape" +
@@ -43,16 +44,16 @@ public abstract class EnderManMixin extends Monster {
 	}
 
 	@ModifyReturnValue(
-		method = "hurt",
+		method = "hurtServer",
 		at = @At("TAIL")
 	)
 	private boolean modifyHurtReturnValue(
-		boolean original, DamageSource source, float amount,
+		boolean original, final ServerLevel level, final DamageSource source, final float damage,
 		@Share("hasEscaped") LocalBooleanRef ref
 	) {
 		if (ref.get())
 			return original;
-		return original || super.hurt(source, amount);
+		return original || super.hurtServer(level, source, damage);
 	}
 
 	/**

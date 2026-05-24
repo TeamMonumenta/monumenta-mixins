@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.playmonumenta.papermixins.ConfigManager;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -42,7 +43,7 @@ public abstract class LivingEntityMixin extends Entity {
 	public Player lastHurtByPlayer;
 
 	@Shadow
-	public int lastHurtByPlayerTime;
+	public int lastHurtByPlayerMemoryTime;
 
 	@Shadow
 	public int invulnerableDuration;
@@ -56,29 +57,26 @@ public abstract class LivingEntityMixin extends Entity {
 	@Shadow
 	public int hurtTime;
 
-	@Shadow
-	public abstract double getAttributeValue(Attribute attribute);
-
 	public LivingEntityMixin(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 
 	// reset last hurt by player time regardless of dmg type
 	@Inject(
-		method = "hurt",
+		method = "hurtServer",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/world/damagesource/DamageSource;getEntity()Lnet/minecraft/world/entity/Entity;"
 		)
 	)
-	private void resetHurtTime(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+	private void resetHurtTime(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
 		if (lastHurtByPlayer != null) {
-			lastHurtByPlayerTime = 100;
+			lastHurtByPlayerMemoryTime = 100;
 		}
 	}
 
 	@ModifyConstant(
-		method = "hurt",
+		method = "hurtServer",
 		constant = @Constant(
 			intValue = 1,
 			ordinal = 0

@@ -35,6 +35,6 @@ public abstract class ProjectileMixin extends Entity {
 		boolean playerHittingPlayer = owner != null && owner.getType() == EntityType.PLAYER && entity.getType() == EntityType.PLAYER;
 		return original
 			&& !(ConfigManager.getConfig().behavior.playerArrowsPassThroughPlayers && playerHittingPlayer)
-			&& !entity.getTags().contains("projectile_passthrough");
+			&& !entity.entityTags().contains("projectile_passthrough");
 	}
 }

@@ -7,11 +7,13 @@ import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.util.TaskChainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class FunctionExecSource extends CommandSourceStack {
 	private final FuncExecState<CommandSourceStack> execState;
@@ -22,7 +24,7 @@ public class FunctionExecSource extends CommandSourceStack {
 			stack.getPosition(),
 			stack.getRotation(),
 			stack.getLevel(),
-			stack.permissionLevel,
+			stack.permissions(),
 			stack.getTextName(),
 			stack.getDisplayName(),
 			stack.getServer(),
@@ -78,13 +80,13 @@ public class FunctionExecSource extends CommandSourceStack {
 	}
 
 	@Override
-	public @NotNull FunctionExecSource withPermission(int level) {
-		return new FunctionExecSource(super.withPermission(level), execState);
+	public @NotNull FunctionExecSource withPermission(@NonNull PermissionSet newPermissions) {
+		return new FunctionExecSource(super.withPermission(newPermissions), execState);
 	}
 
 	@Override
-	public @NotNull FunctionExecSource withMaximumPermission(int level) {
-		return new FunctionExecSource(super.withMaximumPermission(level), execState);
+	public @NotNull FunctionExecSource withMaximumPermission(@NonNull PermissionSet newPermissions) {
+		return new FunctionExecSource(super.withMaximumPermission(newPermissions), execState);
 	}
 
 	@Override

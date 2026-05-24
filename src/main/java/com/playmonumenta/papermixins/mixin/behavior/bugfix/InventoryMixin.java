@@ -27,8 +27,8 @@ public class InventoryMixin {
 	public Player player;
 
 	@ModifyReturnValue(method = "clearOrCountMatchingItems", at = @At("TAIL"))
-	private int clearCraftingSlots(int original, Predicate<ItemStack> shouldRemove, int maxCount,
-								Container craftingInventory) {
+	private int clearCraftingSlots(int original, Predicate<ItemStack> predicate, int amountToRemove,
+								   Container craftSlots) {
 		CraftingContainer container = null;
 
 		if (this.player.containerMenu instanceof InventoryMenu)
@@ -40,18 +40,18 @@ public class InventoryMixin {
 			for (int slotNum = 0; slotNum < container.getContainerSize(); ++slotNum) {
 				ItemStack item = container.getItem(slotNum);
 
-				if (!item.isEmpty() && shouldRemove.test(item)) {
-					int countFromStack = maxCount <= 0 ? item.getCount() : Math.min(maxCount - original,
+				if (!item.isEmpty() && predicate.test(item)) {
+					int countFromStack = amountToRemove <= 0 ? item.getCount() : Math.min(amountToRemove - original,
 						item.getCount());
 
 					original += countFromStack;
-					if (maxCount != 0) {
+					if (amountToRemove != 0) {
 						item.shrink(countFromStack);
 						if (item.isEmpty()) {
 							container.setItem(slotNum, ItemStack.EMPTY);
 						}
 
-						if (maxCount > 0 && original >= maxCount) {
+						if (amountToRemove > 0 && original >= amountToRemove) {
 							return original;
 						}
 					}
