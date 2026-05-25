@@ -31,8 +31,7 @@ public abstract class ServerPlayerMixin extends Player {
 	}
 
 	@Shadow
-	public abstract boolean setRespawnPosition(ServerPlayer.@Nullable RespawnConfig respawnConfig, boolean showMessage
-		, PlayerSetSpawnEvent.Cause cause);
+	public abstract boolean setRespawnPosition(ServerPlayer.@Nullable RespawnConfig respawnConfig, boolean showMessage, PlayerSetSpawnEvent.Cause cause);
 
 	// TODO: figure out what this is trying to do
 	@Inject(

@@ -2,7 +2,6 @@ package com.playmonumenta.papermixins.mixin.behavior.advancement;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.playmonumenta.papermixins.duck.AdvancementAccess;
 import java.util.Map;
@@ -15,7 +14,6 @@ import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
