@@ -40,7 +40,7 @@ public class PlayerDataLoadEvent extends Event {
 	/**
 	 * Get the file path where data will be loaded from.
 	 * <p>
-	 * Data will only be loaded from here if the data is noPlayerEventt directly set by {@link #setData}
+	 * Data will only be loaded from here if the data is not directly set by {@link #setData}
 	 *
 	 * @return data File to load from
 	 */
