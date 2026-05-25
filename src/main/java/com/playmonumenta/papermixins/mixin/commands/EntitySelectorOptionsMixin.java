@@ -23,8 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntitySelectorOptions.class)
 public abstract class EntitySelectorOptionsMixin {
 	@Shadow
-	private static void register(String id, EntitySelectorOptions.Modifier handler,
-								Predicate<EntitySelectorParser> condition, Component description) {
+	private static void register(String name, EntitySelectorOptions.Modifier modifier, Predicate<EntitySelectorParser> predicate, Component description) {
 	}
 
 	@Inject(
@@ -42,7 +41,7 @@ public abstract class EntitySelectorOptionsMixin {
 		register("all_worlds", (reader) -> {
 				int i = reader.getReader().getCursor();
 				String string = reader.getReader().readUnquotedString();
-				reader.setSuggestions((builder, consumer) -> SharedSuggestionProvider.suggest(Arrays.asList("true",
+				reader.setSuggestions((builder, _) -> SharedSuggestionProvider.suggest(Arrays.asList("true",
 					"false"), builder));
 				switch (string) {
 				case "true":

@@ -3,6 +3,7 @@ package com.playmonumenta.papermixins.mixin.impl.event;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.PlayerList;
+import org.objectweb.asm.Opcodes;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,8 +36,9 @@ public abstract class MinecraftServerMixin {
 		method = "stopServer",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/server/MinecraftServer;server:Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;",
-			ordinal = 0
+			target = "Lnet/minecraft/server/MinecraftServer;server:Lorg/bukkit/craftbukkit/CraftServer;",
+			ordinal = 0,
+			opcode = Opcodes.GETFIELD
 		)
 	)
 	void savePlayers(CallbackInfo ci) {
@@ -62,7 +64,8 @@ public abstract class MinecraftServerMixin {
 		at = @At(
 			value = "FIELD",
 			target = "Lnet/minecraft/server/MinecraftServer;playerList:Lnet/minecraft/server/players/PlayerList;",
-			ordinal = 0
+			ordinal = 0,
+			opcode = Opcodes.GETFIELD
 		)
 	)
 	private PlayerList skipSecondSave(PlayerList original) {

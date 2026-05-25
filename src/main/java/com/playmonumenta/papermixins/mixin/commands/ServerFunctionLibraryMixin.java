@@ -1,8 +1,7 @@
 package com.playmonumenta.papermixins.mixin.commands;
 
-import com.google.common.collect.ImmutableMap;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.datafixers.util.Pair;
@@ -26,7 +25,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author Flowey
@@ -62,53 +60,15 @@ public class ServerFunctionLibraryMixin {
 
 	@Inject(
 		method = "lambda$reload$5",
-		at = @At(
-			value = "INVOKE",
-			target = "Lcom/google/common/collect/ImmutableMap$Builder;put(Ljava/lang/Object;Ljava/lang/Object;)" +
-				"Lcom/google/common/collect/ImmutableMap$Builder;"
-		)
+		at = @At(value = "TAIL")
 	)
-	private static void redirectFunctionParsing(Identifier Identifier,
-												ImmutableMap.Builder<?, ?> builder,
-												CommandFunction<?> function, Throwable ex,
-												CallbackInfoReturnable<Object> cir) {
-		if (function == null) {
-			LOGGER.error("Failed to parse function '{}'! See logs for details.", Identifier);
-		}
-	}
-
-	@WrapOperation(
-		method = "lambda$reload$5",
-		at = @At(
-			value = "INVOKE",
-			target = "Lcom/google/common/collect/ImmutableMap$Builder;put(Ljava/lang/Object;Ljava/lang/Object;)" +
-				"Lcom/google/common/collect/ImmutableMap$Builder;"
-		)
-	)
-	private static ImmutableMap.Builder<?, ?> redirectFunctionParsing(ImmutableMap.Builder<?, ?> instance,
-																	Object key, Object value,
-																	Operation<ImmutableMap.Builder<?, ?>> original) {
-		if (value != null) {
-			original.call(instance, key, value);
-		}
-
-		return instance;
-	}
-
-	@Inject(
-		method = "lambda$reload$7",
-		at = @At(
-			value = "INVOKE",
-			target = "Lcom/google/common/collect/ImmutableMap$Builder;build()Lcom/google/common/collect/ImmutableMap;"
-		)
-	)
-	private void onReload(Pair<?, ?> intermediate, CallbackInfo ci) {
+	private static void onReload(Pair<?, ?> data, CallbackInfo ci) {
 		monumenta$isInitialFunctionLoad = false;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Redirect(
-		method = "lambda$reload$2",
+		method = "lambda$reload$3",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/commands/functions/CommandFunction;fromLines" +
@@ -125,5 +85,16 @@ public class ServerFunctionLibraryMixin {
 			(CommandDispatcher<CommandSourceStack>) dispatcher,
 			(CommandSourceStack) source, lines, id, map.getValue().sourcePackId()
 		);
+	}
+
+	@Expression("? != null")
+	@ModifyExpressionValue(
+		method = "lambda$reload$7",
+		at = @At(
+			"MIXINEXTRAS:EXPRESSION"
+		)
+	)
+	private static boolean modifyPredicate(boolean original, @Local(argsOnly = true) CommandFunction<?> function) {
+		return function == null;
 	}
 }

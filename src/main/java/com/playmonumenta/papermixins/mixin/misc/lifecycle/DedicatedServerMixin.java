@@ -24,7 +24,7 @@ public class DedicatedServerMixin {
 		method = "initServer",
 		at = @At(
 			value = "INVOKE",
-			target = "Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;enablePlugins(Lorg/bukkit/plugin/PluginLoadOrder;)V",
+			target = "Lorg/bukkit/craftbukkit/CraftServer;enablePlugins(Lorg/bukkit/plugin/PluginLoadOrder;)V",
 			shift = At.Shift.AFTER
 		)
 	)

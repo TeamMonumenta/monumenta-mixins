@@ -19,7 +19,7 @@ public class ReturnCommandMixin {
 		)
 	)
 	private static <T, S extends ArgumentBuilder<T, S>> ArgumentBuilder<T, S> addSimpleReturn(ArgumentBuilder<T, S> original) {
-		original.executes((CustomCommandExecutor.CommandAdapter<T>) (source, contextChain, flags, control) -> {
+		original.executes((CustomCommandExecutor.CommandAdapter<T>) (_, _, _, control) -> {
 			Frame frame = control.currentFrame();
 			frame.discard();
 		});

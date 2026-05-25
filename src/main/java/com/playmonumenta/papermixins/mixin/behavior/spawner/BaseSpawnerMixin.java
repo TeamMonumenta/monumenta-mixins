@@ -42,12 +42,12 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 			target = "Lnet/minecraft/world/entity/SpawnPlacements;checkSpawnRules(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/entity/EntitySpawnReason;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)Z"
 		)
 	)
-	private boolean disableMobSpawnCheck(boolean original, ServerLevel world, BlockPos pos) {
+	private boolean disableMobSpawnCheck(boolean original, ServerLevel level, BlockPos pos) {
 		// Since logic is inverted, we need to use !=
 		// Also we should check for difficulty
 		// TODO: there is probably a clever way of doing this without getting cancer
 		// TODO: look at @Expression from MixinExtras (currently beta)
-		return world.getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL;
+		return level.getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL;
 	}
 
 	// TODO: validate this mixin actually selects the proper boolean value

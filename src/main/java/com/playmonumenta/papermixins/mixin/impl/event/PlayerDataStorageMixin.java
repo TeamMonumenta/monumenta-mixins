@@ -35,10 +35,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(PlayerDataStorage.class)
 public class PlayerDataStorageMixin {
-	@Shadow
-	@Final
-	private File playerDir;
-
 	@Inject(
 		method = "save",
 		at = @At(

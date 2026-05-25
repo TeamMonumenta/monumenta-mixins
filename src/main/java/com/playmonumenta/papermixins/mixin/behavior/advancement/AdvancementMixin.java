@@ -25,19 +25,9 @@ public class AdvancementMixin implements AdvancementAccess {
 	@Unique
 	private int monumenta$priority = 0;
 
-	@Mutable
-	@Shadow
-	@Final
-	public static Codec<Advancement> CODEC;
-
 	@Shadow
 	@Final
 	private static Codec<Map<String, Criterion<?>>> CRITERIA_CODEC;
-
-	@Shadow
-	public static DataResult<Advancement> validate(Advancement advancement) {
-		return null;
-	}
 
 	@Unique
 	@Override

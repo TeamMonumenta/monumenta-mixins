@@ -15,7 +15,7 @@ public class DedicatedServerMixin {
 		method = "initServer",
 		at = @At(
 			value = "INVOKE",
-			target = "Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;loadPlugins()V"
+			target = "Lorg/bukkit/craftbukkit/CraftServer;loadPlugins()V"
 		)
 	)
 	private boolean conditionallyDisablePluginLoading(CraftServer instance) {
@@ -30,7 +30,7 @@ public class DedicatedServerMixin {
 		method = "initServer",
 		at = @At(
 			value = "INVOKE",
-			target = "Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;enablePlugins(Lorg/bukkit/plugin/PluginLoadOrder;)V"
+			target = "Lorg/bukkit/craftbukkit/CraftServer;enablePlugins(Lorg/bukkit/plugin/PluginLoadOrder;)V"
 		)
 	)
 	private boolean conditionallyDisablePluginEnable(CraftServer instance, PluginLoadOrder pluginLoadOrder) {

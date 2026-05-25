@@ -26,12 +26,12 @@ public class CallFunctionMixin<T extends ExecutionCommandSource<T>> {
 		)
 	)
 	private void useFuncExecTask(
-		ExecutionContext<T> exec,
+		ExecutionContext<T> context,
 		Frame frame,
-		List<UnboundEntryAction<T>> actions,
-		ContinuationTask.TaskProvider<T, UnboundEntryAction<T>> wrapper,
-		@Local(argsOnly = true, ordinal = 0) T context
+		List<UnboundEntryAction<T>> arguments,
+		ContinuationTask.TaskProvider<T, UnboundEntryAction<T>> taskFactory,
+		@Local(name = "sender") T sender
 	) {
-		FuncExecTask.schedule(exec, frame, actions, context);
+		FuncExecTask.schedule(context, frame, arguments, sender);
 	}
 }

@@ -16,9 +16,12 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  */
 @Mixin(CraftServer.class)
 public class CraftServerMixin {
-	@ModifyConstant(
+	@ModifyExpressionValue(
 		method = "<init>",
-		constant = @Constant(stringValue = "Paper")
+		at = @At(
+			value = "INVOKE",
+			target = "Lio/papermc/paper/ServerBuildInfo;brandName()Ljava/lang/String;"
+		)
 	)
 	private String modifyServerName(String string) {
 		return VersionInfo.IDENTIFIER + string;
@@ -27,7 +30,7 @@ public class CraftServerMixin {
 	@ModifyExpressionValue(
 		method = "<init>",
 		at = @At(
-			target = "Ljava/lang/Package;getImplementationVersion()Ljava/lang/String;",
+			target = "Lio/papermc/paper/ServerBuildInfo;asString(Lio/papermc/paper/ServerBuildInfo$StringRepresentation;)Ljava/lang/String;",
 			value = "INVOKE"
 		)
 	)

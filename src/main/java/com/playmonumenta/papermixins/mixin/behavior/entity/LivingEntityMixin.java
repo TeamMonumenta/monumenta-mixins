@@ -7,6 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -35,7 +36,7 @@ import static net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESI
 public abstract class LivingEntityMixin extends Entity {
 	@Shadow
 	@Nullable
-	public Player lastHurtByPlayer;
+	public EntityReference<Player> lastHurtByPlayer;
 
 	@Shadow
 	public int lastHurtByPlayerMemoryTime;
@@ -99,12 +100,12 @@ public abstract class LivingEntityMixin extends Entity {
 				"Lnet/minecraft/world/entity/Entity;Lio/papermc/paper/event/entity/EntityKnockbackEvent$Cause;" +
 				"DLnet/minecraft/world/phys/Vec3;)Lio/papermc/paper/event/entity/EntityKnockbackEvent;"
 		),
-		index = 6
+		index = 4
 	)
 	private double doVerticalKnockback(
 		double originalY,
 		@Local(argsOnly = true, ordinal = 0) double strength,
-		@Local(name = "deltaMovement") Vec3 vec3d
+		@Local(name = "deltaMovement") Vec3 deltaMovement
 	) {
 		if (!ConfigManager.getConfig().behavior.verticalKb) {
 			return originalY;
@@ -112,8 +113,8 @@ public abstract class LivingEntityMixin extends Entity {
 
 		if (this.onGround()) {
 			final var resistance = getAttributeValue(KNOCKBACK_RESISTANCE);
-			return Math.min(0.4D * Math.max(1 - resistance, 0), vec3d.y / 2.0D + strength);
+			return Math.min(0.4D * Math.max(1 - resistance, 0), deltaMovement.y / 2.0D + strength);
 		}
-		return vec3d.y;
+		return deltaMovement.y;
 	}
 }

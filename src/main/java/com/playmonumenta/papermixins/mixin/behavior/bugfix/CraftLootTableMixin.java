@@ -66,7 +66,7 @@ public class CraftLootTableMixin {
 		)
 	)
 	private LootParams useNMSBuilder(LootParams.Builder instance, ContextKeySet contextKeySet,
-									 @Local ContextKeySet.Builder nmsBuilder) {
+									 @Local(name = "nmsBuilder") ContextKeySet.Builder nmsBuilder) {
 		return instance.create(nmsBuilder.build());
 	}
 }

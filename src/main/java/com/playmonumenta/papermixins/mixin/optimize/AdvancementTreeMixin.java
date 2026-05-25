@@ -38,7 +38,6 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 	@Final
 	private Map<Identifier, AdvancementNode> nodes;
 
-	// TODO: we can technically optimize this faster by e bitsets and converting Identifier to index
 	@Unique
 	private void monumenta$addAllFastImpl(List<AdvancementHolder> advancements, Map<Identifier,
 		AdvancementHolder> idMap) {
