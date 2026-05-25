@@ -5,6 +5,7 @@ import ca.spottedleaf.dataconverter.minecraft.datatypes.MCDataType;
 import ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry;
 import com.google.common.collect.ImmutableMap;
 import com.playmonumenta.papermixins.paperapi.v1.DataFix;
+import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTContainer;
 import java.util.Map;
 import net.minecraft.SharedConstants;
@@ -53,7 +54,7 @@ public class DataFixImpl implements DataFix {
 			targetVersion
 		);
 
-		return new NBTContainer(res);
+		return (NBTContainer) NBT.wrapNMSTag(res);
 	}
 
 	@Override

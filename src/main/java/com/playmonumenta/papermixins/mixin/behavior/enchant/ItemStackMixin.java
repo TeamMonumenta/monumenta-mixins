@@ -1,13 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.enchant;
 
-import com.playmonumenta.papermixins.ConfigManager;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author Flowey

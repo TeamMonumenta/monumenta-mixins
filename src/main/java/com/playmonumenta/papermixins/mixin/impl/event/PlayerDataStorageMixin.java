@@ -1,10 +1,10 @@
 package com.playmonumenta.papermixins.mixin.impl.event;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.playmonumenta.papermixins.paperapi.v1.event.PlayerDataLoadEvent;
 import com.playmonumenta.papermixins.paperapi.v1.event.PlayerDataSaveEvent;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.playmonumenta.papermixins.util.Util;
 import java.io.File;
 import java.nio.file.Path;

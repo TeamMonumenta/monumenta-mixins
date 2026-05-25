@@ -24,13 +24,11 @@ import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.permissions.PermissionCheck;
 import org.jetbrains.annotations.NotNull;
 
 import static com.playmonumenta.papermixins.util.CommandUtil.arg;
 import static com.playmonumenta.papermixins.util.CommandUtil.lit;
 import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
-import static net.minecraft.commands.arguments.ComponentArgument.getRawComponent;
 
 public class TellMiniCommand {
 	private static final MiniMessage MM = MiniMessage.builder()

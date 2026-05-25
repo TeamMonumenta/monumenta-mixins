@@ -2,8 +2,8 @@ package com.playmonumenta.papermixins.impl.v1.resource;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.playmonumenta.papermixins.paperapi.v1.resource.DatapackResourceManager;
 import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.paperapi.v1.resource.DatapackResourceManager;
 import com.playmonumenta.papermixins.util.Util;
 import java.util.HashMap;
 import java.util.Map;

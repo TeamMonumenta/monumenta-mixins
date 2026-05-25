@@ -40,20 +40,9 @@ dependencies {
     implementation(libs.fabric.loader)
 }
 
-paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.REOBF_PRODUCTION
-
 tasks {
-    jar {
-        archiveClassifier.set("dev")
-    }
-
     shadowJar {
-        archiveClassifier.set("dev")
         configurations = listOf(shade)
-    }
-
-    reobfJar {
-        remapperArgs = TinyRemapper.createArgsList() + "--mixin"
     }
 }
 
@@ -128,10 +117,6 @@ tasks {
         }
     }
 
-    reobfJar {
-        accessWideners.add("monumenta.accesswidener")
-    }
-
     shadowJar {
         relocate("de.tr7zw.changeme.nbtapi", "de.tr7zw.nbtapi")
     }
@@ -140,7 +125,6 @@ tasks {
 monumenta {
     name("monumenta-mixins")
     serverConfigSubdir("mods")
-    deployArtifactTask("reobfJar")
     disableMaven()
     disableJavadoc()
     overrideJavaVersion()
