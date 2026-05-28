@@ -1,8 +1,7 @@
 package com.playmonumenta.papermixins.mixin.commands;
 
-import com.google.common.collect.ImmutableMap;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.datafixers.util.Pair;
@@ -13,7 +12,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.ExecutionCommandSource;
 import net.minecraft.commands.functions.CommandFunction;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerFunctionLibrary;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -26,7 +25,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author Flowey
@@ -50,80 +48,53 @@ public class ServerFunctionLibraryMixin {
 				"(Lnet/minecraft/server/packs/resources/ResourceManager;)Ljava/util/Map;"
 		)
 	)
-	private static Map<ResourceLocation, Resource> disableFunctionOnFirstLoad(FileToIdConverter instance,
-																			ResourceManager resourceManager) {
+	private static Map<Identifier, Resource> disableFunctionOnFirstLoad(FileToIdConverter instance,
+																			ResourceManager manager) {
 		if (monumenta$isInitialFunctionLoad) {
 			LOGGER.info("Skipping function loading since this is the initial function load!");
 			return Map.of();
 		} else {
-			return instance.listMatchingResources(resourceManager);
+			return instance.listMatchingResources(manager);
 		}
 	}
 
 	@Inject(
 		method = "lambda$reload$5",
-		at = @At(
-			value = "INVOKE",
-			target = "Lcom/google/common/collect/ImmutableMap$Builder;put(Ljava/lang/Object;Ljava/lang/Object;)" +
-				"Lcom/google/common/collect/ImmutableMap$Builder;"
-		)
+		at = @At(value = "TAIL")
 	)
-	private static void redirectFunctionParsing(ResourceLocation resourceLocation,
-												ImmutableMap.Builder<?, ?> builder,
-												CommandFunction<?> function, Throwable ex,
-												CallbackInfoReturnable<Object> cir) {
-		if (function == null) {
-			LOGGER.error("Failed to parse function '{}'! See logs for details.", resourceLocation);
-		}
-	}
-
-	@WrapOperation(
-		method = "lambda$reload$5",
-		at = @At(
-			value = "INVOKE",
-			target = "Lcom/google/common/collect/ImmutableMap$Builder;put(Ljava/lang/Object;Ljava/lang/Object;)" +
-				"Lcom/google/common/collect/ImmutableMap$Builder;"
-		)
-	)
-	private static ImmutableMap.Builder<?, ?> redirectFunctionParsing(ImmutableMap.Builder<?, ?> instance,
-																	Object key, Object value,
-																	Operation<ImmutableMap.Builder<?, ?>> original) {
-		if (value != null) {
-			original.call(instance, key, value);
-		}
-
-		return instance;
-	}
-
-	@Inject(
-		method = "lambda$reload$7",
-		at = @At(
-			value = "INVOKE",
-			target = "Lcom/google/common/collect/ImmutableMap$Builder;build()Lcom/google/common/collect/ImmutableMap;"
-		)
-	)
-	private void onReload(Pair<?, ?> intermediate, CallbackInfo ci) {
+	private static void onReload(Pair<?, ?> data, CallbackInfo ci) {
 		monumenta$isInitialFunctionLoad = false;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Redirect(
-		method = "lambda$reload$2",
+		method = "lambda$reload$3",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/commands/functions/CommandFunction;fromLines" +
-				"(Lnet/minecraft/resources/ResourceLocation;Lcom/mojang/brigadier/CommandDispatcher;" +
+				"(Lnet/minecraft/resources/Identifier;Lcom/mojang/brigadier/CommandDispatcher;" +
 				"Lnet/minecraft/commands/ExecutionCommandSource;Ljava/util/List;)" +
 				"Lnet/minecraft/commands/functions/CommandFunction;"
 		)
 	)
 	private <T extends ExecutionCommandSource<T>> CommandFunction<T> redirectFunctionParsing(
-		ResourceLocation id, CommandDispatcher<T> dispatcher, T source,
-		List<String> lines, @Local(argsOnly = true) Map.Entry<ResourceLocation, Resource> map
+		Identifier id, CommandDispatcher<T> dispatcher, T source,
+		List<String> lines, @Local(argsOnly = true) Map.Entry<Identifier, Resource> map
 	) {
 		return (CommandFunction<T>) Compiler.compileFunction(
 			(CommandDispatcher<CommandSourceStack>) dispatcher,
 			(CommandSourceStack) source, lines, id, map.getValue().sourcePackId()
 		);
+	}
+
+	@Expression("? != null")
+	@ModifyExpressionValue(
+		method = "lambda$reload$7",
+		at = @At(
+			"MIXINEXTRAS:EXPRESSION"
+		)
+	)
+	private static boolean modifyPredicate(boolean original, @Local(argsOnly = true) CommandFunction<?> function) {
+		return function == null;
 	}
 }

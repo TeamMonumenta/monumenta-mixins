@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import net.minecraft.commands.ExecutionCommandSource;
 import net.minecraft.commands.execution.UnboundEntryAction;
 import net.minecraft.commands.functions.PlainTextFunction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * The main code generation class, used to emit "instructions." Supports address labels for advanced control flow
@@ -60,7 +60,7 @@ public class CodeGenerator<T extends ExecutionCommandSource<T>> {
 		return entries.size();
 	}
 
-	public PlainTextFunction<T> define(ResourceLocation id) {
+	public PlainTextFunction<T> define(Identifier id) {
 		// linking :3
 		for (var linkableInfo : linkables) {
 			entries.set(linkableInfo.firstInt(), linkableInfo.second().link());

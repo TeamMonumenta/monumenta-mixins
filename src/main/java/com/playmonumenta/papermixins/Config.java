@@ -12,7 +12,6 @@ public class Config {
 		public boolean disableConcreteHardening = false;
 		public boolean disableIceBreakBehavior = false;
 		public boolean disableIceMelting = false;
-		public boolean normalizeArmorUnbreaking = false;
 		public boolean disableArrowBouncing = false;
 		public boolean disableAnimalPathfindingWeights = false;
 		public boolean keepBeeAgroAfterSting = false;
@@ -29,8 +28,6 @@ public class Config {
 		public boolean disableEndermanTeleport = false;
 		public boolean addGolemAi = false;
 		public boolean crashOnScoreboardLoadFail = false;
-		public boolean forceUpgradeIncludeEntities = false;
-		public boolean forceUpgradeEagerBlockStates = false;
 		public boolean fixInactiveTickNoAi = false;
 		public boolean freezeEndGateway = false;
 		public boolean disableDolphinPlayWithItems = false;

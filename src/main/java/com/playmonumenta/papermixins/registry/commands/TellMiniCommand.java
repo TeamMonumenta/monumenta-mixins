@@ -14,9 +14,11 @@ import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.ResolutionContext;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
@@ -67,9 +69,15 @@ public class TellMiniCommand {
 				: Component.empty();
 
 			for (final var recipient : recipients) {
-				rec.accept(recipient, ComponentUtils.updateForEntity(
-					c.getSource(), message, recipient, 0
-				));
+				final var msg = ComponentUtils.resolve(
+					ResolutionContext.builder()
+						.withSource(c.getSource())
+						.withEntityOverride(recipient)
+						.build(),
+					message
+				);
+
+				rec.accept(recipient, msg);
 			}
 
 			return recipients.size();
@@ -89,7 +97,7 @@ public class TellMiniCommand {
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(mcLitPred("tellmini",
-			stack -> stack.hasPermission(2),
+			Commands.hasPermission(Commands.LEVEL_GAMEMASTERS),
 			lit("msg", generateTellmini(ServerPlayer::sendSystemMessage)),
 			lit("title", generateTellmini(showTitle(ClientboundSetTitleTextPacket::new))),
 			lit("subtitle", generateTellmini(showTitle(ClientboundSetSubtitleTextPacket::new))),

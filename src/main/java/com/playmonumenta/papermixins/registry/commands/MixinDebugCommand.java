@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.playmonumenta.papermixins.debug.DebugMapGenerator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 
 import static com.playmonumenta.papermixins.util.CommandUtil.arg;
@@ -16,7 +17,7 @@ public class MixinDebugCommand {
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(mcLitPred("monumenta-mixin-debug",
-			stack -> stack.hasPermission(2),
+			Commands.hasPermission(Commands.LEVEL_GAMEMASTERS),
 			lit("givedebugmap", arg("players", EntityArgument.players(), context -> {
 				EntityArgument.getPlayers(context, "players").forEach(serverPlayer -> {
 					final var bk = serverPlayer.getBukkitEntity();

@@ -2,17 +2,17 @@ package com.playmonumenta.papermixins.impl.v1.resource;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.playmonumenta.mixinapi.v1.resource.DatapackResourceManager;
 import com.playmonumenta.papermixins.MonumentaMod;
+import com.playmonumenta.papermixins.paperapi.v1.resource.DatapackResourceManager;
 import com.playmonumenta.papermixins.util.Util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import org.bukkit.craftbukkit.v1_20_R3.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -23,7 +23,7 @@ public class PluginDataListener extends SimplePreparableReloadListener<Void> {
 	private static final String PREFIX = "plugin";
 	private static final String SUFFIX = ".json";
 	public static boolean PLUGIN_INIT = false;
-	private final Map<ResourceLocation, JsonElement> data = new HashMap<>();
+	private final Map<Identifier, JsonElement> data = new HashMap<>();
 
 	private PluginDataListener() {
 

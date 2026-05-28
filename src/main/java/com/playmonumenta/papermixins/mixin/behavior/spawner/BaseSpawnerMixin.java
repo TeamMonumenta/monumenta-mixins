@@ -9,10 +9,11 @@ import com.playmonumenta.papermixins.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.level.BaseSpawner;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,18 +39,15 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 		method = "serverTick",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/SpawnPlacements;checkSpawnRules" +
-				"(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/ServerLevelAccessor;" +
-				"Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/core/BlockPos;" +
-				"Lnet/minecraft/util/RandomSource;)Z"
+			target = "Lnet/minecraft/world/entity/SpawnPlacements;checkSpawnRules(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/entity/EntitySpawnReason;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)Z"
 		)
 	)
-	private boolean disableMobSpawnCheck(boolean original, ServerLevel world, BlockPos pos) {
+	private boolean disableMobSpawnCheck(boolean original, ServerLevel level, BlockPos pos) {
 		// Since logic is inverted, we need to use !=
 		// Also we should check for difficulty
 		// TODO: there is probably a clever way of doing this without getting cancer
 		// TODO: look at @Expression from MixinExtras (currently beta)
-		return world.getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL;
+		return level.getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL;
 	}
 
 	// TODO: validate this mixin actually selects the proper boolean value
@@ -69,12 +67,12 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 			)
 		)
 	)
-	private int setFlagIfCancelled(int constant, @Local PreSpawnerSpawnEvent ev, @Local boolean flag) {
-		if(ev.shouldAbortSpawn()) {
+	private int setFlagIfCancelled(int constant, @Local(name = "event") PreSpawnerSpawnEvent event, @Local(name = "delay") boolean delay) {
+		if(event.shouldAbortSpawn()) {
 			return 1; // true
 		}
 
-		return flag ? 1 : 0;
+		return delay ? 1 : 0;
 	}
 
 	@ModifyExpressionValue(
@@ -92,16 +90,15 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 		method = "serverTick",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/Mob;checkSpawnRules(Lnet/minecraft/world/level/LevelAccessor;" +
-				"Lnet/minecraft/world/entity/MobSpawnType;)Z"
+			target = "Lnet/minecraft/world/entity/Mob;checkSpawnRules(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/entity/EntitySpawnReason;)Z"
 		)
 	)
 	private boolean moveMobObstructionCheck(
 		boolean original,
-		ServerLevel world, BlockPos pos,
-		@Local Mob mob
+		ServerLevel level, BlockPos pos,
+		@Local(name = "mob") Mob mob
 	) {
-		return world.isUnobstructed(mob);
+		return level.isUnobstructed(mob);
 	}
 
 	@Override
@@ -118,11 +115,12 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 		method = "serverTick",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/world/entity/Entity;spawnedViaMobSpawner:Z"
+			target = "Lnet/minecraft/world/entity/Entity;spawnedViaMobSpawner:Z",
+			opcode = Opcodes.PUTFIELD
 		)
 	)
-	private void setEntitySpawnedBySpawner(ServerLevel world, BlockPos pos, CallbackInfo ci, @Local Entity entity) {
-		if (!(entity instanceof FlyingMob || entity instanceof Vex)) {
+	private void setEntitySpawnedBySpawner(ServerLevel level, BlockPos pos, CallbackInfo ci, @Local(name = "entity") Entity entity) {
+		if (!(entity instanceof FlyingAnimal || entity instanceof Vex)) {
 			((EntityAccess) entity).monumenta$setSpawner(Util.c(this));
 		}
 	}

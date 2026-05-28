@@ -1,17 +1,10 @@
 package com.playmonumenta.papermixins.util;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Util {
-	public static <T, U> @Nullable U mapNull(@Nullable T value, Function<T, @Nullable U> mapper) {
-		if (value == null)
-			return null;
-		return mapper.apply(value);
-	}
-
 	public static <T> @NotNull T coalesce(@Nullable T value, @NotNull Supplier<T> defaultSupplier) {
 		if (value == null)
 			return defaultSupplier.get();

@@ -1,13 +1,13 @@
 package com.playmonumenta.papermixins.mixin.impl.event;
 
-import com.destroystokyo.paper.event.player.PlayerAdvancementDataLoadEvent;
-import com.destroystokyo.paper.event.player.PlayerAdvancementDataSaveEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.playmonumenta.papermixins.paperapi.v1.event.PlayerAdvancementDataLoadEvent;
+import com.playmonumenta.papermixins.paperapi.v1.event.PlayerAdvancementDataSaveEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +15,9 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import net.minecraft.FileUtil;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.FileUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -164,8 +164,7 @@ public class PlayerAdvancementsMixin {
 		method = "save",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/Util;getOrThrow(Lcom/mojang/serialization/DataResult;" +
-				"Ljava/util/function/Function;)Ljava/lang/Object;"
+			target = "Lcom/mojang/serialization/DataResult;getOrThrow()Ljava/lang/Object;"
 		)
 	)
 	private Object setupSaveEvent(
@@ -185,7 +184,7 @@ public class PlayerAdvancementsMixin {
 		method = "save",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/FileUtil;createDirectoriesSafe(Ljava/nio/file/Path;)V"
+			target = "Lnet/minecraft/util/FileUtil;createDirectoriesSafe(Ljava/nio/file/Path;)V"
 		),
 		cancellable = true
 	)
@@ -202,7 +201,7 @@ public class PlayerAdvancementsMixin {
 		method = "save",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/FileUtil;createDirectoriesSafe(Ljava/nio/file/Path;)V"
+			target = "Lnet/minecraft/util/FileUtil;createDirectoriesSafe(Ljava/nio/file/Path;)V"
 		)
 	)
 	private void createSaveDir(

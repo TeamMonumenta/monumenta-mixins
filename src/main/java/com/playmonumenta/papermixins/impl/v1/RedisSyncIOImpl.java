@@ -2,21 +2,22 @@ package com.playmonumenta.papermixins.impl.v1;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.Strictness;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
-import com.playmonumenta.mixinapi.v1.RedisSyncIO;
+import com.playmonumenta.papermixins.paperapi.v1.RedisSyncIO;
 import java.io.StringReader;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.util.datafix.DataFixTypes;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_20_R3.scoreboard.CraftScoreboard;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -52,7 +53,7 @@ public class RedisSyncIOImpl implements RedisSyncIO {
 	@Override
 	public String upgradePlayerAdvancements(String advancementsStr) {
 		JsonReader jsonreader = new JsonReader(new StringReader(advancementsStr));
-		jsonreader.setLenient(false);
+		jsonreader.setStrictness(Strictness.LENIENT);
 		Dynamic<JsonElement> dynamic = new Dynamic<>(JsonOps.INSTANCE, Streams.parse(jsonreader));
 
 		if (dynamic.get("DataVersion").asNumber().result().isEmpty()) {
@@ -61,12 +62,12 @@ public class RedisSyncIOImpl implements RedisSyncIO {
 
 		DataFixer dataFixer = ((CraftServer) Bukkit.getServer()).getHandle().getServer().getFixerUpper();
 		dynamic = DataFixTypes.ADVANCEMENTS.update(dataFixer, dynamic, dynamic.get("DataVersion").asInt(0),
-			SharedConstants.getCurrentVersion().getDataVersion().getVersion());
+			SharedConstants.getCurrentVersion().dataVersion().version());
 		dynamic = dynamic.remove("DataVersion");
 
 		JsonElement element = dynamic.getValue();
 		element.getAsJsonObject().addProperty("DataVersion",
-			SharedConstants.getCurrentVersion().getDataVersion().getVersion());
+			SharedConstants.getCurrentVersion().dataVersion().version());
 		return PlayerAdvancements.GSON.toJson(element);
 	}
 }

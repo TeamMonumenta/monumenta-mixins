@@ -1,34 +1,13 @@
-accessWidener v2 named
-accessible class io/papermc/paper/plugin/manager/PaperPluginInstanceManager
-accessible class net/minecraft/commands/functions/MacroFunction$Entry
-accessible class net/minecraft/commands/functions/MacroFunction$PlainTextEntry
-accessible class net/minecraft/commands/functions/MacroFunction$MacroEntry
-accessible class net/minecraft/commands/functions/FunctionBuilder
-accessible field net/minecraft/commands/CommandSourceStack permissionLevel I
-accessible field net/minecraft/commands/functions/FunctionBuilder macroEntries Ljava/util/List;
-accessible field net/minecraft/commands/functions/FunctionBuilder plainEntries Ljava/util/List;
-accessible field net/minecraft/commands/functions/MacroFunction$MacroEntry parameters Lit/unimi/dsi/fastutil/ints/IntList;
-accessible field net/minecraft/commands/functions/MacroFunction$MacroEntry template Lnet/minecraft/commands/functions/StringTemplate;
-accessible field net/minecraft/commands/functions/MacroFunction$PlainTextEntry compiledAction Lnet/minecraft/commands/execution/UnboundEntryAction;
-accessible method net/minecraft/commands/functions/FunctionBuilder <init> ()V
-accessible method net/minecraft/commands/functions/CommandFunction shouldConcatenateNextLine (Ljava/lang/CharSequence;)Z
-accessible method net/minecraft/server/commands/ExecuteCommand addConditionals (Lcom/mojang/brigadier/tree/CommandNode;Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;ZLnet/minecraft/commands/CommandBuildContext;)Lcom/mojang/brigadier/builder/ArgumentBuilder;
-accessible method net/minecraft/server/commands/ExecuteCommand spawnEntityAndRedirect (Lnet/minecraft/commands/CommandSourceStack;Lnet/minecraft/core/Holder$Reference;)Lnet/minecraft/commands/CommandSourceStack;
-accessible method net/minecraft/server/commands/ExecuteCommand createRelationOperations (Lcom/mojang/brigadier/tree/CommandNode;Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;)Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;
-accessible class net/minecraft/world/entity/monster/Evoker$EvokerSummonSpellGoal
-accessible class net/minecraft/world/entity/monster/Evoker$EvokerAttackSpellGoal
-accessible class net/minecraft/world/entity/animal/Bee$BeeEnterHiveGoal
-accessible class net/minecraft/world/entity/animal/Bee$BeePollinateGoal
-accessible class net/minecraft/world/entity/animal/Bee$BeeGrowCropGoal
-accessible class net/minecraft/world/entity/animal/Bee$BeeLocateHiveGoal
+accessWidener v2 intermediary
 accessible class net/minecraft/world/scores/PlayerScores
-accessible method net/minecraft/server/players/PlayerList save (Lnet/minecraft/server/level/ServerPlayer;)V
+accessible method org/bukkit/craftbukkit/CraftOfflinePlayer <init> (Lorg/bukkit/craftbukkit/CraftServer;Lnet/minecraft/server/players/NameAndId;)V
+accessible field net/minecraft/nbt/CompoundTag tags Ljava/util/Map;
 accessible field net/minecraft/server/PlayerAdvancements GSON Lcom/google/gson/Gson;
-accessible class net/minecraft/server/level/ServerLevel$EntityRegionFileStorage
-accessible class io/papermc/paper/world/ThreadedWorldUpgrader$ConvertTask
-accessible class io/papermc/paper/world/ThreadedWorldUpgrader$WorldInfo
-accessible field io/papermc/paper/world/ThreadedWorldUpgrader LOGGER Lorg/apache/logging/log4j/Logger;
-accessible method net/minecraft/server/level/ServerLevel$EntityRegionFileStorage write (Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/nbt/CompoundTag;)V
 accessible field net/minecraft/world/scores/Scoreboard playerScores Ljava/util/Map;
+accessible method net/minecraft/commands/CommandSourceStack <init> (Lnet/minecraft/commands/CommandSource;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec2;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/permissions/PermissionSet;Ljava/lang/String;Lnet/minecraft/network/chat/Component;Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/entity/Entity;ZLnet/minecraft/commands/CommandResultCallback;Lnet/minecraft/commands/arguments/EntityAnchorArgument$Anchor;Lnet/minecraft/commands/CommandSigningContext;Lnet/minecraft/util/TaskChainer;)V
+accessible method net/minecraft/server/commands/ExecuteCommand addConditionals (Lcom/mojang/brigadier/tree/CommandNode;Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;ZLnet/minecraft/commands/CommandBuildContext;)Lcom/mojang/brigadier/builder/ArgumentBuilder;
+accessible method net/minecraft/server/commands/ExecuteCommand createRelationOperations (Lcom/mojang/brigadier/tree/CommandNode;Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;)Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;
+accessible method net/minecraft/server/commands/ExecuteCommand spawnEntityAndRedirect (Lnet/minecraft/commands/CommandSourceStack;Lnet/minecraft/core/Holder$Reference;)Lnet/minecraft/commands/CommandSourceStack;
+accessible method net/minecraft/server/players/PlayerList save (Lnet/minecraft/server/level/ServerPlayer;)V
 accessible method net/minecraft/world/scores/PlayerScores listRawScores ()Ljava/util/Map;
 accessible method net/minecraft/advancements/Advancement validate (Lnet/minecraft/advancements/Advancement;)Lcom/mojang/serialization/DataResult;

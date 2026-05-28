@@ -5,12 +5,12 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.storage.LevelData;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,36 +26,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player {
-	public ServerPlayerMixin(Level world, BlockPos pos, float yaw, GameProfile gameProfile) {
-		super(world, pos, yaw, gameProfile);
+	public ServerPlayerMixin(Level level, GameProfile gameProfile) {
+		super(level, gameProfile);
 	}
 
 	@Shadow
-	public abstract boolean setRespawnPosition(
-		ResourceKey<Level> dimension,
-		@Nullable BlockPos pos,
-		float angle,
-		boolean forced,
-		boolean sendMessage,
-		PlayerSetSpawnEvent.Cause cause
-	);
+	public abstract boolean setRespawnPosition(ServerPlayer.@Nullable RespawnConfig respawnConfig, boolean showMessage, PlayerSetSpawnEvent.Cause cause);
 
-	// Move spawnpoint set for sleeping in bed after event
-	// Also, sleeping checks are disabled now...
+	// TODO: figure out what this is trying to do
 	@Inject(
 		method = "getBedResult",
 		at = @At(
-			target = "Lnet/minecraft/server/level/ServerPlayer;setRespawnPosition" +
-				"(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/BlockPos;" +
-				"FZZLcom/destroystokyo/paper/event/player/PlayerSetSpawnEvent$Cause;)Z",
+			target = "Lnet/minecraft/world/attribute/BedRule;canSetSpawn(Lnet/minecraft/world/level/Level;)Z",
 			value = "INVOKE"
 		),
 		cancellable = true
 	)
-	private void alwaysAllowSleeping(BlockPos _0, Direction _1,
-									CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
+	private void alwaysAllowSleeping(BlockPos pos, Direction direction,
+									 CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
 		cir.setReturnValue(Either.right(Unit.INSTANCE));
-		cir.cancel();
 	}
 
 	// Actually set spawnpoints now...
@@ -67,15 +56,12 @@ public abstract class ServerPlayerMixin extends Player {
 				"Lcom/mojang/datafixers/util/Either;"
 		)
 	)
-	private void setSpawn(BlockPos pos, boolean _0,
-						CallbackInfoReturnable<Either<BedSleepingProblem, Unit>> cir) {
+	private void setSpawn(BlockPos pos, boolean force, CallbackInfoReturnable<Either<BedSleepingProblem, Unit>> cir) {
 		this.setRespawnPosition(
-			level().dimension(),
-			pos,
-			getYRot(),
-			false,
-			true,
-			PlayerSetSpawnEvent.Cause.BED
+			new ServerPlayer.RespawnConfig(
+				LevelData.RespawnData.of(this.level().dimension(), pos, this.getYRot(), this.getXRot()),
+				false
+			), true, PlayerSetSpawnEvent.Cause.BED
 		);
 	}
 }

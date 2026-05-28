@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.block;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.playmonumenta.papermixins.ConfigManager;
@@ -16,16 +17,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TheEndGatewayBlockEntity.class)
 public class TheEndGatewayBlockEntityMixin {
-	@Shadow public long age;
+	@Shadow
+	public long age;
 
-	@Shadow @Final private static int SPAWN_TIME;
+	@Shadow
+	@Final
+	private static int SPAWN_TIME;
 
 	@Inject(
 		method = "<init>",
 		at = @At("TAIL")
 	)
-	private void removeBeamAnimationTickAgeSet(BlockPos pos, BlockState state, CallbackInfo ci) {
-		if(ConfigManager.getConfig().behavior.freezeEndGateway) {
+	private void removeBeamAnimationTickAgeSet(BlockPos worldPosition, BlockState blockState, CallbackInfo ci) {
+		if (ConfigManager.getConfig().behavior.freezeEndGateway) {
 			this.age = SPAWN_TIME;
 		}
 	}
@@ -38,23 +42,34 @@ public class TheEndGatewayBlockEntityMixin {
 			opcode = Opcodes.PUTFIELD
 		)
 	)
-	private static void removeBeamAnimationTickAgeSet(TheEndGatewayBlockEntity instance, long value, Operation<Void> original) {
-		if(!ConfigManager.getConfig().behavior.freezeEndGateway) {
+	private static void removeBeamAnimationTickAgeSet(TheEndGatewayBlockEntity instance, long value,
+													  Operation<Void> original) {
+		if (!ConfigManager.getConfig().behavior.freezeEndGateway) {
 			original.call(instance, value);
 		}
 	}
 
 	@WrapOperation(
-		method = "teleportTick",
+		method = "portalTick",
 		at = @At(
 			value = "FIELD",
 			target = "Lnet/minecraft/world/level/block/entity/TheEndGatewayBlockEntity;age:J",
 			opcode = Opcodes.PUTFIELD
 		)
 	)
-	private static void removeTeleportTickAgeSet(TheEndGatewayBlockEntity instance, long value, Operation<Void> original) {
-		if(!ConfigManager.getConfig().behavior.freezeEndGateway) {
+	private static void removeTeleportTickAgeSet(TheEndGatewayBlockEntity instance, long value,
+												 Operation<Void> original) {
+		if (!ConfigManager.getConfig().behavior.freezeEndGateway) {
 			original.call(instance, value);
 		}
+	}
+
+	@ModifyExpressionValue(
+		method = "loadAdditional",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/ValueInput;getLongOr" +
+			"(Ljava/lang/String;J)J")
+	)
+	private static long overwriteLoadValue(long original) {
+		return SPAWN_TIME;
 	}
 }

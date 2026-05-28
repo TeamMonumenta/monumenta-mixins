@@ -1,8 +1,8 @@
 package com.playmonumenta.papermixins.mixin.behavior.block;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,19 +21,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class IceBlockMixin {
 	/**
 	 * @author Flowey
-	 * @reason Disable all special ice behaviour when harvested with non-silk touch tool.
+	 * @reason Disable all special ice behavior when harvested with non-silk touch tool.
 	 */
-	@Inject(
+	@ModifyExpressionValue(
 		method = "afterDestroy",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;dimensionType()" +
-			"Lnet/minecraft/world/level/dimension/DimensionType;"),
-		cancellable = true
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/attribute/EnvironmentAttributeSystem;getValue" +
+			"(Lnet/minecraft/world/attribute/EnvironmentAttribute;Lnet/minecraft/core/BlockPos;)Ljava/lang/Object;")
 	)
-	public void afterDestroy(Level world, BlockPos pos, ItemStack tool, CallbackInfo ci) {
+	public Object afterDestroy(Object original) {
 		if (ConfigManager.getConfig().behavior.disableIceBreakBehavior) {
-			world.removeBlock(pos, false);
-			ci.cancel();
+			return true;
 		}
+
+		return original;
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class IceBlockMixin {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	public void melt(BlockState state, Level world, BlockPos pos, CallbackInfo ci) {
+	public void melt(BlockState state, Level level, BlockPos pos, CallbackInfo ci) {
 		if (ConfigManager.getConfig().behavior.disableIceMelting) {
 			ci.cancel();
 		}

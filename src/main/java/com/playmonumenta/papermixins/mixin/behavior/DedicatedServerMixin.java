@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.playmonumenta.papermixins.ConfigManager;
 import com.playmonumenta.papermixins.MonumentaMod;
 import net.minecraft.server.dedicated.DedicatedServer;
-import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.PluginLoadOrder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,7 +15,7 @@ public class DedicatedServerMixin {
 		method = "initServer",
 		at = @At(
 			value = "INVOKE",
-			target = "Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;loadPlugins()V"
+			target = "Lorg/bukkit/craftbukkit/CraftServer;loadPlugins()V"
 		)
 	)
 	private boolean conditionallyDisablePluginLoading(CraftServer instance) {
@@ -30,7 +30,7 @@ public class DedicatedServerMixin {
 		method = "initServer",
 		at = @At(
 			value = "INVOKE",
-			target = "Lorg/bukkit/craftbukkit/v1_20_R3/CraftServer;enablePlugins(Lorg/bukkit/plugin/PluginLoadOrder;)V"
+			target = "Lorg/bukkit/craftbukkit/CraftServer;enablePlugins(Lorg/bukkit/plugin/PluginLoadOrder;)V"
 		)
 	)
 	private boolean conditionallyDisablePluginEnable(CraftServer instance, PluginLoadOrder pluginLoadOrder) {

@@ -13,7 +13,7 @@ public class MinecraftServerMixin {
 		method = "stopServer",
 		at = @At(
 			value = "INVOKE",
-			target = "Ljava/util/concurrent/ThreadPoolExecutor;shutdownNow()Ljava/util/List;"
+			target = "Ljava/util/concurrent/ExecutorService;shutdownNow()Ljava/util/List;"
 		)
 	)
 	private void onStop(CallbackInfo ci) {

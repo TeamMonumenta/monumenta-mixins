@@ -27,8 +27,7 @@ public class BaseCoralPlantTypeBlockMixin {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private static void scanForWater(BlockState state, BlockGetter world, BlockPos pos,
-									CallbackInfoReturnable<Boolean> cir) {
+	private static void scanForWater(BlockState state, BlockGetter level, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
 		if (ConfigManager.getConfig().behavior.disableCoralDeath) {
 			cir.setReturnValue(true);
 		}

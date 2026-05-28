@@ -3,7 +3,7 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.playmonumenta.papermixins.ConfigManager;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -19,12 +19,12 @@ public class ZombieMixin {
 		method = "tick",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/monster/Zombie;startUnderWaterConversion(I)V"
+			target = "Lnet/minecraft/world/entity/monster/zombie/Zombie;startUnderWaterConversion(I)V"
 		)
 	)
-	private void disableConversion(Zombie instance, int ticksUntilWaterConversion, Operation<Void> original) {
+	private void disableConversion(Zombie instance, int time, Operation<Void> original) {
 		if (!ConfigManager.getConfig().behavior.disableDrownConversion) {
-			original.call(instance, ticksUntilWaterConversion);
+			original.call(instance, time);
 		}
 	}
 }

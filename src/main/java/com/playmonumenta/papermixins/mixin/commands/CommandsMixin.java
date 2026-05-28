@@ -24,10 +24,8 @@ public abstract class CommandsMixin {
 			"Lnet/minecraft/commands/CommandBuildContext;)V",
 		at = @At("TAIL")
 	)
-	private void registerCommands(Commands.CommandSelection environment,
-								CommandBuildContext commandRegistryAccess,
-								CallbackInfo ci) {
+	private void registerCommands(Commands.CommandSelection commandSelection, CommandBuildContext context, CallbackInfo ci) {
 		CommandRegistry.register(this.dispatcher);
-		Parser.init(commandRegistryAccess);
+		Parser.init(context);
 	}
 }

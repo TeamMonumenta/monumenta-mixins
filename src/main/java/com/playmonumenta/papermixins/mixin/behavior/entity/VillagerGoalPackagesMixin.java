@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
@@ -18,8 +19,8 @@ import net.minecraft.world.entity.ai.behavior.TradeWithVillager;
 import net.minecraft.world.entity.ai.behavior.UpdateActivityFromSchedule;
 import net.minecraft.world.entity.ai.behavior.VillagerGoalPackages;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,9 +43,13 @@ public abstract class VillagerGoalPackagesMixin {
 	 * @reason Disable a few POI things.
 	 */
 	@Overwrite
-	public static ImmutableList<Pair<Integer, ? extends BehaviorControl<? super Villager>>> getCorePackage(VillagerProfession profession, float speed) {
-		return ImmutableList.of(Pair.of(0, new LookAtTargetSink(45, 90)), Pair.of(3,
-			new LookAndFollowTradingPlayerSink(speed)));
+	public static ImmutableList<Pair<Integer, ? extends BehaviorControl<? super Villager>>> getCorePackage(
+		final Holder<VillagerProfession> profession, final float speedModifier
+	) {
+		return ImmutableList.of(
+			Pair.of(0, new LookAtTargetSink(45, 90)),
+			Pair.of(3, new LookAndFollowTradingPlayerSink(speedModifier))
+		);
 	}
 
 	/**
@@ -52,7 +57,9 @@ public abstract class VillagerGoalPackagesMixin {
 	 * @reason Disable a few idle rules.
 	 */
 	@Overwrite
-	public static ImmutableList<Pair<Integer, ? extends BehaviorControl<? super Villager>>> getIdlePackage(VillagerProfession profession, float speed) {
+	public static ImmutableList<Pair<Integer, ? extends BehaviorControl<? super Villager>>> getWorkPackage(
+		final Holder<VillagerProfession> profession, final float speedModifier
+	) {
 		return ImmutableList.of(
 			Pair.of(2, new RunOne<>(ImmutableList.of(Pair.of(new DoNothing(30, 60), 1)))),
 			Pair.of(3, SetLookAndInteract.create(EntityType.PLAYER, 4)),

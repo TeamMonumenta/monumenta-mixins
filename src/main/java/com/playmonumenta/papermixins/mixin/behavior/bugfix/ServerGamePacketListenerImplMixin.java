@@ -22,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(ServerGamePacketListenerImpl.class)
 public class ServerGamePacketListenerImplMixin {
-
 	@Shadow
 	public ServerPlayer player;
 
@@ -64,6 +63,6 @@ public class ServerGamePacketListenerImplMixin {
 			return;
 		}
 		player.resetAttackStrengthTicker();
-		player.detectEquipmentUpdatesPublic();
+		player.detectEquipmentUpdates();
 	}
 }

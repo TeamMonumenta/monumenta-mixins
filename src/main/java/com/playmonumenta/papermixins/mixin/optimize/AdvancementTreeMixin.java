@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementNode;
 import net.minecraft.advancements.AdvancementTree;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,20 +36,19 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 
 	@Shadow
 	@Final
-	private Map<ResourceLocation, AdvancementNode> nodes;
+	private Map<Identifier, AdvancementNode> nodes;
 
-	// TODO: we can technically optimize this faster by e bitsets and converting ResourceLocation to index
 	@Unique
-	private void monumenta$addAllFastImpl(List<AdvancementHolder> advancements, Map<ResourceLocation,
+	private void monumenta$addAllFastImpl(List<AdvancementHolder> advancements, Map<Identifier,
 		AdvancementHolder> idMap) {
 		// map from parent -> [all children that depend on parent]
-		final var edges = new HashMap<ResourceLocation, List<AdvancementHolder>>();
+		final var edges = new HashMap<Identifier, List<AdvancementHolder>>();
 
 		// list of all nodes with either no parents, or a parent in this.nodes
 		final var roots = new ArrayList<AdvancementHolder>();
 
 		// list of all nodes with an invalid parent
-		final var invalidRoots = new HashMap<ResourceLocation, ArrayList<AdvancementHolder>>();
+		final var invalidRoots = new HashMap<Identifier, ArrayList<AdvancementHolder>>();
 
 		for (final var advancement : advancements) {
 			final var parentOptional = advancement.value().parent();
@@ -152,7 +151,7 @@ public abstract class AdvancementTreeMixin implements AdvancementTreeAccess {
 	}
 
 	@Override
-	public void monumenta$addAllFast(Map<ResourceLocation, AdvancementHolder> advancements) {
+	public void monumenta$addAllFast(Map<Identifier, AdvancementHolder> advancements) {
 		monumenta$addAllFastImpl(new ArrayList<>(advancements.values()), advancements);
 	}
 }

@@ -2,6 +2,7 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.playmonumenta.papermixins.ConfigManager;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -27,7 +28,7 @@ public abstract class WitherBossMixin extends Monster {
 
 	// It's never below half health (I promise!)
 	@ModifyExpressionValue(
-		method = "hurt",
+		method = "hurtServer",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/world/entity/boss/wither/WitherBoss;isPowered()Z"
@@ -43,12 +44,13 @@ public abstract class WitherBossMixin extends Monster {
 	 */
 	@Inject(
 		method = "dropCustomDeathLoot",
-		at = @At("HEAD"),
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/monster/Monster;dropCustomDeathLoot" +
+			"(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;Z)V", shift =
+			At.Shift.AFTER),
 		cancellable = true
 	)
-	public void dropCustomDeathLoot(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
-		if(ConfigManager.getConfig().behavior.disableWitherStarDrop) {
-			super.dropCustomDeathLoot(source, lootingMultiplier, allowDrops);
+	public void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean killedByPlayer, CallbackInfo ci) {
+		if (ConfigManager.getConfig().behavior.disableWitherStarDrop) {
 			ci.cancel();
 		}
 	}

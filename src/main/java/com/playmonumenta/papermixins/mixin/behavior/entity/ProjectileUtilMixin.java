@@ -24,9 +24,8 @@ public class ProjectileUtilMixin {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private static void returnMainhandIfBow(LivingEntity entity, Item item,
-											CallbackInfoReturnable<InteractionHand> cir) {
-		if (Items.BOW == item && ConfigManager.getConfig().behavior.requireMobBowMainhand) {
+	private static void returnMainhandIfBow(LivingEntity mob, Item weaponItem, CallbackInfoReturnable<InteractionHand> cir) {
+		if (Items.BOW == weaponItem && ConfigManager.getConfig().behavior.requireMobBowMainhand) {
 			cir.setReturnValue(InteractionHand.MAIN_HAND);
 			cir.cancel();
 		}

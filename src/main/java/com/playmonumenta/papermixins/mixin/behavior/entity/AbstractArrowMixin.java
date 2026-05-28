@@ -3,7 +3,7 @@ package com.playmonumenta.papermixins.mixin.behavior.entity;
 import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.bukkit.event.entity.EntityRemoveEvent;
@@ -34,7 +34,7 @@ public abstract class AbstractArrowMixin extends Entity {
 		),
 		cancellable = true
 	)
-	private void disableBounce(EntityHitResult entityHitResult, CallbackInfo ci) {
+	private void disableBounce(EntityHitResult hitResult, CallbackInfo ci) {
 		if(!ConfigManager.getConfig().behavior.disableArrowBouncing) {
 			return;
 		}

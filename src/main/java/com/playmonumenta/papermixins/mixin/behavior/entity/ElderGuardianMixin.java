@@ -1,5 +1,7 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.ElderGuardian;
@@ -7,8 +9,6 @@ import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author Flowey
@@ -25,23 +25,17 @@ public class ElderGuardianMixin extends Guardian {
 	/**
 	 * @author Flowey
 	 * @reason Remove mining fatigue logic
-	 * There might be a more portable way of doing this...
-	 * TODO: look for a more portable way.
 	 */
-	@Inject(
+	@ModifyExpressionValue(
 		method = "customServerAiStep",
-		at = @At("HEAD"),
-		cancellable = true
+		at = @At("MIXINEXTRAS:EXPRESSION")
 	)
-	public void customServerAiStep(CallbackInfo ci) {
-		if(ConfigManager.getConfig().behavior.disableGuardianMiningFatigue) {
-			super.customServerAiStep();
-
-			if (!this.hasRestriction()) {
-				this.restrictTo(this.blockPosition(), 16);
-			}
-
-			ci.cancel();
+	@Expression("? % 1200 == 0")
+	public boolean customServerAiStep(boolean original) {
+		if (ConfigManager.getConfig().behavior.disableGuardianMiningFatigue) {
+			return false;
 		}
+
+		return original;
 	}
 }

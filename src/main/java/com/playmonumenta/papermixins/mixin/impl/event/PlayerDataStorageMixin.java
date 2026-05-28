@@ -1,25 +1,29 @@
 package com.playmonumenta.papermixins.mixin.impl.event;
 
-import com.destroystokyo.paper.event.player.PlayerDataLoadEvent;
-import com.destroystokyo.paper.event.player.PlayerDataSaveEvent;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.playmonumenta.papermixins.paperapi.v1.event.PlayerDataLoadEvent;
+import com.playmonumenta.papermixins.paperapi.v1.event.PlayerDataSaveEvent;
+import com.playmonumenta.papermixins.util.Util;
 import java.io.File;
-import java.nio.file.Files;
-import net.minecraft.Util;
+import java.nio.file.Path;
+import java.util.Optional;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtIo;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.PlayerDataStorage;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.world.level.storage.TagValueOutput;
+import org.bukkit.craftbukkit.CraftOfflinePlayer;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author Flowey
@@ -29,12 +33,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(PlayerDataStorage.class)
 public class PlayerDataStorageMixin {
-	@Shadow
-	@Final
-	private File playerDir;
-
-	// really cursed save inject
-	// TODO: break apart this inject or just use overwrite
 	@Inject(
 		method = "save",
 		at = @At(
@@ -44,30 +42,40 @@ public class PlayerDataStorageMixin {
 		),
 		cancellable = true
 	)
-	private void emitSaveEvent(Player player, CallbackInfo ci, @Local(ordinal = 0) CompoundTag tag) {
-		// always cancel the event since we overwrite logic
-		ci.cancel();
+	private void emitSaveEvent(Player player, CallbackInfo ci,
+							   @Local(name = "playerDirPath") Path playerDirPath,
+							   @Local(name = "output") TagValueOutput output,
+							   @Share("overrideSavePath") LocalRef<Path> overrideSavePath) {
+		var event = new PlayerDataSaveEvent(
+			(CraftPlayer) player.getBukkitEntity(),
+			playerDirPath.resolve(player.getStringUUID() + ".dat"),
+			output.buildResult()
+		);
 
-		var playerData = new File(this.playerDir, player.getStringUUID() + ".dat");
-		var playerDataOld = new File(this.playerDir, player.getStringUUID() + ".dat_old");
+		overrideSavePath.set(null);
 
-		var event = new PlayerDataSaveEvent((CraftPlayer) player.getBukkitEntity(), playerData, tag);
-
+		// if it's cancelled, we don't need to write the file
 		if (!event.callEvent()) {
-			return;
+			ci.cancel();
 		}
 
-		try {
-			var file = Files.createTempFile(this.playerDir.toPath(), player.getStringUUID() + "-", ".dat");
-			NbtIo.writeCompressed((CompoundTag) event.getData(), file);
-			Util.safeReplaceFile(event.getPath().toPath(), file, playerDataOld.toPath());
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
+		overrideSavePath.set(event.getPath());
 	}
 
 	@Redirect(
-		method = "load",
+		method = "save",
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/nio/file/Path;resolve(Ljava/lang/String;)Ljava/nio/file/Path;",
+			ordinal = 0
+		)
+	)
+	private Path modifyPathArg(Path instance, String other, @Share("overrideSavePath") LocalRef<Path> path) {
+		return path.get();
+	}
+
+	@Inject(
+		method = "load(Lnet/minecraft/server/players/NameAndId;Ljava/lang/String;)Ljava/util/Optional;",
 		at = @At(
 			value = "INVOKE",
 			target = "Ljava/io/File;exists()Z"
@@ -75,27 +83,29 @@ public class PlayerDataStorageMixin {
 		slice = @Slice(
 			from = @At(
 				value = "INVOKE",
-				target = "Ljava/util/logging/Logger;warning(Ljava/lang/String;)V"
+				target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V"
 			),
 			to = @At(
 				value = "INVOKE",
 				target = "Ljava/io/File;isFile()Z"
 			)
-		)
+		),
+		cancellable = true
 	)
-	private boolean emitLoadEvent(File file,
-								@Local(argsOnly = true) Player player,
-								@Local LocalRef<CompoundTag> tag,
-								@Local LocalRef<File> localFile) {
-		PlayerDataLoadEvent event = new PlayerDataLoadEvent((CraftPlayer) player.getBukkitEntity(), file);
+	private void emitLoadEvent(NameAndId nameAndId, String suffix, CallbackInfoReturnable<Optional<CompoundTag>> cir,
+							   @Local(argsOnly = true) NameAndId player,
+							   @Local(name = "realFile") LocalRef<File> realFile) {
+		PlayerDataLoadEvent event = new PlayerDataLoadEvent(new CraftOfflinePlayer(
+			MinecraftServer.getServer().server,
+			player
+		), realFile.get().toPath());
+
 		event.callEvent();
 
-		if (event.getData() != null) {
-			tag.set((CompoundTag) event.getData());
-			return false; // cancel this if statement
-		}
+		realFile.set(event.getPath().toFile());
 
-		localFile.set(event.getPath());
-		return event.getPath().exists();
+		if (event.getData() != null) {
+			cir.setReturnValue(Optional.of(Util.c(event.getData())));
+		}
 	}
 }

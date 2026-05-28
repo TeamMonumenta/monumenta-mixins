@@ -144,7 +144,7 @@ public class RawFunctionSource {
 				// Macro pre-parsing
 				final StringTemplate template;
 				try {
-					template = StringTemplate.fromString(line.substring(1), index + 1);
+					template = StringTemplate.fromString(line.substring(1));
 				} catch (IllegalArgumentException e) {
 					// TODO: slightly better error handling here is required
 					context.diagnostics().reportErr(index, e.getMessage());

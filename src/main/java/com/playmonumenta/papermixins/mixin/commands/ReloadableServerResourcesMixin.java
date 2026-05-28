@@ -24,14 +24,12 @@ public class ReloadableServerResourcesMixin {
 		method = "<init>",
 		at = @At(
 			value = "NEW",
-			target = "(Lnet/minecraft/commands/Commands$CommandSelection;Lnet/minecraft/commands/CommandBuildContext;" +
-				")Lnet/minecraft/commands/Commands;"
+			target = "(Lnet/minecraft/commands/Commands$CommandSelection;Lnet/minecraft/commands/CommandBuildContext;Z)Lnet/minecraft/commands/Commands;"
 		)
 	)
-	private Commands cacheCommandInstance(Commands.CommandSelection commandSelection,
-										CommandBuildContext environment, Operation<Commands> original) {
+	private Commands cacheCommandInstance(Commands.CommandSelection commandSelection, CommandBuildContext context, boolean modern, Operation<Commands> original) {
 		if (monumenta$commandsInstance == null) {
-			monumenta$commandsInstance = original.call(commandSelection, environment);
+			monumenta$commandsInstance = original.call(commandSelection, context, modern);
 		}
 
 		return monumenta$commandsInstance;

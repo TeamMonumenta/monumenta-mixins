@@ -1,32 +1,54 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
 
-import com.playmonumenta.papermixins.util.Util;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
-import net.minecraft.world.entity.monster.WitherSkeleton;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
+import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.level.Level;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(WitherSkeleton.class)
-public class WitherSkeletonMixin {
-	@Redirect(method = "getArrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;setSecondsOnFire(I)V"))
-	public void disableFlamingArrows(AbstractArrow instance, int i) {
-		if (!Util.<AbstractSkeleton>c(this).getTags().contains("boss_no_flame_arrows")) {
-			instance.setSecondsOnFire(i);
+public abstract class WitherSkeletonMixin extends AbstractSkeleton {
+	protected WitherSkeletonMixin(EntityType<? extends AbstractSkeleton> type, Level level) {
+		super(type, level);
+	}
+
+	@WrapOperation(
+		method = "getArrow",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/projectile/arrow/AbstractArrow;igniteForSeconds(F)V"
+		)
+	)
+	public void disableFlamingArrows(AbstractArrow instance, float v, Operation<Void> original) {
+		if (!this.entityTags().contains("boss_no_flame_arrows")) {
+			original.call(instance, v);
 		}
 	}
 
-	@Redirect(method = "doHurtTarget", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;Lorg/bukkit/event/entity/EntityPotionEffectEvent$Cause;)Z"))
-	public boolean disableWitherOnHit(LivingEntity instance, MobEffectInstance mobeffect, Entity entity, EntityPotionEffectEvent.Cause cause) {
-		if (!Util.<AbstractSkeleton>c(this).getTags().contains("boss_no_withering")) {
-			return instance.addEffect(mobeffect, entity, cause);
+	@WrapOperation(
+		method = "doHurtTarget",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/LivingEntity;addEffect" +
+				"(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;" +
+				"Lorg/bukkit/event/entity/EntityPotionEffectEvent$Cause;)Z"
+		)
+	)
+	public boolean disableWitherOnHit(LivingEntity instance, MobEffectInstance newEffect, Entity source,
+									  EntityPotionEffectEvent.Cause cause, Operation<Boolean> original) {
+		if (!this.entityTags().contains("boss_no_withering")) {
+			original.call(instance, newEffect, source, cause);
 		}
+
 		return false;
 	}
 }
