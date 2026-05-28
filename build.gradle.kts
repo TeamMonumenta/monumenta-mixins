@@ -6,7 +6,7 @@ import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
-    id("com.playmonumenta.gradle-config") version "5.3+"
+    id("com.playmonumenta.gradle-config") version "6.+"
     id("com.playmonumenta.paperweight-aw.userdev") version "2.1.0-build.4+2.0.0-beta.21"
     id("com.gradleup.shadow") version "8.+"
 }
