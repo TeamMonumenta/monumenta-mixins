@@ -60,11 +60,10 @@ public abstract class CraftSkullMetaMixin {
 		// Fill in textures
 		PlayerProfile ownerProfile = new CraftPlayerProfile(this.profile); // getOwnerProfile may return null
 		if (ownerProfile.getTextures().isEmpty()) {
-			ownerProfile.update().thenAccept((filledProfile) -> {
-				this.setOwnerProfile(filledProfile);
-				// SKULL_OWNER.NBT constant
-				tag.put("SkullOwner", this.serializedProfile);
-			});
+			ownerProfile.complete();
+			this.setOwnerProfile(ownerProfile);
+			// SKULL_OWNER.NBT constant
+			tag.put("SkullOwner", this.serializedProfile);
 		}
 	}
 }
