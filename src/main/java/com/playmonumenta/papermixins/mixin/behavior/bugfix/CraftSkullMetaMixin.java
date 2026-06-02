@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.CraftPlayerProfile;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.nbt.CompoundTag;
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftMetaSkull;
 import org.bukkit.profile.PlayerTextures;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -58,12 +59,17 @@ public abstract class CraftSkullMetaMixin {
 	)
 	void fix(CompoundTag tag, CallbackInfo ci) {
 		// Fill in textures
-		PlayerProfile ownerProfile = new CraftPlayerProfile(this.profile); // getOwnerProfile may return null
+		PlayerProfile ownerProfile = new CraftPlayerProfile(this.profile);
 		if (ownerProfile.getTextures().isEmpty()) {
-			ownerProfile.complete();
-			this.setOwnerProfile(ownerProfile);
-			// SKULL_OWNER.NBT constant
-			tag.put("SkullOwner", this.serializedProfile);
+			// Async; the first call of this method during the runtime of the
+			// server will generally produce an incorrect head. But we can't
+			// do anything about it without enforcing that applying a SkullMeta
+			// to a head is async everywhere in the plugin code.
+			ownerProfile.update().thenAccept((filledProfile) -> {
+				this.setOwnerProfile(filledProfile);
+				// Constant: "SkullOwner" == CraftMetaSkull.SKULL_OWNER.NBT
+				tag.put("SkullOwner", this.serializedProfile);
+			});
 		}
 	}
 }
