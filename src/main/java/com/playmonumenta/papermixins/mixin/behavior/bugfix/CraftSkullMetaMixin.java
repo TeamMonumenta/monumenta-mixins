@@ -4,7 +4,6 @@ import com.destroystokyo.paper.profile.CraftPlayerProfile;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.nbt.CompoundTag;
-import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftMetaSkull;
 import org.bukkit.profile.PlayerTextures;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
