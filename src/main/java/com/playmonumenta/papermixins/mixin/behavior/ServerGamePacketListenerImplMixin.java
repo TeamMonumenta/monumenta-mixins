@@ -26,15 +26,4 @@ public class ServerGamePacketListenerImplMixin {
 	private int changeFlyingTickTime(int constant) {
 		return ConfigManager.getConfig().flyingTime;
 	}
-
-	@Redirect(
-		method = "handleContainerClick",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/world/inventory/InventoryMenu;incrementStateId()I"
-		)
-	)
-	public int doNotIncrement(InventoryMenu instance) {
-		return instance.getStateId();
-	}
 }
