@@ -5,7 +5,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 
 plugins {
 	id("com.playmonumenta.papermixins.mod-conventions")
-	id("com.playmonumenta.gradle-config") version "5.2+"
+	id("com.playmonumenta.gradle-config") version "5.3+"
 }
 
 group = "com.playmonumenta.papermixins"
