@@ -1,7 +1,10 @@
 package com.playmonumenta.papermixins.mixin.impl.event;
 
 import com.google.common.base.Function;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.playmonumenta.papermixins.MixinState;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,9 +36,9 @@ public abstract class LivingEntityMixin extends Entity {
 		index = 2,
 		argsOnly = true
 	)
-	private float setupIframeHandlers(float value) {
+	private float setupIframeHandlers(float value, @Local(argsOnly = true) DamageSource source) {
 		Function<Double, Double> iframes = f -> {
-			if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F) {
+			if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F && !source.is(DamageTypeTags.BYPASSES_COOLDOWN)) {
 				return -Math.max(f - Math.max(f - lastHurt, 0.0F), 0.0F);
 			}
 			return 0.0;
