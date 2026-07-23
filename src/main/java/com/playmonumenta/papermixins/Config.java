@@ -36,6 +36,7 @@ public class Config {
 		public boolean disableDolphinPlayWithItems = false;
 		public boolean reduceDamageParticles = false;
 		public boolean playerArrowsPassThroughPlayers = false;
+		public boolean drownedAttackDuringDay = false;
 
 		public int giantTrackingRange = 96;
 
