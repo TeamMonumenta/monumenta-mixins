@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 	private static MonumentaPaperAPIImpl INSTANCE = null;
 	private final EntityDamageEvent.DamageModifier iframes = EntityDamageEvent.DamageModifier.valueOf("IFRAMES");
+	public boolean stopNextPacketEvent = false;
 
 	public static MonumentaPaperAPIImpl getInstance() {
 		if (INSTANCE == null) {
@@ -28,6 +29,11 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 	@Override
 	public EntityDamageEvent.DamageModifier getIframes() {
 		return iframes;
+	}
+
+	@Override
+	public void stopNextPacketEvent() {
+		stopNextPacketEvent = true;
 	}
 
 	@Override

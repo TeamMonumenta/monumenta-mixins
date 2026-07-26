@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.api;
 
+import com.playmonumenta.papermixins.impl.v1.MonumentaPaperAPIImpl;
 import com.playmonumenta.papermixins.paperapi.v1.event.PacketEvent;
 import io.papermc.paper.util.MCUtil;
 import net.minecraft.network.Connection;
@@ -27,6 +28,9 @@ public abstract class ConnectionMixin {
 	)
 	@SuppressWarnings("unchecked")
 	public Packet<?> onSend(Packet<?> original) {
+		if (MonumentaPaperAPIImpl.getInstance().stopNextPacketEvent) {
+			return original;
+		}
 		@Nullable
 		ServerPlayer player = getPlayer();
 		if (player == null) {

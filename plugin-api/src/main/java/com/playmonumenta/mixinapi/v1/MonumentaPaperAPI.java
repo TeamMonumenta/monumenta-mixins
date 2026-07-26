@@ -16,6 +16,8 @@ public interface MonumentaPaperAPI {
 
 	EntityDamageEvent.DamageModifier getIframes();
 
+	void stopNextPacketEvent();
+
 	SemanticVersion getVersion();
 
 	@ApiStatus.Internal
