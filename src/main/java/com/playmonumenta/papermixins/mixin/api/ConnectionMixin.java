@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.api;
 
+import com.playmonumenta.papermixins.MixinState;
 import com.playmonumenta.papermixins.impl.v1.MonumentaPaperAPIImpl;
 import com.playmonumenta.papermixins.paperapi.v1.event.PacketEvent;
 import io.papermc.paper.util.MCUtil;
@@ -28,7 +29,7 @@ public abstract class ConnectionMixin {
 	)
 	@SuppressWarnings("unchecked")
 	public Packet<?> onSend(Packet<?> original) {
-		if (MonumentaPaperAPIImpl.getInstance().stopNextPacketEvent) {
+		if (MixinState.stopNextPacketEvent) {
 			return original;
 		}
 		@Nullable

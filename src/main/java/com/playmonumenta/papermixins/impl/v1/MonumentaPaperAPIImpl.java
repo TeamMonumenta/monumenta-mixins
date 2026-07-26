@@ -6,6 +6,7 @@ import com.playmonumenta.mixinapi.v1.RedisSyncIO;
 import com.playmonumenta.mixinapi.v1.item.CustomItemRegistry;
 import com.playmonumenta.mixinapi.v1.item.CustomItems;
 import com.playmonumenta.mixinapi.v1.resource.DataLoaderRegistry;
+import com.playmonumenta.papermixins.MixinState;
 import com.playmonumenta.papermixins.VersionInfo;
 import com.playmonumenta.papermixins.impl.paperapi.v1.HookAPIImpl;
 import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
@@ -16,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 	private static MonumentaPaperAPIImpl INSTANCE = null;
 	private final EntityDamageEvent.DamageModifier iframes = EntityDamageEvent.DamageModifier.valueOf("IFRAMES");
-	public boolean stopNextPacketEvent = false;
 
 	public static MonumentaPaperAPIImpl getInstance() {
 		if (INSTANCE == null) {
@@ -33,7 +33,7 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 
 	@Override
 	public void stopNextPacketEvent() {
-		stopNextPacketEvent = true;
+		MixinState.stopNextPacketEvent = true;
 	}
 
 	@Override
