@@ -9,6 +9,7 @@
         "accessor.JavaPluginAccessor",
         "api.DamageModifierMixin",
         "api.MeleeAttackGoalMixin",
+        "api.ConnectionMixin",
         "behavior.DedicatedServerMixin",
         "behavior.DimensionDataStorageMixin",
         "behavior.ServerGamePacketListenerImplMixin",
