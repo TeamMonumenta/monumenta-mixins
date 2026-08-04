@@ -34,7 +34,7 @@ public abstract class EntityMixin {
 		final Entity self = Util.c(this);
 		final var knockbackResist = self instanceof LivingEntity living ?
 			living.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) : 0.0;
-		if (knockbackResist >= 1) {
+		if (knockbackResist >= 0.9999) {
 			ci.cancel();
 		}
 	}
