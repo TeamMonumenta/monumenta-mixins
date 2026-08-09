@@ -30,6 +30,7 @@ public abstract class ConnectionMixin {
 	@SuppressWarnings("unchecked")
 	public Packet<?> onSend(Packet<?> original) {
 		if (MixinState.stopNextPacketEvent) {
+			MixinState.stopNextPacketEvent = false;
 			return original;
 		}
 		@Nullable
