@@ -19,7 +19,7 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
 	@Nullable
 	private final List<Object> allBundledPackets;
 
-	public PacketEvent(Player player, Object packet, @Nullable ArrayList<Object> allBundledPackets) {
+	public PacketEvent(Player player, Object packet, @Nullable List<Object> allBundledPackets) {
 		super(player);
 		this.packet = packet;
 		this.allBundledPackets = allBundledPackets;
