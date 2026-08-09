@@ -89,10 +89,6 @@ public abstract class ConnectionMixin {
 		argsOnly = true
 	)
 	public Packet<?> onReceive(Packet<?> original) {
-		if (MixinState.stopNextOutboundPacketEvent) {
-			MixinState.stopNextOutboundPacketEvent = false;
-			return original;
-		}
 		@Nullable
 		ServerPlayer player = getPlayer();
 		if (player == null) {
