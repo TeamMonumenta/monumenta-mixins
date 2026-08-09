@@ -1,10 +1,10 @@
 package com.playmonumenta.papermixins.mixin.api;
 
 import com.playmonumenta.papermixins.MixinState;
-import com.playmonumenta.papermixins.impl.v1.MonumentaPaperAPIImpl;
 import com.playmonumenta.papermixins.paperapi.v1.event.PacketEvent;
 import io.papermc.paper.util.MCUtil;
 import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.BundlePacket;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBundlePacket;
@@ -29,8 +29,8 @@ public abstract class ConnectionMixin {
 	)
 	@SuppressWarnings("unchecked")
 	public Packet<?> onSend(Packet<?> original) {
-		if (MixinState.stopNextPacketEvent) {
-			MixinState.stopNextPacketEvent = false;
+		if (MixinState.stopNextOutboundPacketEvent) {
+			MixinState.stopNextOutboundPacketEvent = false;
 			return original;
 		}
 		@Nullable
@@ -38,6 +38,7 @@ public abstract class ConnectionMixin {
 		if (player == null) {
 			return original;
 		}
+		// Ignore handshake packets because why would we mess with that
 		if (!MCUtil.isMainThread()) {
 			return original;
 		}
@@ -50,7 +51,7 @@ public abstract class ConnectionMixin {
 			ArrayList<Packet<ClientGamePacketListener>> newSubPacketList = new ArrayList<>(subPacketList.size());
 			boolean modified = false;
 			for (Packet<ClientGamePacketListener> originalPacket : packets) {
-				PacketEvent event = new PacketEvent(player.getBukkitEntity(), originalPacket, subPacketList);
+				PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.OUTBOUND, originalPacket, subPacketList);
 				event.callEvent();
 				if (event.isCancelled()) {
 					continue;
@@ -67,7 +68,7 @@ public abstract class ConnectionMixin {
 				return new ClientboundBundlePacket(newSubPacketList);
 			}
 		} else {
-			PacketEvent event = new PacketEvent(player.getBukkitEntity(), original, null);
+			PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.OUTBOUND, original, null);
 			event.callEvent();
 			if (event.isCancelled()) {
 				return original;
@@ -75,6 +76,38 @@ public abstract class ConnectionMixin {
 			if (event.packetChanged() && event.getPacket() instanceof Packet<?> newPacket) {
 				return newPacket;
 			}
+		}
+		return original;
+	}
+
+	@ModifyVariable(
+		method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/protocol/Packet;)V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/network/Connection;genericsFtw(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;)V"
+		),
+		argsOnly = true
+	)
+	public Packet<?> onReceive(Packet<?> original) {
+		if (MixinState.stopNextOutboundPacketEvent) {
+			MixinState.stopNextOutboundPacketEvent = false;
+			return original;
+		}
+		@Nullable
+		ServerPlayer player = getPlayer();
+		if (player == null) {
+			return original;
+		}
+		if (!MCUtil.isMainThread()) {
+			return original;
+		}
+		PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.INBOUND, original, null);
+		event.callEvent();
+		if (event.isCancelled()) {
+			return original;
+		}
+		if (event.packetChanged() && event.getPacket() instanceof Packet<?> newPacket) {
+			return newPacket;
 		}
 		return original;
 	}

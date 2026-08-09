@@ -33,7 +33,7 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 
 	@Override
 	public void stopNextPacketEvent() {
-		MixinState.stopNextPacketEvent = true;
+		MixinState.stopNextOutboundPacketEvent = true;
 	}
 
 	@Override

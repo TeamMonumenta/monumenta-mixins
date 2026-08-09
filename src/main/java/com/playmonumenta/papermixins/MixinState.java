@@ -6,5 +6,5 @@ public class MixinState {
 	public static final ThreadLocal<Function<? super Double, Double>> IFRAME_FUNC = new ThreadLocal<>();
 	public static final ThreadLocal<Double> IFRAME_VALUE = new ThreadLocal<>();
 
-	public static boolean stopNextPacketEvent;
+	public static boolean stopNextOutboundPacketEvent;
 }

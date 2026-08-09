@@ -7,11 +7,15 @@ import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class PacketEvent extends PlayerEvent implements Cancellable {
+	public enum Type {
+		OUTBOUND,
+		INBOUND
+	}
+	private final Type type;
 	// throw this in version adapter, teehee!
 	private Object packet;
 	private boolean cancelled = false;
@@ -19,8 +23,9 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
 	@Nullable
 	private final List<Object> allBundledPackets;
 
-	public PacketEvent(Player player, Object packet, @Nullable List<Object> allBundledPackets) {
+	public PacketEvent(Player player, Type type, Object packet, @Nullable List<Object> allBundledPackets) {
 		super(player);
+		this.type = type;
 		this.packet = packet;
 		this.allBundledPackets = allBundledPackets;
 	}
