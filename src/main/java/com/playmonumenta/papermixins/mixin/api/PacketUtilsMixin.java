@@ -9,33 +9,58 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PacketUtils.class)
 public class PacketUtilsMixin {
-	@ModifyVariable(
+	@Unique
+	@Nullable
+	private static Packet<?> replacePacket = null;
+
+	@Inject(
 		method = "lambda$ensureRunningOnSameThread$0",
 		at = @At(
 			value = "INVOKE",
 			target = "Lco/aikar/timings/Timing;startTiming()Lco/aikar/timings/Timing;"
 		),
-		argsOnly = true
+		cancellable = true
 	)
 	// For some god knows what reason ServerGamePacketListener does this to make stuff run on main thread...
-	private static Packet<?> onHandle(Packet<?> original, @Local(argsOnly = true) PacketListener listener) {
+	private static void onHandle(PacketListener listener, Packet<?> packet, CallbackInfo ci) {
 		if (!(listener instanceof ServerGamePacketListenerImpl serverListener)) {
-			return original;
+			return;
 		}
 		@Nullable
 		ServerPlayer player = serverListener.player;
-		PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.INBOUND, original, null);
+		PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.INBOUND, packet, null);
 		event.callEvent();
 		if (event.isCancelled()) {
-			return original;
+			ci.cancel();
+			return;
 		}
 		if (event.packetChanged() && event.getPacket() instanceof Packet<?> newPacket) {
-			return newPacket;
+			replacePacket = newPacket;
+		}
+	}
+
+	@ModifyVariable(
+		method = "lambda$ensureRunningOnSameThread$0",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/network/protocol/Packet;handle(Lnet/minecraft/network/PacketListener;)V"
+		),
+		argsOnly = true
+	)
+	// Modifies variable right after startTiming()
+	private static Packet<?> modifyPacket(Packet<?> original) {
+		if (replacePacket != null) {
+			Packet<?> returnedPacket = replacePacket;
+			replacePacket = null;
+			return returnedPacket;
 		}
 		return original;
 	}
