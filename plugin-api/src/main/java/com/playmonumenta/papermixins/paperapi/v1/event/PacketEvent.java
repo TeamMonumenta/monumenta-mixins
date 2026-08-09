@@ -30,6 +30,10 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
 		this.allBundledPackets = allBundledPackets;
 	}
 
+	public Type getType() {
+		return type;
+	}
+
 	public Object getPacket() {
 		return packet;
 	}
