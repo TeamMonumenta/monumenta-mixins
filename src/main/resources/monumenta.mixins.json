@@ -10,6 +10,7 @@
         "api.DamageModifierMixin",
         "api.MeleeAttackGoalMixin",
         "api.ConnectionMixin",
+        "api.PacketUtilsMixin",
         "behavior.DedicatedServerMixin",
         "behavior.DimensionDataStorageMixin",
         "behavior.ServerGamePacketListenerImplMixin",
