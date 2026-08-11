@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(Connection.class)
 public abstract class ConnectionMixin {
@@ -51,25 +52,21 @@ public abstract class ConnectionMixin {
 		}
 		if (packet instanceof ClientboundBundlePacket bundlePacket) {
 			Iterable<Packet<ClientGamePacketListener>> packets = bundlePacket.subPackets();
-			ArrayList<Object> subPacketList = new ArrayList<>();
+			List<Packet<ClientGamePacketListener>> subPacketList = new ArrayList<>();
 			for (Packet<ClientGamePacketListener> p : packets) {
 				subPacketList.add(p);
 			}
-			ArrayList<Packet<ClientGamePacketListener>> newSubPacketList = new ArrayList<>(subPacketList.size());
+			ArrayList<Packet<ClientGamePacketListener>> newSubPacketList = new ArrayList<>(subPacketList);
 			boolean modified = false;
 			for (Packet<ClientGamePacketListener> originalPacket : packets) {
-				PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.OUTBOUND, originalPacket, subPacketList);
+				PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.OUTBOUND, originalPacket, newSubPacketList);
 				event.callEvent();
 				if (event.isCancelled()) {
 					continue;
 				}
-				if (event.packetChanged() && event.getPacket() instanceof Packet<?> newPacket) {
+				if (event.packetChanged()) {
 					modified = true;
-					// oh well, sorry type safety!
-					newSubPacketList.add((Packet<ClientGamePacketListener>) newPacket);
-					continue;
 				}
-				newSubPacketList.add(originalPacket);
 			}
 			if (modified) {
 				replacePacket = new ClientboundBundlePacket(newSubPacketList);

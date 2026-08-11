@@ -21,9 +21,9 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
 	private boolean cancelled = false;
 	private boolean changed = false;
 	@Nullable
-	private final List<Object> allBundledPackets;
+	private final List<?> allBundledPackets;
 
-	public PacketEvent(Player player, Type type, Object packet, @Nullable List<Object> allBundledPackets) {
+	public PacketEvent(Player player, Type type, Object packet, @Nullable List<?> allBundledPackets) {
 		super(player);
 		this.type = type;
 		this.packet = packet;
@@ -61,8 +61,9 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
 		return allBundledPackets != null;
 	}
 
-	public void modifyBundlePackets(Consumer<List<Object>> packetHandler) {
+	public void modifyBundlePackets(Consumer<List<?>> packetHandler) {
 		if (allBundledPackets != null) {
+			changed = true;
 			packetHandler.accept(allBundledPackets);
 		}
 	}
