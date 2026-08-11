@@ -36,7 +36,7 @@ public class PacketUtilsMixin {
 		}
 		@Nullable
 		ServerPlayer player = serverListener.player;
-		PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.INBOUND, packet, null);
+		PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.INBOUND, packet, false);
 		event.callEvent();
 		if (event.isCancelled()) {
 			ci.cancel();

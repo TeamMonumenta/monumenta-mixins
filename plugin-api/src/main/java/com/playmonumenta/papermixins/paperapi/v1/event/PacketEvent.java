@@ -5,10 +5,9 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class PacketEvent extends PlayerEvent implements Cancellable {
 	public enum Type {
@@ -20,14 +19,20 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
 	private Object packet;
 	private boolean cancelled = false;
 	private boolean changed = false;
-	@Nullable
-	private final List<?> allBundledPackets;
 
-	public PacketEvent(Player player, Type type, Object packet, @Nullable List<?> allBundledPackets) {
+	/**
+	 * Will only create events for packets initially in the bundle, added packets will also not be visible!
+	 * events will remove/modify packets in 'bundle'
+ 	 */
+	private final boolean isBundle;
+	private final List<Object> packetsToAdd;
+
+	public PacketEvent(Player player, Type type, Object packet, boolean isBundle) {
 		super(player);
 		this.type = type;
 		this.packet = packet;
-		this.allBundledPackets = allBundledPackets;
+		this.isBundle = isBundle;
+		this.packetsToAdd = new ArrayList<>();
 	}
 
 	public Type getType() {
@@ -58,14 +63,18 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
 	}
 
 	public boolean isBundlePacket() {
-		return allBundledPackets != null;
+		return isBundle;
 	}
 
-	public void modifyBundlePackets(Consumer<List<?>> packetHandler) {
-		if (allBundledPackets != null) {
+	public void addBundlePackets(List<?> packets) {
+		if (isBundle) {
 			changed = true;
-			packetHandler.accept(allBundledPackets);
+			packetsToAdd.addAll(packets);
 		}
+	}
+
+	public List<Object> getPacketsToAdd() {
+		return packetsToAdd;
 	}
 
 	@NotNull

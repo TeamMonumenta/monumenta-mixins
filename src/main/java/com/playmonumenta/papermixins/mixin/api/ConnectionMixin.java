@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Mixin(Connection.class)
@@ -51,28 +52,39 @@ public abstract class ConnectionMixin {
 			return;
 		}
 		if (packet instanceof ClientboundBundlePacket bundlePacket) {
-			Iterable<Packet<ClientGamePacketListener>> packets = bundlePacket.subPackets();
-			List<Packet<ClientGamePacketListener>> subPacketList = new ArrayList<>();
-			for (Packet<ClientGamePacketListener> p : packets) {
-				subPacketList.add(p);
+			List<Packet<ClientGamePacketListener>> packets = new ArrayList<>();
+			for (Packet<ClientGamePacketListener> p : bundlePacket.subPackets()) {
+				packets.add(p);
 			}
-			ArrayList<Packet<ClientGamePacketListener>> newSubPacketList = new ArrayList<>(subPacketList);
+			List<Packet<ClientGamePacketListener>> original = List.copyOf(packets);
+			List<Packet<ClientGamePacketListener>> toAdd = new ArrayList<>();
 			boolean modified = false;
-			for (Packet<ClientGamePacketListener> originalPacket : packets) {
-				PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.OUTBOUND, originalPacket, newSubPacketList);
-				event.callEvent();
-				if (event.isCancelled()) {
+			for (var iterator = packets.listIterator(); iterator.hasNext(); ) {
+				var subPacket = iterator.next();
+				if (!original.contains(subPacket)) {
+					// don't fire an event for this one as it was removed by a previous event
 					continue;
 				}
+				PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.OUTBOUND, subPacket, true);
+				event.callEvent();
 				if (event.packetChanged()) {
 					modified = true;
+					iterator.set((Packet<ClientGamePacketListener>) event.getPacket());
+				}
+				if (event.isCancelled()) {
+					iterator.remove();
+				}
+				for (Object p : event.getPacketsToAdd()) {
+					toAdd.add((Packet<ClientGamePacketListener>) p);
 				}
 			}
+			packets.addAll(toAdd);
+
 			if (modified) {
-				replacePacket = new ClientboundBundlePacket(newSubPacketList);
+				replacePacket = new ClientboundBundlePacket(packets);
 			}
 		} else {
-			PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.OUTBOUND, packet, null);
+			PacketEvent event = new PacketEvent(player.getBukkitEntity(), PacketEvent.Type.OUTBOUND, packet, false);
 			event.callEvent();
 			if (event.isCancelled()) {
 				ci.cancel();
