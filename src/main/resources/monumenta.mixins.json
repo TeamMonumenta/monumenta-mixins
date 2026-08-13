@@ -12,6 +12,7 @@
         "api.ConnectionMixin",
         "api.ServerCommonPacketListenerImplMixin",
         "api.PacketUtilsMixin",
+        "api.ServerGamePacketListenerImplMixin",
         "behavior.DedicatedServerMixin",
         "behavior.DimensionDataStorageMixin",
         "behavior.ServerGamePacketListenerImplMixin",
