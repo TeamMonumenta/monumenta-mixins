@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.api;
+package com.playmonumenta.papermixins.mixin.api.packets;
 
 import com.playmonumenta.papermixins.MixinState;
 import com.playmonumenta.papermixins.paperapi.v1.event.PacketEvent;
@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Mixin(Connection.class)

@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.api;
+package com.playmonumenta.papermixins.mixin.api.packets;
 
 import com.playmonumenta.papermixins.paperapi.v1.event.PacketEvent;
 import net.minecraft.network.protocol.Packet;

@@ -1,6 +1,5 @@
-package com.playmonumenta.papermixins.mixin.api;
+package com.playmonumenta.papermixins.mixin.api.packets;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import com.playmonumenta.papermixins.paperapi.v1.event.PacketEvent;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.protocol.Packet;

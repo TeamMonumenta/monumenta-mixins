@@ -1,4 +1,4 @@
-package com.playmonumenta.papermixins.mixin.api;
+package com.playmonumenta.papermixins.mixin.api.packets;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
