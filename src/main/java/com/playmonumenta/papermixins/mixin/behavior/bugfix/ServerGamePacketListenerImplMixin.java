@@ -1,10 +1,18 @@
 package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
+import com.playmonumenta.papermixins.ConfigManager;
+import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
+import net.minecraft.network.protocol.game.ServerboundSetCarriedItemPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author Flowey
@@ -14,6 +22,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(ServerGamePacketListenerImpl.class)
 public class ServerGamePacketListenerImplMixin {
+
+	@Shadow
+	public ServerPlayer player;
+
 	@Redirect(
 		method = "handleMoveVehicle",
 		at = @At(
@@ -34,5 +46,24 @@ public class ServerGamePacketListenerImplMixin {
 	)
 	private void warnOnTooManyPackets(Logger instance, String str, Object o1, Object o2) {
 		instance.warn(str, o1, o2);
+	}
+
+	@Inject(method = "handlePlayerAction", at = @At("TAIL"))
+	private void onPlayerAction(ServerboundPlayerActionPacket packet, CallbackInfo ci) {
+		forceEquipmentUpdate();
+	}
+
+	@Inject(method = "handleSetCarriedItem", at = @At("TAIL"))
+	public void onUpdateSelectedSlot(ServerboundSetCarriedItemPacket packet, CallbackInfo ci) {
+		forceEquipmentUpdate();
+	}
+
+	@Unique
+	private void forceEquipmentUpdate() {
+		if (!ConfigManager.getConfig().behavior.fixAttributeSwapping) {
+			return;
+		}
+		player.resetAttackStrengthTicker();
+		player.detectEquipmentUpdatesPublic();
 	}
 }

@@ -49,6 +49,7 @@ public abstract class MinecraftServerMixin {
 			try {
 				Thread.sleep(100L);
 			} catch (InterruptedException ignored) {
+				// Interrupt during a brief sleep before server shutdown is harmless; continue.
 			}
 		}
 	}

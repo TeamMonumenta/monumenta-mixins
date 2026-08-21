@@ -1,9 +1,5 @@
 package com.playmonumenta.papermixins.registry.commands;
 
-import static com.playmonumenta.papermixins.util.CommandUtil.arg;
-import static com.playmonumenta.papermixins.util.CommandUtil.lit;
-import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
-
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -27,6 +23,10 @@ import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
+
+import static com.playmonumenta.papermixins.util.CommandUtil.arg;
+import static com.playmonumenta.papermixins.util.CommandUtil.lit;
+import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
 
 public class TellMiniCommand {
 	private static final MiniMessage MM = MiniMessage.builder()

@@ -33,11 +33,21 @@ public class Config {
 		public boolean forceUpgradeEagerBlockStates = false;
 		public boolean fixInactiveTickNoAi = false;
 		public boolean freezeEndGateway = false;
+		public boolean disableDolphinPlayWithItems = false;
+		public boolean reduceDamageParticles = false;
+		public boolean playerArrowsPassThroughPlayers = false;
+		public boolean drownedAttackDuringDay = false;
 
 		public int giantTrackingRange = 96;
 
 		// NOTE: this will be removed when we update to a version with data-driven enchants
 		public int curseOfVanishingMaxLevel = 1;
+
+		public boolean explosionKbr = false;
+		public boolean verticalKb = false;
+		public boolean disableMobPushingWithKbr = false;
+
+		public boolean fixAttributeSwapping = false;
 	}
 
 	@ConfigSerializable

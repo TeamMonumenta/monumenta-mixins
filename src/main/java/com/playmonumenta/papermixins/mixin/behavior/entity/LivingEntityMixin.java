@@ -4,22 +4,29 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import javax.annotation.Nullable;
+import com.playmonumenta.papermixins.ConfigManager;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE;
 
 /**
  * @author Flowey
@@ -48,6 +55,9 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Shadow
 	public int hurtTime;
+
+	@Shadow
+	public abstract double getAttributeValue(Attribute attribute);
 
 	public LivingEntityMixin(EntityType<?> type, Level world) {
 		super(type, world);
@@ -80,8 +90,8 @@ public abstract class LivingEntityMixin extends Entity {
 			)
 		)
 	)
-	private int setFlag(int constant) {
-		return ((float) this.invulnerableTime > (float) this.invulnerableDuration / 2.0F) ? 0 : 1;
+	private int setFlag(int constant, @Local DamageSource damagesource) {
+		return ((float) this.invulnerableTime > (float) this.invulnerableDuration / 2.0F && !damagesource.is(DamageTypeTags.BYPASSES_COOLDOWN)) ? 0 : 1;
 	}
 
 	// forgive me
@@ -119,7 +129,7 @@ public abstract class LivingEntityMixin extends Entity {
 		@Local EntityDamageEvent event
 	) {
 		// Monumenta: use post-event damage for iframes instead of pre-event damage
-		if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F) {
+		if ((float) invulnerableTime > (float) invulnerableDuration / 2.0F && !damagesource.is(DamageTypeTags.BYPASSES_COOLDOWN)) {
 			float damage = (float) event.getDamage();
 			if (damage <= lastHurt) {
 				cir.setReturnValue(false);
@@ -199,5 +209,59 @@ public abstract class LivingEntityMixin extends Entity {
 		)
 	)
 	private void noop3(LivingEntity instance, int value, Operation<Void> original) {
+	}
+
+	@ModifyExpressionValue(
+		method = "hurt",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z",
+			ordinal = 0
+		),
+		slice = @Slice(
+			from = @At(
+				value = "INVOKE",
+				target = "Lnet/minecraft/world/level/Level;broadcastEntityEvent(Lnet/minecraft/world/entity/Entity;B)V"
+			)
+		)
+	)
+	private boolean knockbackResistanceCheck(boolean original) {
+		if (!ConfigManager.getConfig().behavior.verticalKb) {
+			return original;
+		}
+
+		if (getAttributeValue(KNOCKBACK_RESISTANCE) >= 0.9999) {
+			return true;
+		}
+
+		return original;
+	}
+
+	@ModifyArg(
+		method = "knockback(DDDLnet/minecraft/world/entity/Entity;" +
+			"Lorg/bukkit/event/entity/EntityKnockbackEvent$KnockbackCause;)V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lorg/bukkit/craftbukkit/v1_20_R3/event/CraftEventFactory;callEntityKnockbackEvent" +
+				"(Lorg/bukkit/craftbukkit/v1_20_R3/entity/CraftLivingEntity;Lnet/minecraft/world/entity/Entity;" +
+				"Lorg/bukkit/event/entity/EntityKnockbackEvent$KnockbackCause;DLnet/minecraft/world/phys/Vec3;DDD)" +
+				"Lorg/bukkit/event/entity/EntityKnockbackEvent;"
+		),
+		index = 6
+	)
+	private double doVerticalKnockback(
+		double originalY,
+		@Local(argsOnly = true, ordinal = 0) double strength,
+		@Local(ordinal = 0) Vec3 vec3d
+	) {
+		if (!ConfigManager.getConfig().behavior.verticalKb) {
+			return originalY;
+		}
+
+		if (this.onGround()) {
+			final var resistance = getAttributeValue(KNOCKBACK_RESISTANCE);
+			return Math.min(0.4D * Math.max(1 - resistance, 0), vec3d.y / 2.0D + strength);
+		}
+		return vec3d.y;
 	}
 }

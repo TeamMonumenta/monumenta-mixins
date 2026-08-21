@@ -57,6 +57,7 @@ public class DebugCodeGenerator<T extends ExecutionCommandSource<T>> extends Cod
 		return new PlainTextFunction<>(id, entries);
 	}
 
+	@Override
 	public String dumpDisassembly() {
 		if(!defined) {
 			throw new IllegalStateException("function must be linked before disassembly");

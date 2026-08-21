@@ -1,0 +1,9 @@
+name: Build main
+
+on:
+  push:
+    branches:
+    - main
+jobs:
+  call-build-common:
+    uses: TeamMonumenta/monumenta-automation/.github/workflows/plugin_build_common.yml@master

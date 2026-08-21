@@ -8,7 +8,8 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.bundles.gradle)
+    implementation(libs.gradle.paperweight)
+    implementation(libs.gradle.shadow)
     // https://github.com/gradle/gradle/issues/15383
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

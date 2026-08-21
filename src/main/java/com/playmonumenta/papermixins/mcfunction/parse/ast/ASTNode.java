@@ -16,7 +16,7 @@ public abstract class ASTNode {
 	public String dump() {
 		final var builder = new StringBuilder();
 
-		(new Consumer<ASTNode>() {
+		new Consumer<ASTNode>() {
 			private int indent = 0;
 
 			@Override
@@ -26,7 +26,7 @@ public abstract class ASTNode {
 				astNode.visit(this);
 				indent--;
 			}
-		}).accept(this);
+		}.accept(this);
 
 		return builder.toString();
 	}

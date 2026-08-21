@@ -55,8 +55,8 @@ public class MerchantOfferMixin {
 			}
 
 			boolean tagMatches =
-				!sampleCopy.hasTag() || originalCopy.hasTag() && NbtUtils.compareNbt(sampleCopy.getTag(),
-					originalCopy.getTag(), false);
+				!sampleCopy.hasTag() || (originalCopy.hasTag() && NbtUtils.compareNbt(sampleCopy.getTag(),
+					originalCopy.getTag(), false));
 			return ItemStack.isSameItem(originalCopy, sampleCopy) && tagMatches;
 		}
 	}

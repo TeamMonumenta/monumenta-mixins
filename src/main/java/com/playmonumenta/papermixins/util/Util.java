@@ -32,7 +32,7 @@ public class Util {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <E extends Throwable, U> U sneakyThrow(Throwable ex) throws E {
+	public static <E extends Throwable> RuntimeException sneakyThrow(Throwable ex) throws E {
 		throw (E) ex;
 	}
 }

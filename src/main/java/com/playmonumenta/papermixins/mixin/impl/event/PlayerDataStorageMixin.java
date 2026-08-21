@@ -51,7 +51,7 @@ public class PlayerDataStorageMixin {
 		var playerData = new File(this.playerDir, player.getStringUUID() + ".dat");
 		var playerDataOld = new File(this.playerDir, player.getStringUUID() + ".dat_old");
 
-		var event = new PlayerDataSaveEvent((CraftPlayer) (player.getBukkitEntity()), playerData, tag);
+		var event = new PlayerDataSaveEvent((CraftPlayer) player.getBukkitEntity(), playerData, tag);
 
 		if (!event.callEvent()) {
 			return;
@@ -87,7 +87,7 @@ public class PlayerDataStorageMixin {
 								@Local(argsOnly = true) Player player,
 								@Local LocalRef<CompoundTag> tag,
 								@Local LocalRef<File> localFile) {
-		PlayerDataLoadEvent event = new PlayerDataLoadEvent((CraftPlayer) (player.getBukkitEntity()), file);
+		PlayerDataLoadEvent event = new PlayerDataLoadEvent((CraftPlayer) player.getBukkitEntity(), file);
 		event.callEvent();
 
 		if (event.getData() != null) {

@@ -7,7 +7,6 @@ import com.playmonumenta.papermixins.util.nbt.DirectTagApplicator;
 import com.playmonumenta.papermixins.util.nbt.ListTagBuilder;
 import com.playmonumenta.papermixins.util.nbt.TagApplicator;
 import de.tr7zw.nbtapi.NBTContainer;
-import javax.annotation.Nullable;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.nbt.ByteTag;
@@ -17,6 +16,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.Nullable;
 
 public final class CustomItemInstance {
 	private final CustomItem item;

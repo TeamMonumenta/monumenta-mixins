@@ -1,10 +1,16 @@
 plugins {
-	`java-library`
-	id("com.playmonumenta.papermixins.java-conventions")
+	id("com.playmonumenta.gradle-config")
 }
 
-version = rootProject.version
-group = "com.playmonumenta.papermixins"
+repositories {
+	maven("https://maven.fabricmc.net/")
+}
+
+monumenta {
+	name("plugin-api")
+	disableJavadoc()
+	disableDeploy()
+}
 
 dependencies {
 	compileOnly(libs.paper.api)

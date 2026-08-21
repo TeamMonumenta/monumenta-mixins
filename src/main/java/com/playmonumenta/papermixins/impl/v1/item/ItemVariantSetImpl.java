@@ -8,10 +8,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ItemVariantSetImpl implements ItemVariantSet {
 	private final Map<String, CustomItemType> variants = new HashMap<>(1);

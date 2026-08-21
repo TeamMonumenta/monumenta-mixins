@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nullable;
 import net.minecraft.world.item.Item;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomItemRegistryImpl implements CustomItemRegistry {
 	private final static CustomItemRegistryImpl INSTANCE = new CustomItemRegistryImpl();

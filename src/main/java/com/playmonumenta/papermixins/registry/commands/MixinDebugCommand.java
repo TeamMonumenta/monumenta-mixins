@@ -1,15 +1,15 @@
 package com.playmonumenta.papermixins.registry.commands;
 
-import static com.playmonumenta.papermixins.util.CommandUtil.arg;
-import static com.playmonumenta.papermixins.util.CommandUtil.lit;
-import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.playmonumenta.papermixins.debug.DebugMapGenerator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
+
+import static com.playmonumenta.papermixins.util.CommandUtil.arg;
+import static com.playmonumenta.papermixins.util.CommandUtil.lit;
+import static com.playmonumenta.papermixins.util.CommandUtil.mcLitPred;
 
 public class MixinDebugCommand {
 	public static final AtomicBoolean STATE = new AtomicBoolean(false);

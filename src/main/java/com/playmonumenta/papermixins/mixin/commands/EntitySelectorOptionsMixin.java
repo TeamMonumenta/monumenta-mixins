@@ -47,6 +47,7 @@ public abstract class EntitySelectorOptionsMixin {
 				switch (string) {
 				case "true":
 					((EntitySelectorParserAccess) reader).monumenta$setWorldLimited(false);
+					// fall through
 				case "false":
 					break;
 				default:

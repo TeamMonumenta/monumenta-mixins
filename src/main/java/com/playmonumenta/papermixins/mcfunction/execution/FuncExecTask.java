@@ -25,7 +25,7 @@ public class FuncExecTask<T> implements EntryAction<T> {
 	private FuncExecTask(List<UnboundEntryAction<T>> actions, Frame frame,
 						T initialSource) {
 		this.actions = actions;
-		this.selfEntry = new CommandQueueEntry<T>(frame, this);
+		this.selfEntry = new CommandQueueEntry<>(frame, this);
 		this.state = new FuncExecState<>(initialSource);
 	}
 
@@ -34,7 +34,7 @@ public class FuncExecTask<T> implements EntryAction<T> {
 		if (actions.isEmpty())
 			return;
 
-		c.queueNext((new FuncExecTask<>(actions, f, source)).selfEntry);
+		c.queueNext(new FuncExecTask<>(actions, f, source).selfEntry);
 	}
 
 	@Override
