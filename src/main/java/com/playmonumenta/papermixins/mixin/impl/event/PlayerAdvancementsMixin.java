@@ -40,7 +40,7 @@ public class PlayerAdvancementsMixin {
 	@Final
 	public static Gson GSON;
 	@Unique
-	private final ThreadLocal<File> monumenta$actualPlayerSavePath = new ThreadLocal<>();
+	private final ThreadLocal<File> actualPlayerSavePath = new ThreadLocal<>();
 	@Shadow
 	private ServerPlayer player;
 	@Shadow
@@ -73,7 +73,7 @@ public class PlayerAdvancementsMixin {
 		var event = new PlayerAdvancementDataLoadEvent(this.player.getBukkitEntity(), this.playerSavePath.toFile());
 		eventRef.set(event);
 		event.callEvent();
-		monumenta$actualPlayerSavePath.set(event.getPath());
+		actualPlayerSavePath.set(event.getPath());
 	}
 
 	@ModifyArg(
@@ -85,7 +85,7 @@ public class PlayerAdvancementsMixin {
 		index = 2
 	)
 	private Object logActualSavePath(Object arg1) {
-		return monumenta$actualPlayerSavePath.get();
+		return actualPlayerSavePath.get();
 	}
 
 	// Allow loading even if file doesn't exist as long as event supplies json
@@ -151,7 +151,7 @@ public class PlayerAdvancementsMixin {
 		index = 2
 	)
 	private Object modifyLoadLoggedPath(Object arg) {
-		return monumenta$actualPlayerSavePath;
+		return actualPlayerSavePath;
 	}
 
 	// Save event implementation

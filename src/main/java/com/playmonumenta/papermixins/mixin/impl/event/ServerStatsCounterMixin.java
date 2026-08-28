@@ -34,12 +34,12 @@ public class ServerStatsCounterMixin {
 		@Local(ordinal = 0, argsOnly = true) File fileLocalRef,
 		// Introduce new local variables for the event
 		@Share("event") LocalRef<ServerStatsDataLoadEvent> eventRef,
-		@Share("monumenta$actualPlayerSavePath") LocalRef<File> monumenta$actualPlayerSavePath
+		@Share("actualPlayerSavePath") LocalRef<File> actualPlayerSavePath
 	) {
 		var event = new ServerStatsDataLoadEvent(fileLocalRef);
 		eventRef.set(event);
 		event.callEvent();
-		monumenta$actualPlayerSavePath.set(event.getPath());
+		actualPlayerSavePath.set(event.getPath());
 	}
 
 	@ModifyExpressionValue(
@@ -67,9 +67,9 @@ public class ServerStatsCounterMixin {
 	)
 	private Object modifyLoadLoggedPath(
 		Object arg1,
-		@Share("monumenta$actualPlayerSavePath") LocalRef<File> monumenta$actualPlayerSavePath
+		@Share("actualPlayerSavePath") LocalRef<File> actualPlayerSavePath
 	) {
-		return monumenta$actualPlayerSavePath.get().getPath();
+		return actualPlayerSavePath.get().getPath();
 	}
 
 	@Redirect(
