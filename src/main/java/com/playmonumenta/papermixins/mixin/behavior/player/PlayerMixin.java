@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.player;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.playmonumenta.papermixins.ConfigManager;
 import com.playmonumenta.papermixins.paperapi.v1.event.SweepingEdgeParticleEvent;
@@ -29,6 +30,25 @@ public abstract class PlayerMixin implements LivingEntity {
 		if (!event.callEvent()) {
 			ci.cancel();
 		}
+	}
+
+	@ModifyExpressionValue(
+		method = "attack",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/player/Player;isSprinting()Z"
+		),
+		slice = @Slice(
+			from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;onClimbable()Z"),
+			to = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getFireAspect(Lnet/minecraft/world/entity/LivingEntity;)I")
+		)
+	)
+	public boolean critIgnoreSprint(boolean original) {
+		if (ConfigManager.getConfig().behavior.critWhileSprinting) {
+			// pretend player is not sprintingz
+			return false;
+		}
+		return original;
 	}
 
 	@ModifyVariable(
