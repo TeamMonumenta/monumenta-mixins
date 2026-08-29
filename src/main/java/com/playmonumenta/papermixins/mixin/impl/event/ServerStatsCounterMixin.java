@@ -3,19 +3,18 @@ package com.playmonumenta.papermixins.mixin.impl.event;
 import com.destroystokyo.paper.event.player.ServerStatsDataLoadEvent;
 import com.destroystokyo.paper.event.player.ServerStatsDataSaveEvent;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import net.minecraft.stats.ServerStatsCounter;
-import org.apache.commons.io.FileUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
@@ -72,7 +71,8 @@ public class ServerStatsCounterMixin {
 		return actualPlayerSavePath.get().getPath();
 	}
 
-	@Redirect(
+	@SuppressWarnings("RedundantThrows")
+	@WrapOperation(
 		method = "<init>",
 		at = @At(
 			value = "INVOKE",
@@ -81,6 +81,7 @@ public class ServerStatsCounterMixin {
 	)
 	private String modifyLoadReadSource(
 		final File file,
+		Operation<String> original,
 		@Share("event") LocalRef<ServerStatsDataLoadEvent> eventRef
 	) throws IOException {
 		String evData = eventRef.get().getJsonData();
@@ -88,10 +89,11 @@ public class ServerStatsCounterMixin {
 		if (evData != null) {
 			return evData;
 		}
-		return FileUtils.readFileToString(file, Charset.defaultCharset());
+		return original.call(file);
 	}
 
-	@Redirect(
+	@SuppressWarnings("RedundantThrows")
+	@WrapOperation(
 		method = "save",
 		at = @At(
 			value = "INVOKE",
@@ -100,7 +102,8 @@ public class ServerStatsCounterMixin {
 	)
 	private void overrideSave(
 		final File file,
-		final String data
+		final String data,
+		Operation<Void> original
 	) throws IOException {
 		ServerStatsDataSaveEvent event = new ServerStatsDataSaveEvent(file, data);
 		event.callEvent();
@@ -109,6 +112,6 @@ public class ServerStatsCounterMixin {
 			return;
 		}
 
-		FileUtils.writeStringToFile(event.getPath(), event.getJsonData(), Charset.defaultCharset(), false);
+		original.call(event.getPath(), event.getJsonData());
 	}
 }
