@@ -83,6 +83,7 @@
         "impl.event.MinecraftServerMixin",
         "impl.event.PlayerAdvancementsMixin",
         "impl.event.PlayerDataStorageMixin",
+        "impl.event.ServerStatsCounterMixin",
         "impl.hook.EntityMixin",
         "impl.itemapi.CraftEventFactoryMixin",
         "impl.itemapi.DedicatedServerMixin",
