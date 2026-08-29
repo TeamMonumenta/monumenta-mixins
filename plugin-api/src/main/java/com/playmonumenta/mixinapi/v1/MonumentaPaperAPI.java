@@ -18,6 +18,10 @@ public interface MonumentaPaperAPI {
 
 	SemanticVersion getVersion();
 
+	int getLastMapId();
+
+	int getFreeMapId();
+
 	@ApiStatus.Internal
 	DataLoaderRegistry getDataLoaderRegistryAPI();
 
