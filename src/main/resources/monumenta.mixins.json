@@ -25,6 +25,7 @@
         "behavior.block.CoralBlockMixin",
         "behavior.block.IceBlockMixin",
         "behavior.block.TheEndGatewayBlockEntityMixin",
+        "behavior.bugfix.AbstractHorseMixin",
         "behavior.bugfix.ArmorStandMixin",
         "behavior.bugfix.CommodoreMethodVisitorMixin",
         "behavior.bugfix.CraftLootTableMixin",

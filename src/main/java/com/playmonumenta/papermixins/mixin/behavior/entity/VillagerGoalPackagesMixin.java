@@ -13,7 +13,6 @@ import net.minecraft.world.entity.ai.behavior.LookAndFollowTradingPlayerSink;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.RunOne;
 import net.minecraft.world.entity.ai.behavior.SetLookAndInteract;
-import net.minecraft.world.entity.ai.behavior.ShowTradesToPlayer;
 import net.minecraft.world.entity.ai.behavior.TradeWithVillager;
 import net.minecraft.world.entity.ai.behavior.UpdateActivityFromSchedule;
 import net.minecraft.world.entity.ai.behavior.VillagerGoalPackages;
@@ -56,7 +55,6 @@ public abstract class VillagerGoalPackagesMixin {
 		return ImmutableList.of(
 			Pair.of(2, new RunOne<>(ImmutableList.of(Pair.of(new DoNothing(30, 60), 1)))),
 			Pair.of(3, SetLookAndInteract.create(EntityType.PLAYER, 4)),
-			Pair.of(3, new ShowTradesToPlayer(400, 1600)),
 			Pair.of(3,
 				new GateBehavior<>(
 					ImmutableMap.of(),

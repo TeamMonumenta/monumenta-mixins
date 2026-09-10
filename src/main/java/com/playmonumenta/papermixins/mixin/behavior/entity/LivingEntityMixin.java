@@ -230,7 +230,7 @@ public abstract class LivingEntityMixin extends Entity {
 			return original;
 		}
 
-		if (getAttributeValue(KNOCKBACK_RESISTANCE) >= 1) {
+		if (getAttributeValue(KNOCKBACK_RESISTANCE) >= 0.9999) {
 			return true;
 		}
 
