@@ -22,7 +22,7 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
 	/**
 	 * Will only create events for packets initially in the bundle, added packets will also not be visible!
 	 * events will remove/modify packets in 'bundle'
- 	 */
+	 */
 	private final boolean isBundle;
 	private final List<Object> packetsToAdd;
 
