@@ -16,6 +16,12 @@ public interface MonumentaPaperAPI {
 
 	EntityDamageEvent.DamageModifier getIframes();
 
+	/**
+	 * Prevents the next packet being sent from creating a packet event, hacky fix for sending packets without events.
+	 * Meant to be used like ProtocolLib's sendServerPacket(..., filters=false)
+	 */
+	void stopNextPacketEvent();
+
 	SemanticVersion getVersion();
 
 	@ApiStatus.Internal
