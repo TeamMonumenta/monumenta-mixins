@@ -28,10 +28,18 @@ replay_pid*
 build/
 .gradle/
 .idea/
+*.iml
+*.ipr
+*.iws
 buildSrc/.kotlin
+
+.vscode/
 
 !gradle/wrapper/gradle-wrapper.jar
 .classpath
 .project
 **/bin/
 .settings/
+*.factorypath
+
+.patches/
