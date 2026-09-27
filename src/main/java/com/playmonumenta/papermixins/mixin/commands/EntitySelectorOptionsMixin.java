@@ -1,5 +1,7 @@
 package com.playmonumenta.papermixins.mixin.commands;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.playmonumenta.papermixins.duck.EntitySelectorParserAccess;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -9,6 +11,7 @@ import net.minecraft.commands.arguments.selector.options.EntitySelectorOptions;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -39,25 +42,52 @@ public abstract class EntitySelectorOptionsMixin {
 		)
 	)
 	private static void registerAllWorlds(CallbackInfo ci) {
-		register("all_worlds", (reader) -> {
-				int i = reader.getReader().getCursor();
-				String string = reader.getReader().readUnquotedString();
-				reader.setSuggestions((builder, consumer) -> SharedSuggestionProvider.suggest(Arrays.asList("true",
-					"false"), builder));
-				switch (string) {
-				case "true":
-					((EntitySelectorParserAccess) reader).monumenta$setWorldLimited(false);
-					// fall through
-				case "false":
-					break;
-				default:
-					reader.getReader().setCursor(i);
-					throw EntitySelectorOptions.ERROR_UNKNOWN_OPTION.createWithContext(reader.getReader(), string);
-				}
+		register("all_worlds",
+			(reader) -> {
+				((EntitySelectorParserAccess) reader).monumenta$setWorldLimited(!readBoolean(reader)); // allworlds true -> worldlimited false
 				((EntitySelectorParserAccess) reader).monumenta$setWorldLimitedSet(true);
 			},
 			(reader) -> !((EntitySelectorParserAccess) reader).monumenta$getWorldLimitedSet(),
 			Component.literal("Select entities in all worlds")
 		);
+		register("dx",
+			(reader) -> reader.setDeltaX(reader.getX() - reader.getReader().readDouble()),
+			(reader) -> reader.getX() != null && reader.getDeltaX() == null,
+			Component.literal("Shorthand that sets dx to x2 - x")
+		);
+		register("dy",
+			(reader) -> reader.setDeltaY(reader.getY() - reader.getReader().readDouble()),
+			(reader) -> reader.getY() != null && reader.getDeltaY() == null,
+			Component.literal("Shorthand that sets dy to y2 - y")
+		);
+		register("dz",
+			(reader) -> reader.setDeltaZ(reader.getZ() - reader.getReader().readDouble()),
+			(reader) -> reader.getZ() != null && reader.getDeltaZ() == null,
+			Component.literal("Shorthand that sets dz to z2 - z")
+		);
+		register("dont_add_one",
+			(reader) -> {
+				((EntitySelectorParserAccess) reader).monumenta$setDontAddOne(readBoolean(reader));
+				((EntitySelectorParserAccess) reader).monumenta$setDontAddOneSet(true);
+			},
+			(reader) -> !((EntitySelectorParserAccess) reader).monumenta$getDontAddOneSet(),
+			Component.literal("Disable the behavior of adding +1 to dx/dy/dz arguments")
+		);
+	}
+
+	@Unique
+	private static boolean readBoolean(EntitySelectorParser reader) throws CommandSyntaxException {
+		int i = reader.getReader().getCursor();
+		String string = reader.getReader().readUnquotedString();
+		reader.setSuggestions((builder, consumer) -> SharedSuggestionProvider.suggest(Arrays.asList("true",
+				"false"), builder));
+        return switch (string) {
+            case "true" -> true;
+            case "false" -> false;
+            default -> {
+                reader.getReader().setCursor(i);
+                throw EntitySelectorOptions.ERROR_UNKNOWN_OPTION.createWithContext(reader.getReader(), string);
+            }
+        };
 	}
 }

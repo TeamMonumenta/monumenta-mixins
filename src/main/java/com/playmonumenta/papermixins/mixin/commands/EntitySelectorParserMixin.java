@@ -30,6 +30,12 @@ public class EntitySelectorParserMixin implements EntitySelectorParserAccess {
 	@Unique
 	private boolean monumenta$worldLimitedSet = false;
 
+	@Unique
+	private boolean monumenta$dontAddOne = false;
+
+	@Unique
+	private boolean monumenta$dontAddOneSet = false;
+
 	// TODO: validate this guy
 	@ModifyConstant(
 		method = "lambda$new$8",
@@ -48,6 +54,14 @@ public class EntitySelectorParserMixin implements EntitySelectorParserAccess {
 	private void setWorldLimited(StringReader reader, boolean atAllowed,
 								boolean parsingEntityArgumentSuggestions, CallbackInfo ci) {
 		this.worldLimited = true;
+	}
+
+	@ModifyConstant(
+		method = "createAabb(DDD)Lnet/minecraft/world/phys/AABB;",
+		constant = @Constant(doubleValue = 1.0)
+	)
+    private double disableAddingOne(double constant) {
+		return monumenta$dontAddOne ? 0.0 : 1.0;
 	}
 
 	// impl the I-face
@@ -69,6 +83,26 @@ public class EntitySelectorParserMixin implements EntitySelectorParserAccess {
 	@Override
 	public void monumenta$setWorldLimitedSet(boolean b) {
 		monumenta$worldLimitedSet = b;
+	}
+
+	@Override
+	public boolean monumenta$getDontAddOne() {
+		return monumenta$dontAddOne;
+	}
+
+	@Override
+	public void monumenta$setDontAddOne(boolean b) {
+		monumenta$dontAddOne = b;
+	}
+
+	@Override
+	public boolean monumenta$getDontAddOneSet() {
+		return monumenta$dontAddOneSet;
+	}
+
+	@Override
+	public void monumenta$setDontAddOneSet(boolean b) {
+		monumenta$dontAddOneSet = b;
 	}
 
 	/**
