@@ -1,5 +1,6 @@
 package com.playmonumenta.papermixins.mixin.behavior.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,5 +36,11 @@ public abstract class MobMixin extends LivingEntity {
 		if(ConfigManager.getConfig().behavior.disableControllingPassenger) {
 			cir.setReturnValue(null);
 		}
+	}
+
+	@ModifyExpressionValue(method = "checkDespawn()V", at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/Mob;shouldDespawnInPeaceful()Z"))
+	public boolean shouldDespawn(boolean original) {
+		return original && !this.getTags().contains("peaceful_despawn_immune");
 	}
 }
