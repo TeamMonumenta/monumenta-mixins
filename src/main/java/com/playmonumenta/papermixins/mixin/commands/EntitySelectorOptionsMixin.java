@@ -1,6 +1,5 @@
 package com.playmonumenta.papermixins.mixin.commands;
 
-import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.playmonumenta.papermixins.duck.EntitySelectorParserAccess;
 import java.util.Arrays;
