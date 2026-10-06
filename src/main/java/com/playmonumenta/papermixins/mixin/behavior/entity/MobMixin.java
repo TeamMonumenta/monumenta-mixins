@@ -9,7 +9,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -48,38 +47,16 @@ public abstract class MobMixin extends LivingEntity {
 		if (!ConfigManager.getConfig().behavior.roundedMobReachHitbox) {
 			return original.call(entity);
 		}
-		// cases:
-		// - entity AABB engulfs rectangular segment
-		// - entity AABB has 1 corner inside a round corner
-		// - entity AABB has 1 corner inside rectangular segment
-
 		AABB selfBB = this.getBoundingBox();
 		AABB otherBB = entity.getBoundingBox();
-		// Case 1 & 3:
-		double halfXSize = (selfBB.getXsize() + otherBB.getXsize()) / 2;
-		double halfZSize = (selfBB.getZsize() + otherBB.getZsize()) / 2;
-		double xReach = DEFAULT_ATTACK_REACH + halfXSize;
-		double zReach = DEFAULT_ATTACK_REACH + halfZSize;
-		double xDist = Math.abs((selfBB.minX + selfBB.maxX) / 2 - (otherBB.minX + otherBB.maxX) / 2);
-		double zDist = Math.abs((selfBB.minZ + selfBB.maxZ) / 2 - (otherBB.minZ + otherBB.maxZ) / 2);
-		// out of y range
-		if (selfBB.minY - DEFAULT_ATTACK_REACH > otherBB.maxY || selfBB.maxY + DEFAULT_ATTACK_REACH < otherBB.minY) {
-			return false;
-		}
-		if (xDist <= xReach && zDist <= halfZSize || zDist <= zReach && xDist <= halfXSize) {
-			return true;
-		}
-		double reachSq = DEFAULT_ATTACK_REACH * DEFAULT_ATTACK_REACH;
-		return distSqr(selfBB.maxX, selfBB.maxZ, otherBB.minX, otherBB.minZ) <= reachSq
-			|| distSqr(selfBB.maxX, selfBB.minZ, otherBB.minX, otherBB.maxZ) <= reachSq
-			|| distSqr(selfBB.minX, selfBB.maxZ, otherBB.maxX, otherBB.minZ) <= reachSq
-			|| distSqr(selfBB.minX, selfBB.minZ, otherBB.maxX, otherBB.maxZ) <= reachSq;
-	}
-
-	@Unique
-	private static double distSqr(double x1, double z1, double x2, double z2) {
-		double dx = x1 - x2;
-		double dz = z2 - z1;
-		return dx * dx + dz * dz;
+		double selfX = (selfBB.minX + selfBB.maxX) / 2;
+		double selfY = (selfBB.minY + selfBB.maxY) / 2;
+		double selfZ = (selfBB.minZ + selfBB.maxZ) / 2;
+		// Sphercle (Sphere with square 'center')!
+		double distX = Math.max(otherBB.minX - selfX, selfX - otherBB.maxX) - selfBB.getXsize() / 2;
+		double distY = Math.max(otherBB.minY - selfY, selfY - otherBB.maxY) - selfBB.getYsize() / 2;
+		double distZ = Math.max(otherBB.minZ - selfZ, selfZ - otherBB.maxZ) - selfBB.getZsize() / 2;
+		double distSquared = (distX > 0 ? distX * distX : 0) + (distY > 0 ? distY * distY : 0) + (distZ > 0 ? distZ * distZ : 0);
+		return distSquared <= DEFAULT_ATTACK_REACH * DEFAULT_ATTACK_REACH;
 	}
 }
