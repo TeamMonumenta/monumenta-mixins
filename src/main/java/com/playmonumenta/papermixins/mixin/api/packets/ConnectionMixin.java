@@ -3,8 +3,6 @@ package com.playmonumenta.papermixins.mixin.api.packets;
 import com.playmonumenta.papermixins.MixinState;
 import com.playmonumenta.papermixins.paperapi.v1.event.PacketEvent;
 import io.papermc.paper.util.MCUtil;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.network.Connection;
 import net.minecraft.network.PacketSendListener;
 import net.minecraft.network.protocol.Packet;
@@ -19,6 +17,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(Connection.class)
 public abstract class ConnectionMixin {
@@ -90,6 +91,8 @@ public abstract class ConnectionMixin {
 			}
 			if (event.packetChanged() && event.getPacket() instanceof Packet<?> newPacket) {
 				replacePacket = newPacket;
+			} else {
+				replacePacket = null;
 			}
 		}
 	}
