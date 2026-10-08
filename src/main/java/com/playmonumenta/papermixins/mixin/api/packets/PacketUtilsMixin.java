@@ -42,6 +42,7 @@ public class PacketUtilsMixin {
 		event.callEvent();
 		cancelPacket = event.isCancelled();
 		if (cancelPacket) {
+			replacePacket = null;
 			return;
 		}
 		if (event.packetChanged() && event.getPacket() instanceof Packet<?> newPacket) {

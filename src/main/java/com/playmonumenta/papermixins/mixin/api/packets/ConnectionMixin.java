@@ -86,6 +86,7 @@ public abstract class ConnectionMixin {
 			event.callEvent();
 			if (event.isCancelled()) {
 				ci.cancel();
+				replacePacket = null;
 				return;
 			}
 			if (event.packetChanged() && event.getPacket() instanceof Packet<?> newPacket) {
