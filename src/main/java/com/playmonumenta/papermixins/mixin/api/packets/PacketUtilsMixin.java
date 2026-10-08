@@ -64,13 +64,15 @@ public class PacketUtilsMixin {
 	private static <T extends PacketListener> void modifyPacket(Packet<T> instance, T t, Operation<Void> original) {
 		if (cancelPacket) {
 			cancelPacket = false;
-			original.call(instance, t);
 			return;
 		}
+
 		if (replacePacket != null) {
 			Packet<T> newPacket = (Packet<T>) replacePacket;
 			replacePacket = null;
 			newPacket.handle(t);
+		} else {
+			original.call(instance, t);
 		}
 	}
 }
