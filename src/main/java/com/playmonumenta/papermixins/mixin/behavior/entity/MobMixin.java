@@ -43,7 +43,7 @@ public abstract class MobMixin extends LivingEntity {
 	}
 
 	@WrapMethod(method = "isWithinMeleeAttackRange")
-	public boolean squircleWithinMeleeAttack3Range(LivingEntity entity, Operation<Boolean> original) {
+	public boolean squircleWithinMeleeAttackRange(LivingEntity entity, Operation<Boolean> original) {
 		if (!ConfigManager.getConfig().behavior.roundedMobReachHitbox) {
 			return original.call(entity);
 		}
