@@ -1,9 +1,8 @@
 package com.playmonumenta.papermixins;
 
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
 public class Config {
