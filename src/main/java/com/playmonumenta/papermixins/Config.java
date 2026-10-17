@@ -37,6 +37,7 @@ public class Config {
 		public boolean reduceDamageParticles = false;
 		public boolean playerArrowsPassThroughPlayers = false;
 		public boolean drownedAttackDuringDay = false;
+		public boolean roundedMobReachHitbox = false;
 
 		public int giantTrackingRange = 96;
 
