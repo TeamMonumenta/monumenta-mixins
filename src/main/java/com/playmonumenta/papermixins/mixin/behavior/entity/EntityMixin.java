@@ -5,13 +5,24 @@ import com.playmonumenta.papermixins.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.bukkit.Bukkit;
+import org.bukkit.event.entity.EntityRemoveEvent;
+import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Arrays;
+
 @Mixin(Entity.class)
 public abstract class EntityMixin {
+	@Shadow
+	@Final
+	private static Logger LOGGER;
+
 	/**
 	 * @author ashphyx
 	 * @reason Prevent mobs pushing each other from bypassing Knockback Resistance.
@@ -38,4 +49,11 @@ public abstract class EntityMixin {
 			ci.cancel();
 		}
 	}
+
+//	@Inject(method = "setRemoved(Lnet/minecraft/world/entity/Entity$RemovalReason;Lorg/bukkit/event/entity/EntityRemoveEvent$Cause;)V",
+//		at = @At("HEAD"))
+//	public void a(Entity.RemovalReason entity_removalreason, EntityRemoveEvent.Cause cause, CallbackInfo ci) {
+//		Bukkit.getOnlinePlayers().forEach(p -> p.sendRawMessage("entity removed"));
+//		LOGGER.info(String.join("\n", Arrays.stream(Thread.currentThread().getStackTrace()).map(Object::toString).toList()));
+//	}
 }
