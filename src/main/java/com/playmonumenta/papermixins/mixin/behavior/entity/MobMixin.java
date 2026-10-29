@@ -7,7 +7,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -20,8 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(Mob.class)
 public abstract class MobMixin extends LivingEntity {
-	@Unique private boolean meow = false;
-
 	protected MobMixin(EntityType<? extends LivingEntity> type, Level world) {
 		super(type, world);
 	}
@@ -41,6 +38,11 @@ public abstract class MobMixin extends LivingEntity {
 		}
 	}
 
+	/**
+	 * @author Lucy
+	 * Prevent hostile mobs tagged with <code>peaceful_despawn_immune</code> from being removed each tick.
+	 * See event/CraftEventFactoryMixin for the corresponding mixin to prevent them from being removed on spawn.
+	 */
 	@ModifyExpressionValue(method = "checkDespawn()V", at = @At(value = "INVOKE",
 			target = "Lnet/minecraft/world/entity/Mob;shouldDespawnInPeaceful()Z"))
 	public boolean preventPeacefulDespawnIfTagged(boolean original) {

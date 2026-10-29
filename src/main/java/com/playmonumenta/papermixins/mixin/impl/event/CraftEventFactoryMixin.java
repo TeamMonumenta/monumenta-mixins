@@ -78,6 +78,11 @@ public class CraftEventFactoryMixin {
 		return type.getMsgId().contains("custom") ? EntityDamageEvent.DamageCause.CUSTOM : cause;
 	}
 
+	/**
+	 * @author Lucy
+	 * Prevent hostile mobs tagged with <code>peaceful_despawn_immune</code> from being removed on spawn.
+	 * See MobMixin for the corresponding mixin to prevent them from being removed each tick.
+	 */
     @ModifyExpressionValue(method = "doEntityAddEventCalling", at = @At(value = "INVOKE",
 			target = "Lorg/bukkit/craftbukkit/v1_20_R3/CraftWorld;getAllowMonsters()Z"))
 	private static boolean preventPeacefulDespawnIfTagged(boolean original, Level world, Entity entity, CreatureSpawnEvent.SpawnReason spawnReason) {
