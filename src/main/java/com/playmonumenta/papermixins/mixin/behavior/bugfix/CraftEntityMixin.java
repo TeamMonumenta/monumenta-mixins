@@ -3,13 +3,10 @@ package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.papermc.paper.entity.TeleportFlag;
-
 import java.util.List;
 import java.util.Set;
-
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.spongepowered.asm.mixin.Mixin;

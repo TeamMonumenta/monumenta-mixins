@@ -1,6 +1,5 @@
 package com.playmonumenta.papermixins.mixin.behavior.bugfix;
 
-import com.google.common.collect.ImmutableList;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.papermc.paper.entity.TeleportFlag;
