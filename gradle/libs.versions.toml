@@ -3,8 +3,8 @@ metadata.format.version = "1.1"
 [versions]
 fabric-loader = "2.0.0+fabric.0.17.2"
 
-paper-api = "26.1.2.build.65-stable"
-nbtapi = "2.15.2"
+paper-api = "26.3.build.+"
+nbtapi = "2.16.1"
 
 [libraries]
 fabric-loader = { module = "com.floweytf.fabricpaperloader:fabric-paper-loader", version.ref = "fabric-loader" }
@@ -12,4 +12,3 @@ fabric-loader = { module = "com.floweytf.fabricpaperloader:fabric-paper-loader",
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
 nbtapi = { module = "de.tr7zw:item-nbt-api", version.ref = "nbtapi" }
 nbtapi-plugin = { module = "de.tr7zw:item-nbt-api-plugin", version.ref = "nbtapi" }
-

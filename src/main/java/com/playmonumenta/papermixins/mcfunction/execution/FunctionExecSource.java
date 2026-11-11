@@ -19,14 +19,14 @@ public class FunctionExecSource extends CommandSourceStack {
 	private final FuncExecState<CommandSourceStack> execState;
 
 	public FunctionExecSource(CommandSourceStack stack, FuncExecState<CommandSourceStack> execState) {
+		final var nameProvider = stack.getEntity() != null ? CommandSourceStack.NamesProvider.FOR_ENTITY : CommandSourceStack.NamesProvider.constant(stack.getDisplayName());
 		super(
 			stack.source,
 			stack.getPosition(),
 			stack.getRotation(),
 			stack.getLevel(),
 			stack.permissions(),
-			stack.getTextName(),
-			stack.getDisplayName(),
+			nameProvider,
 			stack.getServer(),
 			stack.getEntity(),
 			stack.isSilent(),

@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
 import net.minecraft.world.entity.ai.behavior.DoNothing;
@@ -62,7 +62,7 @@ public abstract class VillagerGoalPackagesMixin {
 	) {
 		return ImmutableList.of(
 			Pair.of(2, new RunOne<>(ImmutableList.of(Pair.of(new DoNothing(30, 60), 1)))),
-			Pair.of(3, SetLookAndInteract.create(EntityType.PLAYER, 4)),
+			Pair.of(3, SetLookAndInteract.create(EntityTypes.PLAYER, 4)),
 			Pair.of(3, new ShowTradesToPlayer(400, 1600)),
 			Pair.of(3,
 				new GateBehavior<>(

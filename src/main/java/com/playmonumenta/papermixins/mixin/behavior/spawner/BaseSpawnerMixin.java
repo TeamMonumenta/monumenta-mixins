@@ -10,7 +10,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.animal.bee.Bee;
+import net.minecraft.world.entity.animal.parrot.Parrot;
+import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.level.BaseSpawner;
 import org.objectweb.asm.Opcodes;
@@ -120,7 +122,7 @@ public class BaseSpawnerMixin implements SpawnerAccess {
 		)
 	)
 	private void setEntitySpawnedBySpawner(ServerLevel level, BlockPos pos, CallbackInfo ci, @Local(name = "entity") Entity entity) {
-		if (!(entity instanceof FlyingAnimal || entity instanceof Vex)) {
+		if (!(entity instanceof Bee || entity instanceof Parrot || entity instanceof Allay || entity instanceof Vex)) {
 			((EntityAccess) entity).monumenta$setSpawner(Util.c(this));
 		}
 	}

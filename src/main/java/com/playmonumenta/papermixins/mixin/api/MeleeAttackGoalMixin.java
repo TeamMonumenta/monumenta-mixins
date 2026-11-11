@@ -32,6 +32,6 @@ public class MeleeAttackGoalMixin implements CustomMeleeAttackGoal {
 	)
 	private boolean redirectCanUse(PathfinderMob instance,
 								net.minecraft.world.entity.LivingEntity livingEntity) {
-		return isWithinAttackRange(livingEntity.getBukkitLivingEntity());
+		return isWithinAttackRange(livingEntity.getBukkitEntity());
 	}
 }

@@ -8,7 +8,7 @@ import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * @mm-patch 0033-Monumenta-Mob-behavior-changes.patch
  * @mm-patch 0037-Monumenta-Remove-vanilla-Enderman-teleportation.patch
  */
-@Mixin(EnderMan.class)
+@Mixin(Enderman.class)
 public abstract class EnderManMixin extends Monster {
 	protected EnderManMixin(EntityType<? extends Monster> type, Level world) {
 		super(type, world);
@@ -31,7 +31,7 @@ public abstract class EnderManMixin extends Monster {
 		method = "hurtServer",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/monster/EnderMan;tryEscape" +
+			target = "Lnet/minecraft/world/entity/monster/Enderman;tryEscape" +
 				"(Lcom/destroystokyo/paper/event/entity/EndermanEscapeEvent$Reason;)Z"
 		)
 	)

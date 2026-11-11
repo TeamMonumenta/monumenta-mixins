@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.playmonumenta.papermixins.ConfigManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,7 @@ public abstract class ProjectileMixin extends Entity {
 	public boolean canHitEntity(boolean original, @Local(argsOnly = true) Entity entity) {
 		@Nullable Entity owner = getOwner();
 		boolean playerHittingPlayer =
-			owner != null && owner.getType() == EntityType.PLAYER && entity.getType() == EntityType.PLAYER;
+			owner != null && owner.getType() == EntityTypes.PLAYER && entity.getType() == EntityTypes.PLAYER;
 		return original
 			&& !(ConfigManager.getConfig().behavior.playerArrowsPassThroughPlayers && playerHittingPlayer)
 			&& !entity.entityTags().contains("projectile_passthrough");

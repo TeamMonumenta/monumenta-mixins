@@ -1,7 +1,6 @@
 package com.playmonumenta.papermixins.impl.v1;
 
 import com.playmonumenta.papermixins.VersionInfo;
-import com.playmonumenta.papermixins.paperapi.v1.DataFix;
 import com.playmonumenta.papermixins.paperapi.v1.MonumentaPaperAPI;
 import com.playmonumenta.papermixins.paperapi.v1.RedisSyncIO;
 import com.playmonumenta.papermixins.paperapi.v1.resource.DataLoaderRegistry;
@@ -39,10 +38,5 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 	@Override
 	public RedisSyncIO getRedisSyncIO() {
 		return RedisSyncIOImpl.getInstance();
-	}
-
-	@Override
-	public DataFix getDataFix() {
-		return DataFixImpl.getInstance();
 	}
 }

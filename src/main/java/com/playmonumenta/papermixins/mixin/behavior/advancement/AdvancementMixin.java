@@ -9,7 +9,7 @@ import java.util.Optional;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
