@@ -27,12 +27,13 @@ public abstract class CraftPlayerMixin {
 			target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z"
 		)
 	)
-	public boolean retainPassengersAlways(Set instance, Object o, Operation<Boolean> original,
+	public boolean retainPassengersAlways(Set<?> instance, Object o, Operation<Boolean> original,
 										  Location location, PlayerTeleportEvent.TeleportCause cause, TeleportFlag[] flags) {
 		if (o == TeleportFlag.EntityState.RETAIN_PASSENGERS) {
-			if (location.getWorld() != ((CraftPlayer) (Object) this).getWorld() && !((CraftPlayer) (Object) this).getPassengers().isEmpty()) {
-				oldPassengers = ((CraftPlayer) (Object) this).getPassengers();
-				((CraftPlayer) (Object) this).eject();
+			CraftPlayer craftPlayer = (CraftPlayer) (Object) this;
+			if (location.getWorld() != craftPlayer.getWorld() && !craftPlayer.getPassengers().isEmpty()) {
+				oldPassengers = craftPlayer.getPassengers();
+				craftPlayer.eject();
 			}
 			return true;
 		}
@@ -45,6 +46,9 @@ public abstract class CraftPlayerMixin {
 	public void restorePassengers(Location location, PlayerTeleportEvent.TeleportCause cause, TeleportFlag[] flags, CallbackInfoReturnable<Boolean> cir) {
 		if (oldPassengers != null) {
 			for (Entity entity : oldPassengers) {
+				if (!entity.isValid()) {
+					continue;
+				}
 				entity.teleport(location);
 				((CraftPlayer) (Object) this).addPassenger(entity);
 			}
