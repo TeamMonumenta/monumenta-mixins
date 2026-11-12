@@ -102,6 +102,7 @@
         "misc.lifecycle.DedicatedServerMixin",
         "misc.lifecycle.MinecraftServerMixin",
         "optimize.AdvancementTreeMixin",
+        "optimize.ConnectionMixin",
         "optimize.ServerAdvancementManagerMixin"
     ]
 }
