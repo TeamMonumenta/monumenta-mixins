@@ -82,6 +82,7 @@
         "commands.ReloadableServerResourcesMixin",
         "commands.ReturnCommandMixin",
         "commands.ServerFunctionLibraryMixin",
+        "commands.SharedSuggestionProviderMixin",
         "impl.event.CraftEventFactoryMixin",
         "impl.event.LivingEntityMixin",
         "impl.event.MinecraftServerMixin",
