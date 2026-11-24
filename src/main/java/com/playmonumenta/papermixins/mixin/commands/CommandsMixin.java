@@ -21,10 +21,10 @@ public abstract class CommandsMixin {
 
 	@Inject(
 		method = "<init>(Lnet/minecraft/commands/Commands$CommandSelection;" +
-			"Lnet/minecraft/commands/CommandBuildContext;)V",
+			"Lnet/minecraft/commands/CommandBuildContext;Z)V",
 		at = @At("TAIL")
 	)
-	private void registerCommands(Commands.CommandSelection commandSelection, CommandBuildContext context, CallbackInfo ci) {
+	private void registerCommands(Commands.CommandSelection commandSelection, CommandBuildContext context, boolean modern, CallbackInfo ci) {
 		CommandRegistry.register(this.dispatcher);
 		Parser.init(context);
 	}
