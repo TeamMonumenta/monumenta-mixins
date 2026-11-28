@@ -2,7 +2,7 @@ package com.playmonumenta.papermixins.mixin.impl.hook;
 
 import com.playmonumenta.papermixins.duck.hook.EntityHookAccess;
 import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
-import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBT;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -77,7 +77,7 @@ public class EntityMixin implements EntityHookAccess {
 
 		monumenta$persistentEntries.forEach(entry -> {
 			final var serTag = new CompoundTag();
-			entry.value().save(new NBTContainer(serTag));
+			entry.value().save(NBT.wrapNMSTag(serTag));
 			persistentHookRoot.put(entry.key().asString(), serTag);
 		});
 

@@ -6,9 +6,10 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class SweepingEdgeParticleEvent extends PlayerEvent implements Cancellable {
-	private Location location;
+	private @Nullable Location location;
 	private boolean cancelled;
 
 	public SweepingEdgeParticleEvent(Player player) {
@@ -38,11 +39,11 @@ public class SweepingEdgeParticleEvent extends PlayerEvent implements Cancellabl
 		return handlers;
 	}
 
-	public Location getLocation() {
+	public @Nullable Location getLocation() {
 		return location;
 	}
 
-	public void setLocation(Location location) {
+	public void setLocation(@Nullable Location location) {
 		this.location = location;
 	}
 }
