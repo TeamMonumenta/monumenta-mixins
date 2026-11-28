@@ -68,6 +68,8 @@ public class ExtraItemDataImpl implements ExtraItemData {
 		this.title = title;
 	}
 
+	// CustomItemInstance needs an NBTContainer, which only the deprecated constructor guarantees
+	@SuppressWarnings("deprecation")
 	@Override
 	public ReadWriteNBT getNBTTag() {
 		if (extraTag == null) {

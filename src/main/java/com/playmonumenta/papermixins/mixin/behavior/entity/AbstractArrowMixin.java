@@ -26,6 +26,7 @@ public abstract class AbstractArrowMixin extends Entity {
 	@Shadow
 	public abstract byte getPierceLevel();
 
+	// Paper's discard() for this version takes EntityRemoveEvent.Cause, deprecated for removal
 	@Inject(
 		method = "onHitEntity",
 		at = @At(
@@ -34,6 +35,7 @@ public abstract class AbstractArrowMixin extends Entity {
 		),
 		cancellable = true
 	)
+	@SuppressWarnings("removal")
 	private void disableBounce(EntityHitResult entityHitResult, CallbackInfo ci) {
 		if(!ConfigManager.getConfig().behavior.disableArrowBouncing) {
 			return;

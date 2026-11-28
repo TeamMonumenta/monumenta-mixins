@@ -2,7 +2,7 @@ package com.playmonumenta.papermixins.impl.paperapi.v1;
 
 import com.playmonumenta.papermixins.duck.hook.EntityHookAccess;
 import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
-import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBT;
 import it.unimi.dsi.fastutil.Pair;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -23,7 +23,7 @@ record EntityPersistentImpl<T extends HookAPI.Persistent>(
 		}
 
 		final var instance = supplier.get();
-		instance.load(new NBTContainer(access.monumenta$getHookPersistentData().get(key)));
+		instance.load(NBT.wrapNMSTag(access.monumenta$getHookPersistentData().get(key)));
 		access.monumenta$getHookPersistentData().remove(key);
 		access.monumenta$getPersistentEntries().add(Pair.of(key, instance));
 		access.monumenta$getHooks().put(id, instance);

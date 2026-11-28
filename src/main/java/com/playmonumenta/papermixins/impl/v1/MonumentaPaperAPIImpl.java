@@ -9,6 +9,9 @@ import com.playmonumenta.mixinapi.v1.resource.DataLoaderRegistry;
 import com.playmonumenta.papermixins.MixinState;
 import com.playmonumenta.papermixins.VersionInfo;
 import com.playmonumenta.papermixins.impl.paperapi.v1.HookAPIImpl;
+import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
+import com.playmonumenta.papermixins.impl.v1.item.CustomItemsImpl;
+import com.playmonumenta.papermixins.impl.v1.resource.DataLoaderRegistryImpl;
 import com.playmonumenta.papermixins.paperapi.v1.HookAPI;
 import net.fabricmc.loader.api.SemanticVersion;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -43,17 +46,17 @@ public class MonumentaPaperAPIImpl implements MonumentaPaperAPI {
 
 	@Override
 	public DataLoaderRegistry getDataLoaderRegistryAPI() {
-		return DataLoaderRegistry.getInstance();
+		return DataLoaderRegistryImpl.getInstance();
 	}
 
 	@Override
 	public CustomItemRegistry getCustomItemRegistryAPI() {
-		return CustomItemRegistry.getInstance();
+		return CustomItemRegistryImpl.getInstance();
 	}
 
 	@Override
 	public CustomItems getCustomItemsAPI() {
-		return CustomItems.getInstance();
+		return CustomItemsImpl.getInstance();
 	}
 
 	@Override

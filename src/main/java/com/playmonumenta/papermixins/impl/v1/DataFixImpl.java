@@ -44,6 +44,8 @@ public class DataFixImpl implements DataFix {
 		.put(Types.SAVED_DATA_RAIDS, MCTypeRegistry.SAVED_DATA_RAIDS)
 		.build();
 
+	// The plugin API takes and returns NBTContainer, whose constructors are deprecated
+	@SuppressWarnings("deprecation")
 	@Override
 	public NBTContainer dataFix(NBTContainer input, Types type, int currentVersion, int targetVersion) {
 		final var res = MCDataConverter.convertTag(

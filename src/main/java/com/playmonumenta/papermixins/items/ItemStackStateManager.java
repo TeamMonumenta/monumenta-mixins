@@ -3,7 +3,7 @@ package com.playmonumenta.papermixins.items;
 import com.playmonumenta.papermixins.duck.ItemStackAccess;
 import com.playmonumenta.papermixins.impl.v1.item.CustomItemRegistryImpl;
 import com.playmonumenta.papermixins.impl.v1.item.CustomItemTypeImpl;
-import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBT;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.NamespacedKey;
@@ -50,7 +50,7 @@ public class ItemStackStateManager {
 		final var rootTag = stack.getOrCreateTagElement(ROOT_TAG_KEY);
 		rootTag.putString(KEY_ID, customState.key().asString());
 		rootTag.putString(KEY_VARIANT, customState.variant());
-		customState.item().writeSaveData(new NBTContainer(rootTag));
+		customState.item().writeSaveData(NBT.wrapNMSTag(rootTag));
 	}
 
 	public void loadCustomState(ItemStack stack) {
@@ -99,7 +99,7 @@ public class ItemStackStateManager {
 			realTag.put(KEY_SAVE_DATA, new CompoundTag());
 		}
 
-		customState.item().readSaveData(new NBTContainer(realTag));
+		customState.item().readSaveData(NBT.wrapNMSTag(realTag));
 		storeCustomState(stack);
 		recomputeDisplay(stack);
 	}
